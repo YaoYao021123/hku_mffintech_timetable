@@ -580,8 +580,8 @@ function updateStatistics() {
     const projectCount = selectedCourses.filter(c => c.type === 'project').length;
     
     document.getElementById('selectedCount').textContent = totalSelected;
-    document.getElementById('coreCount').textContent = coreCount;
-    document.getElementById('electiveCount').textContent = electiveCount + projectCount;
+    document.getElementById('coreCount').textContent = coreCount + projectCount; // 毕业项目计入核心课程
+    document.getElementById('electiveCount').textContent = electiveCount;
     
     // 更新冲突数量
     const conflicts = detectTimeConflicts(selectedCourses);
