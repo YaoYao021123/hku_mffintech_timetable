@@ -1,0 +1,823 @@
+[
+    {
+      "term": "Semester 1 (Module 1 & 2)",
+      "code": "LLAW6093",
+      "title": "Regulation of Financial Markets",
+      "section": "C",
+      "type": "Core",
+      "instructor": "Ms. Lea-Anne Lee",
+      "schedule": {
+        "days": ["Thursday"],
+        "time": "16:00-19:00"
+      },
+      "dates": [
+        "2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-16", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13", "2025-11-20"
+      ],
+      "special_arrangements": [],
+      "campus": "MC",
+      "venue": "CBC"
+    },
+    {
+      "term": "Semester 1 (Module 1 & 2)",
+      "code": "LLAW6046",
+      "title": "Privacy and Data Protection",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Mr. Adam Au",
+      "schedule": {
+        "days": ["Wednesday"],
+        "time": "19:00-22:00"
+      },
+      "dates": [
+        "2025-09-10", "2025-09-17", "2025-09-24", "2025-10-08", "2025-10-15", "2025-10-22", "2025-11-05", "2025-11-12"
+      ],
+      "special_arrangements": [],
+      "campus": "MC",
+      "venue": "KK101"
+    },
+    {
+      "term": "Semester 1 (Module 1 & 2)",
+      "code": "FITE7409",
+      "title": "Blockchain and Cryptocurrency",
+      "section": "A",
+      "type": "Core",
+      "instructor": "Dr. KP Chow",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "13:00-16:00"
+      },
+      "dates": [
+        "2025-10-13", "2025-10-20", "2025-10-27", "2025-10-30", "2025-11-03", "2025-11-06", "2025-11-10", "2025-11-13", "2025-11-27"
+      ],
+      "special_arrangements": [],
+      "campus": "MC",
+      "venue": "Mon lectures: CPD-3.04, Thu lectures: MW-T2"
+    },
+    {
+      "term": "Semester 1 (Module 1 & 2)",
+      "code": "DASC7606",
+      "title": "Deep Learning",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Francis Chin & Dr. Bethany Chan",
+      "schedule": {
+        "days": ["Thursday"],
+        "time": "13:00-16:00"
+      },
+      "dates": [
+        "2025-09-04", "2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13"
+      ],
+      "special_arrangements": [],
+      "campus": "MC",
+      "venue": "LE-1"
+    },
+    {
+      "term": "Semester 1 (Module 1 & 2)",
+      "code": "FITE7410",
+      "title": "Financial Fraud Analytics",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Dr. Vivien Chan & Ms. Annie Chan",
+      "schedule": {
+        "days": ["Wednesday"],
+        "time": "19:00-22:00"
+      },
+      "dates": [
+        "2025-09-03", "2025-09-10", "2025-09-17", "2025-09-24", "2025-10-08", "2025-10-22", "2025-11-05", "2025-11-12", "2025-11-19", "2025-11-26"
+      ],
+      "special_arrangements": [],
+      "campus": "MC",
+      "venue": "LE-5"
+    },
+    {
+      "term": "Module 1",
+      "code": "MFIN6003",
+      "title": "Derivative Securities",
+      "section": "E",
+      "type": "Core",
+      "instructor": "Prof. Hongye Guo",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2025-09-02", "2025-09-09", "2025-09-12", "2025-09-16", "2025-09-19", "2025-09-26", "2025-09-30", "2025-10-03"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-09-13",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2025-09-27",
+          "day": "Saturday",
+          "time": "14:00-17:00",
+          "venue": "LTB"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC, LTB (Sep 27)"
+    },
+    {
+      "term": "Module 1",
+      "code": "MFIN6003",
+      "title": "Derivative Securities",
+      "section": "F",
+      "type": "Core",
+      "instructor": "Prof. Hongye Guo",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2025-09-02", "2025-09-09", "2025-09-12", "2025-09-16", "2025-09-19", "2025-09-26", "2025-09-30", "2025-10-03"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-09-17",
+          "day": "Wednesday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2025-09-27",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "LTB"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 1",
+      "code": "MFIN7002",
+      "title": "Investment Analysis and Portfolio Management",
+      "section": "E",
+      "type": "Core",
+      "instructor": "Prof. Rujing Meng",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2025-09-01", "2025-09-04", "2025-09-08", "2025-09-11", "2025-09-15", "2025-09-18", "2025-09-22", "2025-09-25", "2025-09-29", "2025-10-02"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 1",
+      "code": "MFIN7002",
+      "title": "Investment Analysis and Portfolio Management",
+      "section": "F",
+      "type": "Core",
+      "instructor": "Prof. Rujing Meng",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2025-09-01", "2025-09-04", "2025-09-08", "2025-09-11", "2025-09-15", "2025-09-18", "2025-09-22", "2025-09-25", "2025-09-29", "2025-10-02"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 1",
+      "code": "MFIN7031",
+      "title": "Introduction to FinTech and its Impact on the Future of Banking and Finance",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Fangzhou Lu",
+      "schedule": {
+        "days": ["Sunday"],
+        "time": "09:30-12:30 & 14:00-17:00"
+      },
+      "dates": [
+        "2025-08-31", "2025-09-07", "2025-09-14", "2025-09-21", "2025-09-28"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 2",
+      "code": "MFIN7003",
+      "title": "Mathematical Techniques in Finance",
+      "section": "E",
+      "type": "Core",
+      "instructor": "Dr. Jinghan Meng",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "09:30-12:30"
+      },
+      "dates": [
+        "2025-10-14", "2025-10-21", "2025-10-24", "2025-10-28", "2025-10-31", "2025-11-04", "2025-11-07", "2025-11-11"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-10-13",
+          "day": "Monday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2025-11-10",
+          "day": "Monday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 2",
+      "code": "MFIN7003",
+      "title": "Mathematical Techniques in Finance",
+      "section": "F",
+      "type": "Core",
+      "instructor": "Dr. Jinghan Meng",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2025-10-14", "2025-10-21", "2025-10-24", "2025-10-28", "2025-10-31", "2025-11-04", "2025-11-07", "2025-11-11"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-10-17",
+          "day": "Friday",
+          "time": "18:30-21:30",
+          "venue": "Room H"
+        },
+        {
+          "date": "2025-11-14",
+          "day": "Friday",
+          "time": "18:30-21:30",
+          "venue": "LTA"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC, Room H (Oct 17), LTA (Nov 14)"
+    },
+    {
+      "term": "Module 2",
+      "code": "MFIN7033",
+      "title": "Advanced Financial Programming and Databases",
+      "section": "A",
+      "type": "Core",
+      "instructor": "Prof. Jiantao Huang",
+      "schedule": {
+        "days": ["Wednesday", "Saturday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2025-10-15", "2025-10-22", "2025-11-05", "2025-11-12", "2025-11-19"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-10-20",
+          "day": "Monday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2025-10-27",
+          "day": "Monday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2025-11-03",
+          "day": "Monday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2025-11-17",
+          "day": "Monday",
+          "time": "14:00-17:00 & 18:30-21:30",
+          "venue": "Room ABC"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 2",
+      "code": "MFIN7033",
+      "title": "Advanced Financial Programming and Databases",
+      "section": "B",
+      "type": "Core",
+      "instructor": "Prof. Jiantao Huang",
+      "schedule": {
+        "days": ["Wednesday", "Saturday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2025-10-15", "2025-10-18", "2025-10-22", "2025-10-25", "2025-11-01", "2025-11-05", "2025-11-08", "2025-11-12", "2025-11-15", "2025-11-19"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Semester 2 (Module 3 - 5)",
+      "code": "LLAW6093",
+      "title": "Regulation of Financial Markets",
+      "section": "D",
+      "type": "Core",
+      "instructor": "Ms Lea-Anne Lee",
+      "schedule": {
+        "days": ["Friday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-10"
+      ],
+      "special_arrangements": [],
+      "campus": "MC",
+      "venue": "CPD-3.04"
+    },
+    {
+      "term": "Semester 2 (Module 3 - 5)",
+      "code": "LLAW6256",
+      "title": "Law of Anti-Money Laundering and Counter-Terrorist Financing and Compliance Issues",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Dr John Lee",
+      "schedule": {
+        "days": ["Friday"],
+        "time": "19:00-22:00"
+      },
+      "dates": [
+        "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-10"
+      ],
+      "special_arrangements": [],
+      "campus": "MC",
+      "venue": "CPD-2.16"
+    },
+    {
+      "term": "Module 3",
+      "code": "MFIN7036",
+      "title": "Text Analytics and Natural Language Processing in Finance and FinTech",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Matthias Buehlmaier",
+      "schedule": {
+        "days": ["Wednesday", "Saturday"],
+        "time": "09:30-12:30"
+      },
+      "dates": [
+        "2025-12-10", "2025-12-20", "2026-01-03", "2026-01-07"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-12-17",
+          "day": "Wednesday",
+          "time": "09:30-12:30 & 14:00-17:00",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2026-01-10",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        },
+        {
+          "date": "2026-01-14",
+          "day": "Wednesday",
+          "time": "09:30-12:30 & 14:00-17:00",
+          "venue": "Room ABC & LTA"
+        },
+        {
+          "date": "2026-01-17",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 3",
+      "code": "MFIN7005",
+      "title": "Corporate Finance and Asset Valuation",
+      "section": "E",
+      "type": "Core",
+      "instructor": "Prof. Jack Xiaoyong Fu",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2025-12-09", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-20"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-12-20",
+          "day": "Saturday",
+          "time": "14:00-17:00",
+          "venue": "Room J"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC, Room J (Dec 20)"
+    },
+    {
+      "term": "Module 3",
+      "code": "MFIN7005",
+      "title": "Corporate Finance and Asset Valuation",
+      "section": "F",
+      "type": "Core",
+      "instructor": "Prof. Jack Xiaoyong Fu",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2025-12-13",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "Room H"
+        },
+        {
+          "date": "2025-12-20",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "Room H"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC, Room H (Dec 13 & 20)"
+    },
+    {
+      "term": "Module 3",
+      "code": "MFIN7002",
+      "title": "Investment Analysis and Portfolio Management",
+      "section": "G",
+      "type": "Core",
+      "instructor": "Prof. Rujing Meng",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2025-12-08", "2025-12-11", "2025-12-15", "2025-12-18", "2026-01-05", "2026-01-08", "2026-01-12", "2026-01-15", "2026-01-19", "2026-01-22"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 3",
+      "code": "MFIN7054",
+      "title": "Introduction to Cryptocurrencies and Digital Assets",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Henri Arslanian",
+      "schedule": {
+        "days": ["Saturday", "Sunday"],
+        "time": "Block Mode"
+      },
+      "dates": [],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "TBC"
+    },
+    {
+      "term": "Module 3",
+      "code": "MFIN7004",
+      "title": "Financial Services Regulations",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Berry Hsu",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "09:30-12:30"
+      },
+      "dates": [
+        "2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2026-01-16",
+          "day": "Friday",
+          "time": "09:30-12:30",
+          "venue": "MC - KK101"
+        }
+      ],
+      "campus": "CP & MC",
+      "venue": "CP - Room H, MC - KK101 (Jan 16)"
+    },
+    {
+      "term": "Module 3",
+      "code": "MFIN7004",
+      "title": "Financial Services Regulations",
+      "section": "B",
+      "type": "Elective",
+      "instructor": "Prof. Berry Hsu",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2026-01-16",
+          "day": "Friday",
+          "time": "14:00-17:00",
+          "venue": "MC - KK101"
+        }
+      ],
+      "campus": "CP & MC",
+      "venue": "CP - Room H, MC - KK101 (Jan 16)"
+    },
+    {
+      "term": "Module 4",
+      "code": "MFIN7037",
+      "title": "Quantitative Trading",
+      "section": "A",
+      "type": "Core",
+      "instructor": "Prof. Alan Kwan, Prof. Yang You",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2026-01-29", "2026-02-02", "2026-02-05", "2026-02-09", "2026-02-12", "2026-02-23", "2026-02-26", "2026-03-02", "2026-03-05", "2026-03-09"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 4",
+      "code": "MFIN7037",
+      "title": "Quantitative Trading",
+      "section": "B",
+      "type": "Core",
+      "instructor": "Prof. Alan Kwan, Prof. Yang You",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2026-01-29", "2026-02-02", "2026-02-05", "2026-02-09", "2026-02-12", "2026-02-23", "2026-02-26", "2026-03-02", "2026-03-05", "2026-03-09"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 4",
+      "code": "MFIN7034",
+      "title": "Machine Learning and Artificial Intelligence in Finance",
+      "section": "A",
+      "type": "Core",
+      "instructor": "Prof. Ye Luo",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2026-01-30", "2026-02-03", "2026-02-06", "2026-02-10", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 4",
+      "code": "MFIN7034",
+      "title": "Machine Learning and Artificial Intelligence in Finance",
+      "section": "B",
+      "type": "Core",
+      "instructor": "Prof. Ye Luo",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2026-01-30", "2026-02-03", "2026-02-06", "2026-02-10", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 5",
+      "code": "MFIN7060",
+      "title": "Fintech cybersecurity and risk management",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Alan Chow",
+      "schedule": {
+        "days": ["Wednesday", "Saturday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2026-03-21", "2026-04-01", "2026-04-08", "2026-04-15", "2026-04-22"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2026-03-25",
+          "day": "Wednesday",
+          "time": "14:00-17:00",
+          "venue": "Room EFG"
+        },
+        {
+          "date": "2026-03-28",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "LTA"
+        },
+        {
+          "date": "2026-04-11",
+          "day": "Saturday",
+          "time": "14:00-17:00",
+          "venue": "Room EFG"
+        },
+        {
+          "date": "2026-04-18",
+          "day": "Saturday",
+          "time": "18:30-21:30",
+          "venue": "LTA"
+        },
+        {
+          "date": "2026-04-25",
+          "day": "Saturday",
+          "time": "14:00-17:00",
+          "venue": "Room 205-1&2"
+        }
+      ],
+      "campus": "CP",
+      "venue": "LTA"
+    },
+    {
+      "term": "Module 5",
+      "code": "MFIN7035",
+      "title": "Big Data in Finance",
+      "section": "A",
+      "type": "Capstone",
+      "instructor": "Prof. Alan Kwan",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "14:00-17:00"
+      },
+      "dates": [
+        "2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-20", "2026-04-23"
+      ],
+      "special_arrangements": [
+        {
+          "date": "2026-04-15",
+          "day": "Wednesday",
+          "time": "18:30-21:30",
+          "venue": "Room ABC"
+        }
+      ],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 5",
+      "code": "MFIN7035",
+      "title": "Big Data in Finance",
+      "section": "B",
+      "type": "Capstone",
+      "instructor": "Prof. Alan Kwan",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-16", "2026-04-20", "2026-04-23"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room ABC"
+    },
+    {
+      "term": "Module 5",
+      "code": "MFIN7016",
+      "title": "Real Options and Dynamic Corporate Finance",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Keith K. P. Wong",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-07", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room D"
+    },
+    {
+      "term": "Module 5",
+      "code": "MFIN7049",
+      "title": "Money, Financial Institutions and Markets",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Xuewen Liu",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-16", "2026-04-20", "2026-04-23"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room H"
+    },
+    {
+      "term": "Module 5",
+      "code": "MFIN7052",
+      "title": "Green Finance and ESG",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Dragon Yongjun Tang",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "09:30-12:30"
+      },
+      "dates": [
+        "2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-07", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room H"
+    },
+    {
+      "term": "Module 6",
+      "code": "MFIN7013",
+      "title": "Seminar in Commercial Banking and Real Estate Financing",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Berry Hsu & Dr. Maurice K.S. Tse",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "09:30-12:30"
+      },
+      "dates": [
+        "2026-05-05", "2026-05-08", "2026-05-12", "2026-05-15", "2026-05-19", "2026-05-22", "2026-05-26", "2026-05-29", "2026-06-02", "2026-06-05"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room H"
+    },
+    {
+      "term": "Module 6",
+      "code": "MFIN7014",
+      "title": "Fund Management and Alternative Investments",
+      "section": "A",
+      "type": "Elective",
+      "instructor": "Prof. Fangzhou Lu",
+      "schedule": {
+        "days": ["Monday", "Thursday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2026-05-04", "2026-05-07", "2026-05-11", "2026-05-14", "2026-05-18", "2026-05-21", "2026-05-28", "2026-06-01", "2026-06-04", "2026-06-08"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room H"
+    },
+    {
+      "term": "Module 6",
+      "code": "MFIN7014",
+      "title": "Fund Management and Alternative Investments",
+      "section": "B",
+      "type": "Elective",
+      "instructor": "Prof. Fangzhou Lu",
+      "schedule": {
+        "days": ["Tuesday", "Friday"],
+        "time": "18:30-21:30"
+      },
+      "dates": [
+        "2026-05-05", "2026-05-08", "2026-05-12", "2026-05-15", "2026-05-19", "2026-05-22", "2026-05-26", "2026-05-29", "2026-06-02", "2026-06-05"
+      ],
+      "special_arrangements": [],
+      "campus": "CP",
+      "venue": "Room H"
+    }
+  ]
+

@@ -32,8 +32,8 @@ function initializeApp() {
     // 初始化语言显示
     updateLanguageDisplay();
     
-    // 默认选择推荐课程
-    selectRecommendedCourses();
+    // 默认不选择任何课程 - 用户自主选择
+    // selectRecommendedCourses();
     
     console.log('应用初始化完成');
 }
@@ -450,6 +450,17 @@ function bindEventListeners() {
         calendar.changeView('timeGridDay');
         updateViewButtons(this);
     });
+    
+    // 导出功能按钮
+    document.getElementById('exportICS').addEventListener('click', function(e) {
+        e.preventDefault();
+        exportToICS();
+    });
+    
+    document.getElementById('exportExcel').addEventListener('click', function(e) {
+        e.preventDefault();
+        exportToExcel();
+    });
 }
 
 function ensureOneSectionPerCourse() {
@@ -498,7 +509,10 @@ function updateLanguageDisplay() {
         'viewAllModeLabel': currentLanguage === 'zh' ? '查看全部' : 'View All',
         'selectAll': currentLanguage === 'zh' ? '全选' : 'Select All',
         'clearAll': currentLanguage === 'zh' ? '清空' : 'Clear All',
-        'languageToggle': currentLanguage === 'zh' ? '🌍 EN' : '🌍 中文'
+        'languageToggle': currentLanguage === 'zh' ? '🌍 EN' : '🌍 中文',
+        'exportLabel': currentLanguage === 'zh' ? '导出' : 'Export',
+        'exportICSLabel': currentLanguage === 'zh' ? '日历文件 (.ics)' : 'Calendar File (.ics)',
+        'exportExcelLabel': currentLanguage === 'zh' ? 'Excel表格 (.xlsx)' : 'Excel Spreadsheet (.xlsx)'
     };
     
     Object.entries(elements).forEach(([id, text]) => {
@@ -796,5 +810,220 @@ window.addEventListener('resize', function() {
         calendar.updateSize();
     }
 });
+
+// 导出功能
+function exportToICS() {
+    if (selectedCourses.length === 0) {
+        alert(currentLanguage === 'zh' ? '请先选择课程再导出' : 'Please select courses before exporting');
+        return;
+    }
+    
+    let ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//HKU//Master of Finance in FinTech//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:HKU FinTech Master Schedule
+X-WR-TIMEZONE:Asia/Hong_Kong
+X-WR-CALDESC:香港大学金融科技硕士课程表
+BEGIN:VTIMEZONE
+TZID:Asia/Hong_Kong
+BEGIN:STANDARD
+DTSTART:20251101T030000
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:HKT
+END:STANDARD
+END:VTIMEZONE
+`;
+
+    const events = generateCalendarEvents(selectedCourses);
+    
+    events.forEach(event => {
+        const startDate = new Date(event.start);
+        const endDate = new Date(event.end);
+        
+        // Format dates for ICS (YYYYMMDDTHHMMSS)
+        const formatDate = (date) => {
+            return date.getFullYear() +
+                   String(date.getMonth() + 1).padStart(2, '0') +
+                   String(date.getDate()).padStart(2, '0') + 'T' +
+                   String(date.getHours()).padStart(2, '0') +
+                   String(date.getMinutes()).padStart(2, '0') +
+                   String(date.getSeconds()).padStart(2, '0');
+        };
+        
+        const dtStart = formatDate(startDate);
+        const dtEnd = formatDate(endDate);
+        const dtStamp = formatDate(new Date());
+        
+        // Create unique UID
+        const uid = `${event.id}@hku-fintech.edu.hk`;
+        
+        // Event description
+        const description = `课程代码: ${event.extendedProps.course.code}\\n` +
+                          `讲师: ${event.extendedProps.instructor}\\n` +
+                          `地点: ${event.extendedProps.room}\\n` +
+                          `校区: ${event.extendedProps.campus}`;
+        
+        ics += `BEGIN:VEVENT
+UID:${uid}
+DTSTAMP:${dtStamp}Z
+ORGANIZER;CN=HKU Business School:MAILTO:noreply@hku.hk
+DTSTART;TZID=Asia/Hong_Kong:${dtStart}
+DTEND;TZID=Asia/Hong_Kong:${dtEnd}
+SUMMARY:${event.title}
+DESCRIPTION:${description}
+LOCATION:${event.extendedProps.room}, ${event.extendedProps.campus}
+STATUS:CONFIRMED
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT15M
+DESCRIPTION:课程即将开始
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+`;
+    });
+    
+    ics += 'END:VCALENDAR';
+    
+    // Download ICS file
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'HKU_FinTech_Schedule.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Show success message
+    setTimeout(() => {
+        alert(currentLanguage === 'zh' ? 
+              '日历文件导出成功！文件包含15分钟课前提醒。' : 
+              'Calendar exported successfully! File includes 15-minute pre-class reminders.');
+    }, 100);
+}
+
+function exportToExcel() {
+    if (selectedCourses.length === 0) {
+        alert(currentLanguage === 'zh' ? '请先选择课程再导出' : 'Please select courses before exporting');
+        return;
+    }
+    
+    // Prepare data for Excel
+    const worksheetData = [];
+    
+    // Add headers
+    const headers = currentLanguage === 'zh' ? 
+        ['课程代码', '课程名称', '班级', '类型', '讲师', '上课时间', '日期', '教室', '校区', '特殊安排'] :
+        ['Course Code', 'Course Name', 'Section', 'Type', 'Instructor', 'Schedule', 'Date', 'Room', 'Campus', 'Special'];
+    
+    worksheetData.push(headers);
+    
+    selectedCourses.forEach(course => {
+        const courseType = currentLanguage === 'zh' ? 
+            getCourseTypeName(course.type, 'zh') : 
+            getCourseTypeName(course.type, 'en');
+            
+        const courseName = currentLanguage === 'zh' ? course.name : getCourseName(course, 'en');
+        
+        // Regular class dates
+        course.dates.forEach(date => {
+            worksheetData.push([
+                course.code,
+                courseName,
+                course.section,
+                courseType,
+                course.instructor,
+                course.schedule,
+                date,
+                course.room,
+                course.campus,
+                ''
+            ]);
+        });
+        
+        // Special arrangements
+        if (course.special_arrangements && course.special_arrangements.length > 0) {
+            course.special_arrangements.forEach(arrangement => {
+                worksheetData.push([
+                    course.code,
+                    courseName + ' (特殊安排)',
+                    course.section,
+                    courseType,
+                    course.instructor,
+                    `${arrangement.day} ${arrangement.time}`,
+                    arrangement.date,
+                    arrangement.venue,
+                    course.campus,
+                    '✓'
+                ]);
+            });
+        }
+    });
+    
+    // Create workbook
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    
+    // Set column widths
+    worksheet['!cols'] = [
+        { wch: 12 }, // Course Code
+        { wch: 35 }, // Course Name
+        { wch: 8 },  // Section
+        { wch: 10 }, // Type
+        { wch: 25 }, // Instructor
+        { wch: 25 }, // Schedule
+        { wch: 12 }, // Date
+        { wch: 20 }, // Room
+        { wch: 8 },  // Campus
+        { wch: 8 }   // Special
+    ];
+    
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, currentLanguage === 'zh' ? '课程安排' : 'Course Schedule');
+    
+    // Create summary worksheet
+    const summaryData = [];
+    summaryData.push([currentLanguage === 'zh' ? '课程统计' : 'Course Statistics']);
+    summaryData.push([]);
+    
+    const stats = {
+        total: selectedCourses.length,
+        core: selectedCourses.filter(c => c.type === 'core').length,
+        elective: selectedCourses.filter(c => c.type === 'elective').length,
+        project: selectedCourses.filter(c => c.type === 'project').length
+    };
+    
+    if (currentLanguage === 'zh') {
+        summaryData.push(['总课程数', stats.total]);
+        summaryData.push(['核心课程', stats.core]);
+        summaryData.push(['选修课程', stats.elective]);
+        summaryData.push(['毕业项目', stats.project]);
+        summaryData.push([]);
+        summaryData.push(['导出时间', new Date().toLocaleString('zh-CN')]);
+    } else {
+        summaryData.push(['Total Courses', stats.total]);
+        summaryData.push(['Core Courses', stats.core]);
+        summaryData.push(['Elective Courses', stats.elective]);
+        summaryData.push(['Capstone Project', stats.project]);
+        summaryData.push([]);
+        summaryData.push(['Export Time', new Date().toLocaleString('en-US')]);
+    }
+    
+    const summaryWorksheet = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(workbook, summaryWorksheet, currentLanguage === 'zh' ? '统计信息' : 'Statistics');
+    
+    // Generate Excel file and download
+    XLSX.writeFile(workbook, 'HKU_FinTech_Schedule.xlsx');
+    
+    // Show success message
+    setTimeout(() => {
+        alert(currentLanguage === 'zh' ? 
+              'Excel文件导出成功！包含课程详情和统计信息。' : 
+              'Excel file exported successfully! Includes course details and statistics.');
+    }, 100);
+}
 
 console.log('📚 HKU 金融科技硕士课程日历应用加载完成!');
