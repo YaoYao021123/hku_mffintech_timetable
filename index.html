@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKU 金融科技硕士课程日历</title>
+    
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap CSS for better styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar for course selection -->
+            <div class="col-md-3 sidebar p-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h3 class="mb-1">🎓 HKU 金融科技硕士</h3>
+                        <h5 class="mb-0" id="appTitle">课程规划日历 2025-2026</h5>
+                    </div>
+                    <button class="btn btn-sm btn-outline-light" id="languageToggle">🌍 EN</button>
+                </div>
+                
+                <!-- Exemption Settings -->
+                <div class="exemption-section mb-4">
+                    <h6 class="mb-3">🎓 <span id="exemptionTitle">豁免课程设置</span></h6>
+                    <div class="exemption-group mb-3">
+                        <small class="text-muted d-block mb-2" id="fundamentalTitle">基础核心课程:</small>
+                        <div id="fundamentalCourses"></div>
+                    </div>
+                    <div class="exemption-group mb-3">
+                        <small class="text-muted d-block mb-2" id="advancedTitle">高级核心课程:</small>
+                        <div id="advancedCourses"></div>
+                    </div>
+                    <div class="alert alert-info" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                        <small id="exemptionInfo">豁免 0 门核心课程 = 可选 2 门选修课</small>
+                    </div>
+                </div>
+                
+                <!-- Course Selection -->
+                <div class="course-selection">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 id="courseSelectionTitle">选择课程</h6>
+                        <div>
+                            <div class="btn-group me-2" role="group">
+                                <input type="radio" class="btn-check" name="viewMode" id="selectMode" checked>
+                                <label class="btn btn-sm btn-outline-light" for="selectMode" id="selectModeLabel">选课</label>
+                                
+                                <input type="radio" class="btn-check" name="viewMode" id="viewAllMode">
+                                <label class="btn btn-sm btn-outline-light" for="viewAllMode" id="viewAllModeLabel">查看全部</label>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary me-1" id="selectAll">全选</button>
+                            <button class="btn btn-sm btn-outline-secondary" id="clearAll">清空</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Semester 1 -->
+                    <div class="semester-section mb-4">
+                        <h6 class="semester-title">第一学期 (2025年9月-11月)</h6>
+                        <div class="course-group" id="semester1-courses">
+                            <!-- Courses will be dynamically generated -->
+                        </div>
+                    </div>
+                    
+                    <!-- Semester 2 -->
+                    <div class="semester-section mb-4">
+                        <h6 class="semester-title">第二学期 (2026年1月-5月)</h6>
+                        <div class="course-group" id="semester2-courses">
+                            <!-- Courses will be dynamically generated -->
+                        </div>
+                    </div>
+                    
+                    <!-- Summer Semester -->
+                    <div class="semester-section mb-4">
+                        <h6 class="semester-title">夏季学期 (2026年5月-6月)</h6>
+                        <div class="course-group" id="summer-courses">
+                            <!-- Courses will be dynamically generated -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Conflict Warning -->
+                <div class="alert alert-warning d-none" id="conflictWarning">
+                    <h6><i class="fas fa-exclamation-triangle"></i> 时间冲突警告</h6>
+                    <div id="conflictDetails"></div>
+                </div>
+                
+                <!-- Statistics -->
+                <div class="stats-section mt-4">
+                    <h6>统计信息</h6>
+                    <div class="stats">
+                        <p class="mb-1">已选课程: <span id="selectedCount">0</span></p>
+                        <p class="mb-1">核心课程: <span id="coreCount">0</span></p>
+                        <p class="mb-1">选修课程: <span id="electiveCount">0</span></p>
+                        <p class="mb-0">时间冲突: <span id="conflictCount" class="text-danger">0</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main content area for calendar -->
+            <div class="col-md-9 main-content">
+                <div class="calendar-header p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4>📅 课程日历</h4>
+                        <div class="view-controls">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="monthView">月视图</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary active" id="weekView">周视图</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="dayView">日视图</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Legend -->
+                    <div class="legend mb-3">
+                        <small class="text-muted">课程类型: </small>
+                        <span class="legend-item core-course">核心课程</span>
+                        <span class="legend-item elective-course">选修课程</span>
+                        <span class="legend-item project-course">毕业项目</span>
+                        <span class="legend-item conflict-course">时间冲突</span>
+                    </div>
+                </div>
+                
+                <!-- Calendar -->
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Course Detail Modal -->
+    <div class="modal fade" id="courseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="courseModalTitle">课程详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="courseModalBody">
+                    <!-- Course details will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/locales/zh-cn.global.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="course-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
