@@ -803,6 +803,23 @@ function parseScheduleTime(schedule) {
     };
 }
 
+function parseAllTimeRanges(schedule) {
+    // 解析包含多个时间段的课程表，例如 "周日 09:30-12:30 & 14:00-17:00"
+    const timeRanges = [];
+    const timePattern = /(\d{2}:\d{2})-(\d{2}:\d{2})/g;
+    let match;
+    
+    while ((match = timePattern.exec(schedule)) !== null) {
+        timeRanges.push({
+            startTime: match[1],
+            endTime: match[2]
+        });
+    }
+    
+    // 如果没有找到时间范围，返回空数组
+    return timeRanges.length > 0 ? timeRanges : [];
+}
+
 function generateCalendarEvents(selectedCourses, showAllMode = false) {
     const events = [];
     const conflictGroups = detectTimeConflicts(selectedCourses);
@@ -820,42 +837,46 @@ function generateCalendarEvents(selectedCourses, showAllMode = false) {
         
         const courseName = getCourseName(course, currentLanguage);
         
-        // 处理常规日期和时间
+        // 处理常规日期和时间 - 修改以支持多个时间段
         course.dates.forEach(dateStr => {
             const date = new Date(dateStr);
             const dayOfWeek = date.getDay();
             
             scheduleInfo.days.forEach(expectedDay => {
                 if (dayOfWeek === expectedDay) {
-                    // 使用本地时间格式，不进行时区转换
-                    const startDateTime = dateStr + 'T' + scheduleInfo.startTime + ':00';
-                    const endDateTime = dateStr + 'T' + scheduleInfo.endTime + ':00';
+                    // 检查是否包含多个时间段（例如 "09:30-12:30 & 14:00-17:00"）
+                    const timeRanges = parseAllTimeRanges(course.schedule);
                     
-                    events.push({
-                        id: `${courseId}-${dateStr}-${expectedDay}`,
-                        title: `${courseName} (${course.section})`,
-                        start: startDateTime,
-                        end: endDateTime,
-                        backgroundColor: isConflicted ? '#6f42c1' : course.color,
-                        borderColor: isConflicted ? '#6f42c1' : course.color,
-                        textColor: 'white',
-                        extendedProps: {
-                            course: course,
-                            courseId: courseId,
-                            instructor: course.instructor,
-                            room: course.room,
-                            campus: course.campus,
-                            type: course.type,
-                            isConflicted: isConflicted,
-                            courseName: courseName,
-                            courseNameEn: getCourseName(course, 'en'),
-                            courseNameZh: getCourseName(course, 'zh'),
-                            isSpecialArrangement: false
-                        },
-                        classNames: [
-                            `${course.type}-course`,
-                            isConflicted ? 'conflict-course' : ''
-                        ].filter(Boolean)
+                    timeRanges.forEach((timeRange, index) => {
+                        const startDateTime = dateStr + 'T' + timeRange.startTime + ':00';
+                        const endDateTime = dateStr + 'T' + timeRange.endTime + ':00';
+                        
+                        events.push({
+                            id: `${courseId}-${dateStr}-${expectedDay}${timeRanges.length > 1 ? `-${index}` : ''}`,
+                            title: `${courseName} (${course.section})${timeRanges.length > 1 ? ` - 第${index + 1}节` : ''}`,
+                            start: startDateTime,
+                            end: endDateTime,
+                            backgroundColor: isConflicted ? '#6f42c1' : course.color,
+                            borderColor: isConflicted ? '#6f42c1' : course.color,
+                            textColor: 'white',
+                            extendedProps: {
+                                course: course,
+                                courseId: courseId,
+                                instructor: course.instructor,
+                                room: course.room,
+                                campus: course.campus,
+                                type: course.type,
+                                isConflicted: isConflicted,
+                                courseName: courseName,
+                                courseNameEn: getCourseName(course, 'en'),
+                                courseNameZh: getCourseName(course, 'zh'),
+                                isSpecialArrangement: false
+                            },
+                            classNames: [
+                                `${course.type}-course`,
+                                isConflicted ? 'conflict-course' : ''
+                            ].filter(Boolean)
+                        });
                     });
                 }
             });
@@ -1021,6 +1042,7 @@ if (typeof module !== 'undefined' && module.exports) {
         isExemptedCourse,
         updateElectiveCount,
         parseScheduleTime,
+        parseAllTimeRanges,
         generateCalendarEvents,
         detectTimeConflicts,
         hasTimeConflict

@@ -29,17 +29,24 @@
                 
                 <!-- Exemption Settings -->
                 <div class="exemption-section mb-4">
-                    <h6 class="mb-3">🎓 <span id="exemptionTitle">豁免课程设置</span></h6>
-                    <div class="exemption-group mb-3">
-                        <small class="text-muted d-block mb-2" id="fundamentalTitle">基础核心课程:</small>
-                        <div id="fundamentalCourses"></div>
+                    <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#exemptionCollapse" aria-expanded="true" aria-controls="exemptionCollapse" style="cursor: pointer;">
+                        <h6 class="mb-0">🎓 <span id="exemptionTitle">豁免课程设置</span></h6>
+                        <i class="fas fa-chevron-down"></i>
                     </div>
-                    <div class="exemption-group mb-3">
-                        <small class="text-muted d-block mb-2" id="advancedTitle">高级核心课程:</small>
-                        <div id="advancedCourses"></div>
-                    </div>
-                    <div class="alert alert-info" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
-                        <small id="exemptionInfo">豁免 0 门核心课程 = 可选 2 门选修课</small>
+                    <div class="collapse show" id="exemptionCollapse">
+                        <div class="mt-3">
+                            <div class="exemption-group mb-3">
+                                <small class="text-muted d-block mb-2" id="fundamentalTitle">基础核心课程:</small>
+                                <div id="fundamentalCourses"></div>
+                            </div>
+                            <div class="exemption-group mb-3">
+                                <small class="text-muted d-block mb-2" id="advancedTitle">高级核心课程:</small>
+                                <div id="advancedCourses"></div>
+                            </div>
+                            <div class="alert alert-info" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                                <small id="exemptionInfo">豁免 0 门核心课程 = 可选 2 门选修课</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -60,27 +67,74 @@
                         </div>
                     </div>
                     
-                    <!-- Semester 1 -->
-                    <div class="semester-section mb-4">
-                        <h6 class="semester-title">第一学期 (2025年9月-11月)</h6>
-                        <div class="course-group" id="semester1-courses">
-                            <!-- Courses will be dynamically generated -->
+                    <!-- Core Courses -->
+                    <div class="course-category mb-3">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#coreCollapse" aria-expanded="true" aria-controls="coreCollapse" style="cursor: pointer;">
+                            <h6 class="mb-0" id="coreTitle">Core</h6>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="collapse show" id="coreCollapse">
+                            <div class="course-group mt-2" id="core-courses">
+                                <!-- Core courses will be dynamically generated -->
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Semester 2 -->
-                    <div class="semester-section mb-4">
-                        <h6 class="semester-title">第二学期 (2026年1月-5月)</h6>
-                        <div class="course-group" id="semester2-courses">
-                            <!-- Courses will be dynamically generated -->
+                    <!-- Capstone Core -->
+                    <div class="course-category mb-3">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#capstoneCollapse" aria-expanded="true" aria-controls="capstoneCollapse" style="cursor: pointer;">
+                            <h6 class="mb-0" id="capstoneTitle">Capstone Core</h6>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="collapse show" id="capstoneCollapse">
+                            <div class="course-group mt-2" id="capstone-courses">
+                                <!-- Capstone courses will be dynamically generated -->
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Summer Semester -->
-                    <div class="semester-section mb-4">
-                        <h6 class="semester-title">夏季学期 (2026年5月-6月)</h6>
-                        <div class="course-group" id="summer-courses">
-                            <!-- Courses will be dynamically generated -->
+                    <!-- Engineering Electives -->
+                    <div class="course-category mb-3">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#engineeringCollapse" aria-expanded="true" aria-controls="engineeringCollapse" style="cursor: pointer;">
+                            <h6 class="mb-0" id="engineeringTitle">Elective offered by Faculty of Engineering</h6>
+                            <div class="d-flex align-items-center">
+                                <small class="text-muted me-2" id="engineeringLimit">限选1门</small>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="collapse show" id="engineeringCollapse">
+                            <div class="course-group mt-2" id="engineering-courses">
+                                <!-- Engineering elective courses will be dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Law Electives -->
+                    <div class="course-category mb-3">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#lawCollapse" aria-expanded="true" aria-controls="lawCollapse" style="cursor: pointer;">
+                            <h6 class="mb-0" id="lawTitle">Elective offered by Faculty of Law</h6>
+                            <div class="d-flex align-items-center">
+                                <small class="text-muted me-2" id="lawLimit">限选1门</small>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="collapse show" id="lawCollapse">
+                            <div class="course-group mt-2" id="law-courses">
+                                <!-- Law elective courses will be dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- HKUBS Programme Electives -->
+                    <div class="course-category mb-3">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#hkubsCollapse" aria-expanded="true" aria-controls="hkubsCollapse" style="cursor: pointer;">
+                            <h6 class="mb-0" id="hkubsTitle">HKUBS Programme - Elective</h6>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="collapse show" id="hkubsCollapse">
+                            <div class="course-group mt-2" id="hkubs-courses">
+                                <!-- HKUBS elective courses will be dynamically generated -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,6 +175,9 @@
                                     <li><a class="dropdown-item" href="#" id="exportExcel">
                                         <i class="fas fa-file-excel"></i> <span id="exportExcelLabel">Excel表格 (.xlsx)</span>
                                     </a></li>
+                                    <li><a class="dropdown-item" href="#" id="exportAgenda">
+                                        <i class="fas fa-list"></i> <span id="exportAgendaLabel">议程表格 (.xlsx)</span>
+                                    </a></li>
                                 </ul>
                             </div>
                             <!-- View Controls -->
@@ -129,6 +186,7 @@
                                     <button type="button" class="btn btn-sm btn-outline-primary" id="monthView">月视图</button>
                                     <button type="button" class="btn btn-sm btn-outline-primary active" id="weekView">周视图</button>
                                     <button type="button" class="btn btn-sm btn-outline-primary" id="dayView">日视图</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="agendaView">议程视图</button>
                                 </div>
                             </div>
                         </div>
@@ -146,6 +204,31 @@
                 
                 <!-- Calendar -->
                 <div id="calendar"></div>
+                
+                <!-- Agenda View -->
+                <div id="agenda-view" class="d-none">
+                    <div class="agenda-container">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="agenda-table">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th width="12%">日期</th>
+                                        <th width="8%">星期</th>
+                                        <th width="12%">时间</th>
+                                        <th width="25%">课程</th>
+                                        <th width="15%">讲师</th>
+                                        <th width="15%">地点</th>
+                                        <th width="8%">类型</th>
+                                        <th width="5%">特殊</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="agenda-tbody">
+                                    <!-- Agenda items will be dynamically generated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

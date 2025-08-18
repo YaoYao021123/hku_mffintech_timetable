@@ -7,6 +7,13 @@ let isViewAllMode = false;
 let currentLanguage = 'zh'; // 'zh' 或 'en'
 let exemptedCourses = new Set(); // 豁免的课程代码
 let availableElectives = 2; // 基础选修课程数量（无豁免时）
+let currentView = 'calendar'; // 'calendar' 或 'agenda'
+
+// 课程分类定义
+const ENGINEERING_COURSES = ['FITE7410', 'DASC7606'];
+const LAW_COURSES = ['LLAW6256', 'LLAW6046'];
+let engineeringElectiveCount = 0; // 已选工程学院选修课数量
+let lawElectiveCount = 0; // 已选法学院选修课数量
 
 // 应用初始化
 document.addEventListener('DOMContentLoaded', function() {
@@ -39,18 +46,51 @@ function initializeApp() {
 }
 
 function initializeCourseSelection() {
-    const semester1Container = document.getElementById('semester1-courses');
-    const semester2Container = document.getElementById('semester2-courses');
-    const summerContainer = document.getElementById('summer-courses');
+    const coreContainer = document.getElementById('core-courses');
+    const capstoneContainer = document.getElementById('capstone-courses');
+    const engineeringContainer = document.getElementById('engineering-courses');
+    const lawContainer = document.getElementById('law-courses');
+    const hkubsContainer = document.getElementById('hkubs-courses');
     
-    // 渲染第一学期课程
-    renderCourseGroup(COURSE_DATA.semester1, semester1Container);
+    // 获取所有课程并按类型分类
+    const categorizedCourses = categorizeCourses();
     
-    // 渲染第二学期课程
-    renderCourseGroup(COURSE_DATA.semester2, semester2Container);
+    // 渲染各类课程
+    renderCourseGroup(categorizedCourses.core, coreContainer);
+    renderCourseGroup(categorizedCourses.capstone, capstoneContainer);
+    renderCourseGroup(categorizedCourses.engineering, engineeringContainer);
+    renderCourseGroup(categorizedCourses.law, lawContainer);
+    renderCourseGroup(categorizedCourses.hkubs, hkubsContainer);
+}
+
+function categorizeCourses() {
+    const allCourses = [...COURSE_DATA.semester1, ...COURSE_DATA.semester2, ...COURSE_DATA.summer];
     
-    // 渲染夏季学期课程
-    renderCourseGroup(COURSE_DATA.summer, summerContainer);
+    const categorized = {
+        core: [],
+        capstone: [],
+        engineering: [],
+        law: [],
+        hkubs: []
+    };
+    
+    allCourses.forEach(course => {
+        if (course.type === 'core') {
+            categorized.core.push(course);
+        } else if (course.type === 'project') {
+            categorized.capstone.push(course);
+        } else if (course.type === 'elective') {
+            if (ENGINEERING_COURSES.includes(course.code)) {
+                categorized.engineering.push(course);
+            } else if (LAW_COURSES.includes(course.code)) {
+                categorized.law.push(course);
+            } else {
+                categorized.hkubs.push(course);
+            }
+        }
+    });
+    
+    return categorized;
 }
 
 function renderCourseGroup(courses, container) {
@@ -133,6 +173,33 @@ function handleCourseSelection(checkbox) {
     if (!course) return;
     
     if (checkbox.checked) {
+        // 检查工程学院和法学院选修课限制
+        if (course.type === 'elective' && !isViewAllMode) {
+            if (ENGINEERING_COURSES.includes(course.code)) {
+                const currentEngCount = selectedCourses.filter(c => 
+                    c.type === 'elective' && ENGINEERING_COURSES.includes(c.code)
+                ).length;
+                if (currentEngCount >= 1) {
+                    alert(currentLanguage === 'zh' ? 
+                          '工程学院选修课最多只能选择1门' : 
+                          'You can only select 1 Engineering elective course');
+                    checkbox.checked = false;
+                    return;
+                }
+            } else if (LAW_COURSES.includes(course.code)) {
+                const currentLawCount = selectedCourses.filter(c => 
+                    c.type === 'elective' && LAW_COURSES.includes(c.code)
+                ).length;
+                if (currentLawCount >= 1) {
+                    alert(currentLanguage === 'zh' ? 
+                          '法学院选修课最多只能选择1门' : 
+                          'You can only select 1 Law elective course');
+                    checkbox.checked = false;
+                    return;
+                }
+            }
+        }
+        
         // 在选课模式下，先移除同一课程的其他班级
         if (!isViewAllMode) {
             selectedCourses = selectedCourses.filter(c => c.code !== course.code);
@@ -163,14 +230,48 @@ function handleCourseSelection(checkbox) {
     // 更新课程可用性
     updateCourseDisability();
     
-    // 更新日历
+    // 更新学院选修课计数
+    updateFacultyElectiveCounts();
+    
+    // 更新日历和agenda视图
     updateCalendar();
+    updateAgendaView();
     
     // 更新统计信息
     updateStatistics();
     
     // 检查时间冲突
     checkAndDisplayConflicts();
+}
+
+function updateFacultyElectiveCounts() {
+    engineeringElectiveCount = selectedCourses.filter(c => 
+        c.type === 'elective' && ENGINEERING_COURSES.includes(c.code)
+    ).length;
+    
+    lawElectiveCount = selectedCourses.filter(c => 
+        c.type === 'elective' && LAW_COURSES.includes(c.code)
+    ).length;
+    
+    // 更新UI中的限制提示
+    updateFacultyLimitDisplay();
+}
+
+function updateFacultyLimitDisplay() {
+    const engineeringLimit = document.getElementById('engineeringLimit');
+    const lawLimit = document.getElementById('lawLimit');
+    
+    if (engineeringLimit) {
+        engineeringLimit.textContent = currentLanguage === 'zh' ? 
+            `限选1门 (${engineeringElectiveCount}/1)` : 
+            `Max 1 (${engineeringElectiveCount}/1)`;
+    }
+    
+    if (lawLimit) {
+        lawLimit.textContent = currentLanguage === 'zh' ? 
+            `限选1门 (${lawElectiveCount}/1)` : 
+            `Max 1 (${lawElectiveCount}/1)`;
+    }
 }
 
 function updateCourseItemStyle(courseId, isSelected) {
@@ -451,6 +552,12 @@ function bindEventListeners() {
         updateViewButtons(this);
     });
     
+    // 新增议程视图按钮
+    document.getElementById('agendaView').addEventListener('click', function() {
+        switchToAgendaView();
+        updateViewButtons(this);
+    });
+    
     // 导出功能按钮
     document.getElementById('exportICS').addEventListener('click', function(e) {
         e.preventDefault();
@@ -460,6 +567,11 @@ function bindEventListeners() {
     document.getElementById('exportExcel').addEventListener('click', function(e) {
         e.preventDefault();
         exportToExcel();
+    });
+    
+    document.getElementById('exportAgenda').addEventListener('click', function(e) {
+        e.preventDefault();
+        exportAgendaToExcel();
     });
 }
 
@@ -512,7 +624,13 @@ function updateLanguageDisplay() {
         'languageToggle': currentLanguage === 'zh' ? '🌍 EN' : '🌍 中文',
         'exportLabel': currentLanguage === 'zh' ? '导出' : 'Export',
         'exportICSLabel': currentLanguage === 'zh' ? '日历文件 (.ics)' : 'Calendar File (.ics)',
-        'exportExcelLabel': currentLanguage === 'zh' ? 'Excel表格 (.xlsx)' : 'Excel Spreadsheet (.xlsx)'
+        'exportExcelLabel': currentLanguage === 'zh' ? 'Excel表格 (.xlsx)' : 'Excel Spreadsheet (.xlsx)',
+        'exportAgendaLabel': currentLanguage === 'zh' ? '议程表格 (.xlsx)' : 'Agenda Table (.xlsx)',
+        'coreTitle': currentLanguage === 'zh' ? 'Core' : 'Core',
+        'capstoneTitle': currentLanguage === 'zh' ? 'Capstone Core' : 'Capstone Core',
+        'engineeringTitle': currentLanguage === 'zh' ? 'Elective offered by Faculty of Engineering' : 'Elective offered by Faculty of Engineering',
+        'lawTitle': currentLanguage === 'zh' ? 'Elective offered by Faculty of Law' : 'Elective offered by Faculty of Law',
+        'hkubsTitle': currentLanguage === 'zh' ? 'HKUBS Programme - Elective' : 'HKUBS Programme - Elective'
     };
     
     Object.entries(elements).forEach(([id, text]) => {
@@ -541,8 +659,12 @@ function updateLanguageDisplay() {
     // 更新豁免信息
     updateExemptionInfo();
     
-    // 更新日历
+    // 更新学院选修课限制显示
+    updateFacultyLimitDisplay();
+    
+    // 更新日历和agenda视图
     updateCalendar();
+    updateAgendaView();
 }
 
 function updateCourseListDisplay() {
@@ -567,10 +689,137 @@ function updateCourseListDisplay() {
 }
 
 function updateViewButtons(activeButton) {
-    document.querySelectorAll('#monthView, #weekView, #dayView').forEach(btn => {
+    document.querySelectorAll('#monthView, #weekView, #dayView, #agendaView').forEach(btn => {
         btn.classList.remove('active');
     });
     activeButton.classList.add('active');
+    
+    // 根据选择的视图显示相应内容
+    const calendarDiv = document.getElementById('calendar');
+    const agendaDiv = document.getElementById('agenda-view');
+    
+    if (activeButton.id === 'agendaView') {
+        calendarDiv.style.display = 'none';
+        agendaDiv.classList.remove('d-none');
+        currentView = 'agenda';
+    } else {
+        calendarDiv.style.display = 'block';
+        agendaDiv.classList.add('d-none');
+        currentView = 'calendar';
+    }
+}
+
+function switchToAgendaView() {
+    updateAgendaView();
+}
+
+function updateAgendaView() {
+    if (currentView !== 'agenda') return;
+    
+    const agendaData = generateAgendaData();
+    const tbody = document.getElementById('agenda-tbody');
+    
+    tbody.innerHTML = '';
+    
+    agendaData.forEach(item => {
+        const row = document.createElement('tr');
+        row.className = item.isSpecial ? 'table-warning' : '';
+        
+        row.innerHTML = `
+            <td>${item.date}</td>
+            <td>${item.dayOfWeek}</td>
+            <td>${item.time}</td>
+            <td>
+                <div class="fw-bold">${item.courseName}</div>
+                <small class="text-muted">${item.courseCode}</small>
+            </td>
+            <td>${item.instructor}</td>
+            <td>${item.location}</td>
+            <td>
+                <span class="badge bg-${item.typeColor}">${item.type}</span>
+            </td>
+            <td>${item.isSpecial ? '✓' : ''}</td>
+        `;
+        
+        tbody.appendChild(row);
+    });
+}
+
+function generateAgendaData() {
+    const agendaItems = [];
+    
+    selectedCourses.forEach(course => {
+        const courseName = getCourseName(course);
+        const typeColor = course.type === 'core' ? 'primary' : 
+                         course.type === 'project' ? 'success' : 'secondary';
+        const typeName = getCourseTypeName(course.type);
+        
+        // 处理常规日期
+        course.dates.forEach(dateStr => {
+            const date = new Date(dateStr);
+            const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            const dayOfWeek = dayNames[date.getDay()];
+            
+            // 解析时间信息
+            const timeInfo = parseScheduleForAgenda(course.schedule);
+            timeInfo.forEach(time => {
+                agendaItems.push({
+                    date: dateStr,
+                    dayOfWeek: dayOfWeek,
+                    time: time,
+                    courseName: courseName,
+                    courseCode: course.code,
+                    instructor: course.instructor,
+                    location: `${course.room}, ${course.campus}`,
+                    type: typeName,
+                    typeColor: typeColor,
+                    isSpecial: false,
+                    sortKey: `${dateStr}T${time.split('-')[0]}`
+                });
+            });
+        });
+        
+        // 处理特殊安排
+        if (course.special_arrangements && course.special_arrangements.length > 0) {
+            course.special_arrangements.forEach(arrangement => {
+                const timeInfo = parseScheduleForAgenda(arrangement.time);
+                timeInfo.forEach(time => {
+                    agendaItems.push({
+                        date: arrangement.date,
+                        dayOfWeek: arrangement.day,
+                        time: time,
+                        courseName: courseName + ' (特殊安排)',
+                        courseCode: course.code,
+                        instructor: course.instructor,
+                        location: `${arrangement.venue}, ${course.campus}`,
+                        type: typeName,
+                        typeColor: 'warning',
+                        isSpecial: true,
+                        sortKey: `${arrangement.date}T${time.split('-')[0]}`
+                    });
+                });
+            });
+        }
+    });
+    
+    // 按日期和时间排序
+    agendaItems.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+    
+    return agendaItems;
+}
+
+function parseScheduleForAgenda(scheduleText) {
+    const timeRanges = [];
+    
+    // 匹配时间格式，如 "09:30-12:30" 或 "09:30-12:30 & 14:00-17:00"
+    const timePattern = /(\d{2}:\d{2})-(\d{2}:\d{2})/g;
+    let match;
+    
+    while ((match = timePattern.exec(scheduleText)) !== null) {
+        timeRanges.push(`${match[1]}-${match[2]}`);
+    }
+    
+    return timeRanges.length > 0 ? timeRanges : [scheduleText];
 }
 
 function updateStatistics() {
@@ -1023,6 +1272,70 @@ function exportToExcel() {
         alert(currentLanguage === 'zh' ? 
               'Excel文件导出成功！包含课程详情和统计信息。' : 
               'Excel file exported successfully! Includes course details and statistics.');
+    }, 100);
+}
+
+function exportAgendaToExcel() {
+    if (selectedCourses.length === 0) {
+        alert(currentLanguage === 'zh' ? '请先选择课程再导出议程' : 'Please select courses before exporting agenda');
+        return;
+    }
+    
+    const agendaData = generateAgendaData();
+    
+    // 准备议程表格数据
+    const worksheetData = [];
+    
+    // 添加标题
+    const headers = currentLanguage === 'zh' ? 
+        ['日期', '星期', '时间', '课程名称', '课程代码', '讲师', '地点', '类型', '特殊安排'] :
+        ['Date', 'Day', 'Time', 'Course Name', 'Course Code', 'Instructor', 'Location', 'Type', 'Special'];
+    
+    worksheetData.push(headers);
+    
+    // 添加数据行
+    agendaData.forEach(item => {
+        worksheetData.push([
+            item.date,
+            item.dayOfWeek,
+            item.time,
+            item.courseName,
+            item.courseCode,
+            item.instructor,
+            item.location,
+            item.type,
+            item.isSpecial ? '✓' : ''
+        ]);
+    });
+    
+    // 创建工作簿
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    
+    // 设置列宽
+    worksheet['!cols'] = [
+        { wch: 12 }, // Date
+        { wch: 8 },  // Day
+        { wch:15 }, // Time
+        { wch: 40 }, // Course Name
+        { wch: 12 }, // Course Code
+        { wch: 25 }, // Instructor
+        { wch: 30 }, // Location
+        { wch: 12 }, // Type
+        { wch: 8 }   // Special
+    ];
+    
+    // 添加工作表到工作簿
+    XLSX.utils.book_append_sheet(workbook, worksheet, currentLanguage === 'zh' ? '课程议程' : 'Course Agenda');
+    
+    // 生成并下载Excel文件
+    XLSX.writeFile(workbook, 'HKU_FinTech_Agenda.xlsx');
+    
+    // 显示成功消息
+    setTimeout(() => {
+        alert(currentLanguage === 'zh' ? 
+              '议程表格导出成功！按时间顺序显示所有课程安排。' : 
+              'Agenda table exported successfully! Shows all course schedules in chronological order.');
     }, 100);
 }
 
