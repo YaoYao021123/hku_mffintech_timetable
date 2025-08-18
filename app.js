@@ -570,32 +570,7 @@ function bindEventListeners() {
     // 导出功能按钮
     document.getElementById('exportICS').addEventListener('click', function(e) {
         e.preventDefault();
-        exportToICS();
-    });
-    
-    // 提醒时间选择事件
-    document.querySelectorAll('[data-reminder]').forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const reminderValue = this.getAttribute('data-reminder');
-            
-            // 更新选中的提醒时间
-            if (reminderValue === 'none') {
-                selectedReminderTime = null;
-            } else {
-                selectedReminderTime = parseInt(reminderValue);
-            }
-            
-            // 更新UI显示
-            updateReminderSelection(reminderValue);
-            
-            // 关闭下拉菜单
-            const dropdown = document.getElementById('exportDropdown');
-            const bsDropdown = bootstrap.Dropdown.getInstance(dropdown);
-            if (bsDropdown) {
-                bsDropdown.hide();
-            }
-        });
+        showReminderModal();
     });
     
     document.getElementById('exportExcel').addEventListener('click', function(e) {
@@ -610,6 +585,9 @@ function bindEventListeners() {
     
     // 箭头动画控制
     initializeCollapseArrows();
+    
+    // 提醒时间选择模态框事件
+    initializeReminderModalEvents();
     
     // 本地存储按钮事件
     document.getElementById('saveLocal').addEventListener('click', function(e) {
@@ -712,7 +690,15 @@ function updateLanguageDisplay() {
         'reminder1hourLabel': currentLanguage === 'zh' ? '1小时前' : '1 hour before',
         'reminder2hourLabel': currentLanguage === 'zh' ? '2小时前' : '2 hours before',
         'reminder1dayLabel': currentLanguage === 'zh' ? '1天前' : '1 day before',
-        'reminder2dayLabel': currentLanguage === 'zh' ? '2天前' : '2 days before'
+        'reminder2dayLabel': currentLanguage === 'zh' ? '2天前' : '2 days before',
+        'reminderModalTitle': currentLanguage === 'zh' ? '选择提醒时间' : 'Select Reminder Time',
+        'customReminderLabel': currentLanguage === 'zh' ? '自定义时间:' : 'Custom time:',
+        'customMinutesLabel': currentLanguage === 'zh' ? '分钟' : 'minutes',
+        'customHoursLabel': currentLanguage === 'zh' ? '小时' : 'hours',
+        'customDaysLabel': currentLanguage === 'zh' ? '天' : 'days',
+        'customReminderBtnLabel': currentLanguage === 'zh' ? '使用自定义' : 'Use Custom',
+        'cancelReminderBtn': currentLanguage === 'zh' ? '取消' : 'Cancel',
+        'confirmReminderBtnLabel': currentLanguage === 'zh' ? '确认导出' : 'Confirm Export'
     };
     
     Object.entries(elements).forEach(([id, text]) => {
@@ -1539,27 +1525,162 @@ function exportAgendaToExcel() {
     }, 100);
 }
 
-// 更新提醒时间选择的UI显示
-function updateReminderSelection(selectedValue) {
+// 显示提醒时间选择模态框
+function showReminderModal() {
+    if (selectedCourses.length === 0) {
+        alert(currentLanguage === 'zh' ? '请先选择课程再导出' : 'Please select courses before exporting');
+        return;
+    }
+    
+    // 重置模态框状态
+    resetReminderModal();
+    
+    // 显示模态框
+    const modal = new bootstrap.Modal(document.getElementById('reminderModal'));
+    modal.show();
+}
+
+// 重置提醒时间选择模态框
+function resetReminderModal() {
     // 清除所有选中状态
-    document.querySelectorAll('[data-reminder]').forEach(item => {
-        const icon = item.querySelector('i.fas.fa-check');
+    document.querySelectorAll('.reminder-option').forEach(option => {
+        option.classList.remove('selected');
+        const icon = option.querySelector('i.fas.fa-check');
         if (icon) {
             icon.remove();
         }
     });
     
-    // 为选中的项目添加勾选图标
-    const selectedItem = document.querySelector(`[data-reminder="${selectedValue}"]`);
-    if (selectedItem) {
-        const span = selectedItem.querySelector('span');
+    // 设置默认选中15分钟
+    const defaultOption = document.querySelector('.reminder-option[data-reminder="15"]');
+    if (defaultOption) {
+        defaultOption.classList.add('selected');
+        const span = defaultOption.querySelector('span');
         if (span) {
             const icon = document.createElement('i');
             icon.className = 'fas fa-check text-success';
-            icon.style.marginRight = '8px';
-            selectedItem.insertBefore(icon, span);
+            defaultOption.insertBefore(icon, span);
         }
     }
+    
+    // 重置自定义输入
+    document.getElementById('customReminderInput').value = '15';
+    document.getElementById('customReminderUnit').value = 'minutes';
+    
+    selectedReminderTime = 15;
+}
+
+// 更新提醒时间选择的UI显示
+function updateReminderSelection(selectedValue) {
+    // 清除所有选中状态
+    document.querySelectorAll('.reminder-option').forEach(option => {
+        option.classList.remove('selected');
+        const icon = option.querySelector('i.fas.fa-check');
+        if (icon) {
+            icon.remove();
+        }
+    });
+    
+    // 为选中的项目添加选中状态
+    const selectedOption = document.querySelector(`.reminder-option[data-reminder="${selectedValue}"]`);
+    if (selectedOption) {
+        selectedOption.classList.add('selected');
+        const span = selectedOption.querySelector('span');
+        if (span) {
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-check text-success';
+            selectedOption.insertBefore(icon, span);
+        }
+    }
+}
+
+// 初始化提醒时间选择模态框事件
+function initializeReminderModalEvents() {
+    // 提醒时间选项点击事件
+    document.querySelectorAll('.reminder-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const reminderValue = this.getAttribute('data-reminder');
+            
+            // 更新选中的提醒时间
+            if (reminderValue === 'none') {
+                selectedReminderTime = null;
+            } else {
+                selectedReminderTime = parseInt(reminderValue);
+            }
+            
+            // 更新UI显示
+            updateReminderSelection(reminderValue);
+        });
+    });
+    
+    // 自定义提醒时间按钮事件
+    document.getElementById('customReminderBtn').addEventListener('click', function() {
+        const input = document.getElementById('customReminderInput');
+        const unit = document.getElementById('customReminderUnit').value;
+        const value = parseInt(input.value);
+        
+        if (!value || value <= 0) {
+            alert(currentLanguage === 'zh' ? '请输入有效的自定义时间' : 'Please enter a valid custom time');
+            return;
+        }
+        
+        // 转换为分钟
+        let minutes;
+        switch (unit) {
+            case 'minutes':
+                minutes = value;
+                break;
+            case 'hours':
+                minutes = value * 60;
+                break;
+            case 'days':
+                minutes = value * 24 * 60;
+                break;
+            default:
+                minutes = value;
+        }
+        
+        // 检查最大值（7天）
+        if (minutes > 10080) {
+            alert(currentLanguage === 'zh' ? '自定义时间不能超过7天' : 'Custom time cannot exceed 7 days');
+            return;
+        }
+        
+        selectedReminderTime = minutes;
+        
+        // 清除预设选项的选中状态
+        document.querySelectorAll('.reminder-option').forEach(option => {
+            option.classList.remove('selected');
+            const icon = option.querySelector('i.fas.fa-check');
+            if (icon) {
+                icon.remove();
+            }
+        });
+        
+        // 显示自定义选中状态
+        const customOption = document.querySelector('.custom-reminder');
+        if (customOption) {
+            customOption.style.backgroundColor = '#e3f2fd';
+            customOption.style.border = '1px solid #2196f3';
+        }
+    });
+    
+    // 确认导出按钮事件
+    document.getElementById('confirmReminderBtn').addEventListener('click', function() {
+        // 关闭模态框
+        const modal = bootstrap.Modal.getInstance(document.getElementById('reminderModal'));
+        modal.hide();
+        
+        // 执行导出
+        exportToICS();
+    });
+    
+    // 取消按钮事件
+    document.getElementById('cancelReminderBtn').addEventListener('click', function() {
+        // 关闭模态框
+        const modal = bootstrap.Modal.getInstance(document.getElementById('reminderModal'));
+        modal.hide();
+    });
 }
 
 console.log('📚 HKU 金融科技硕士课程日历应用加载完成!');
