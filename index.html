@@ -31,7 +31,7 @@
                 <div class="exemption-section mb-4">
                     <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#exemptionCollapse" aria-expanded="true" aria-controls="exemptionCollapse" style="cursor: pointer;">
                         <h6 class="mb-0">🎓 <span id="exemptionTitle">豁免课程设置</span></h6>
-                        <i class="fas fa-chevron-down"></i>
+                        <i class="fas fa-chevron-down collapse-arrow" data-target="#exemptionCollapse"></i>
                     </div>
                     <div class="collapse show" id="exemptionCollapse">
                         <div class="mt-3">
@@ -71,7 +71,7 @@
                     <div class="course-category mb-3">
                         <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#coreCollapse" aria-expanded="true" aria-controls="coreCollapse" style="cursor: pointer;">
                             <h6 class="mb-0" id="coreTitle">Core</h6>
-                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-chevron-down collapse-arrow" data-target="#coreCollapse"></i>
                         </div>
                         <div class="collapse show" id="coreCollapse">
                             <div class="course-group mt-2" id="core-courses">
@@ -84,7 +84,7 @@
                     <div class="course-category mb-3">
                         <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#capstoneCollapse" aria-expanded="true" aria-controls="capstoneCollapse" style="cursor: pointer;">
                             <h6 class="mb-0" id="capstoneTitle">Capstone Core</h6>
-                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-chevron-down collapse-arrow" data-target="#capstoneCollapse"></i>
                         </div>
                         <div class="collapse show" id="capstoneCollapse">
                             <div class="course-group mt-2" id="capstone-courses">
@@ -99,7 +99,7 @@
                             <h6 class="mb-0" id="engineeringTitle">Elective offered by Faculty of Engineering</h6>
                             <div class="d-flex align-items-center">
                                 <small class="text-muted me-2" id="engineeringLimit">限选1门</small>
-                                <i class="fas fa-chevron-down"></i>
+                                <i class="fas fa-chevron-down collapse-arrow" data-target="#engineeringCollapse"></i>
                             </div>
                         </div>
                         <div class="collapse show" id="engineeringCollapse">
@@ -115,7 +115,7 @@
                             <h6 class="mb-0" id="lawTitle">Elective offered by Faculty of Law</h6>
                             <div class="d-flex align-items-center">
                                 <small class="text-muted me-2" id="lawLimit">限选1门</small>
-                                <i class="fas fa-chevron-down"></i>
+                                <i class="fas fa-chevron-down collapse-arrow" data-target="#lawCollapse"></i>
                             </div>
                         </div>
                         <div class="collapse show" id="lawCollapse">
@@ -129,7 +129,7 @@
                     <div class="course-category mb-3">
                         <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#hkubsCollapse" aria-expanded="true" aria-controls="hkubsCollapse" style="cursor: pointer;">
                             <h6 class="mb-0" id="hkubsTitle">HKUBS Programme - Elective</h6>
-                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-chevron-down collapse-arrow" data-target="#hkubsCollapse"></i>
                         </div>
                         <div class="collapse show" id="hkubsCollapse">
                             <div class="course-group mt-2" id="hkubs-courses">
@@ -154,6 +154,20 @@
                         <p class="mb-1">选修课程: <span id="electiveCount">0</span></p>
                         <p class="mb-0">时间冲突: <span id="conflictCount" class="text-danger">0</span></p>
                     </div>
+                </div>
+                
+                <!-- 本地存储管理 -->
+                <div class="local-storage-section mt-4">
+                    <h6 id="localStorageTitle">本地存储</h6>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-success" id="saveLocal" title="手动保存当前课表">
+                            <i class="fas fa-save"></i> <span id="saveLocalLabel">保存</span>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" id="clearLocal" title="清除本地保存的课表">
+                            <i class="fas fa-trash"></i> <span id="clearLocalLabel">清除</span>
+                        </button>
+                    </div>
+                    <small class="text-muted d-block mt-1" id="localStorageNote">课表会自动保存，下次打开时自动恢复</small>
                 </div>
             </div>
             

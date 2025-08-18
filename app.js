@@ -39,8 +39,15 @@ function initializeApp() {
     // 初始化语言显示
     updateLanguageDisplay();
     
-    // 默认不选择任何课程 - 用户自主选择
-    // selectRecommendedCourses();
+    // 尝试从本地存储加载课表
+    const hasLocalData = loadScheduleFromLocal();
+    if (hasLocalData) {
+        console.log('已从本地存储恢复课表');
+    } else {
+        console.log('未找到本地存储的课表，使用默认状态');
+        // 默认不选择任何课程 - 用户自主选择
+        // selectRecommendedCourses();
+    }
     
     console.log('应用初始化完成');
 }
@@ -242,6 +249,9 @@ function handleCourseSelection(checkbox) {
     
     // 检查时间冲突
     checkAndDisplayConflicts();
+    
+    // 自动保存到本地存储
+    saveScheduleToLocal();
 }
 
 function updateFacultyElectiveCounts() {
@@ -419,6 +429,9 @@ function handleExemptionChange(checkbox) {
     updateExemptionInfo();
     updateCourseAvailability();
     updateStatistics();
+    
+    // 自动保存到本地存储
+    saveScheduleToLocal();
 }
 
 function updateExemptionInfo() {
@@ -573,6 +586,36 @@ function bindEventListeners() {
         e.preventDefault();
         exportAgendaToExcel();
     });
+    
+    // 箭头动画控制
+    initializeCollapseArrows();
+    
+    // 本地存储按钮事件
+    document.getElementById('saveLocal').addEventListener('click', function() {
+        saveScheduleToLocal();
+        // 显示保存成功提示
+        const button = this;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> 已保存';
+        button.classList.add('btn-success');
+        button.classList.remove('btn-outline-success');
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('btn-success');
+            button.classList.add('btn-outline-success');
+        }, 2000);
+    });
+    
+    document.getElementById('clearLocal').addEventListener('click', function() {
+        if (confirm(currentLanguage === 'zh' ? 
+                   '确定要清除本地保存的课表吗？此操作无法撤销。' : 
+                   'Are you sure you want to clear the locally saved schedule? This action cannot be undone.')) {
+            clearLocalSchedule();
+            // 刷新页面以重置所有状态
+            location.reload();
+        }
+    });
 }
 
 function ensureOneSectionPerCourse() {
@@ -630,7 +673,11 @@ function updateLanguageDisplay() {
         'capstoneTitle': currentLanguage === 'zh' ? 'Capstone Core' : 'Capstone Core',
         'engineeringTitle': currentLanguage === 'zh' ? 'Elective offered by Faculty of Engineering' : 'Elective offered by Faculty of Engineering',
         'lawTitle': currentLanguage === 'zh' ? 'Elective offered by Faculty of Law' : 'Elective offered by Faculty of Law',
-        'hkubsTitle': currentLanguage === 'zh' ? 'HKUBS Programme - Elective' : 'HKUBS Programme - Elective'
+        'hkubsTitle': currentLanguage === 'zh' ? 'HKUBS Programme - Elective' : 'HKUBS Programme - Elective',
+        'localStorageTitle': currentLanguage === 'zh' ? '本地存储' : 'Local Storage',
+        'saveLocalLabel': currentLanguage === 'zh' ? '保存' : 'Save',
+        'clearLocalLabel': currentLanguage === 'zh' ? '清除' : 'Clear',
+        'localStorageNote': currentLanguage === 'zh' ? '课表会自动保存，下次打开时自动恢复' : 'Schedule is auto-saved and will be restored on next visit'
     };
     
     Object.entries(elements).forEach(([id, text]) => {
@@ -665,6 +712,114 @@ function updateLanguageDisplay() {
     // 更新日历和agenda视图
     updateCalendar();
     updateAgendaView();
+}
+
+function initializeCollapseArrows() {
+    // 为所有可收缩面板添加箭头动画监听
+    document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(trigger => {
+        const targetSelector = trigger.getAttribute('data-bs-target') || trigger.getAttribute('href');
+        const targetElement = document.querySelector(targetSelector);
+        const arrow = trigger.querySelector('.collapse-arrow');
+        
+        if (targetElement && arrow) {
+            targetElement.addEventListener('show.bs.collapse', function () {
+                arrow.classList.remove('collapsed');
+            });
+            
+            targetElement.addEventListener('hide.bs.collapse', function () {
+                arrow.classList.add('collapsed');
+            });
+            
+            // 初始状态设置
+            if (!targetElement.classList.contains('show')) {
+                arrow.classList.add('collapsed');
+            }
+        }
+    });
+}
+
+// 本地存储功能
+function saveScheduleToLocal() {
+    const scheduleData = {
+        selectedCourses: selectedCourses.map(course => ({
+            code: course.code,
+            section: course.section
+        })),
+        exemptedCourses: Array.from(exemptedCourses),
+        timestamp: new Date().toISOString()
+    };
+    
+    try {
+        localStorage.setItem('hku_fintech_schedule', JSON.stringify(scheduleData));
+        console.log('课表已保存到本地存储');
+    } catch (error) {
+        console.error('保存课表失败:', error);
+    }
+}
+
+function loadScheduleFromLocal() {
+    try {
+        const savedData = localStorage.getItem('hku_fintech_schedule');
+        if (!savedData) return false;
+        
+        const scheduleData = JSON.parse(savedData);
+        console.log('从本地存储加载课表:', scheduleData);
+        
+        // 恢复豁免课程
+        if (scheduleData.exemptedCourses) {
+            exemptedCourses.clear();
+            scheduleData.exemptedCourses.forEach(courseCode => {
+                exemptedCourses.add(courseCode);
+                // 更新豁免课程复选框状态
+                const exemptionCheckbox = document.querySelector(`#exempt-${courseCode}`);
+                if (exemptionCheckbox) {
+                    exemptionCheckbox.checked = true;
+                }
+            });
+        }
+        
+        // 恢复选中的课程
+        if (scheduleData.selectedCourses) {
+            selectedCourses = [];
+            scheduleData.selectedCourses.forEach(courseInfo => {
+                const courseId = `${courseInfo.code}-${courseInfo.section}`;
+                const course = getCourseById(courseId);
+                if (course) {
+                    selectedCourses.push(course);
+                    // 更新课程复选框状态
+                    const courseCheckbox = document.querySelector(`[data-course-id="${courseId}"]`);
+                    if (courseCheckbox) {
+                        courseCheckbox.checked = true;
+                        updateCourseItemStyle(courseId, true);
+                    }
+                }
+            });
+        }
+        
+        // 更新相关状态
+        updateFacultyElectiveCounts();
+        updateElectiveCount();
+        updateExemptionInfo();
+        updateCourseAvailability();
+        updateStatistics();
+        updateCalendar();
+        updateAgendaView();
+        checkAndDisplayConflicts();
+        
+        return true;
+    } catch (error) {
+        console.error('加载课表失败:', error);
+        return false;
+    }
+}
+
+function clearLocalSchedule() {
+    try {
+        localStorage.removeItem('hku_fintech_schedule');
+        console.log('本地课表已清除');
+    } catch (error) {
+        console.error('清除本地课表失败:', error);
+    }
 }
 
 function updateCourseListDisplay() {
