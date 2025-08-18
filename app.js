@@ -591,23 +591,27 @@ function bindEventListeners() {
     initializeCollapseArrows();
     
     // 本地存储按钮事件
-    document.getElementById('saveLocal').addEventListener('click', function() {
+    document.getElementById('saveLocal').addEventListener('click', function(e) {
+        e.preventDefault();
         saveScheduleToLocal();
         // 显示保存成功提示
         const button = this;
         const originalText = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-check"></i> 已保存';
-        button.classList.add('btn-success');
-        button.classList.remove('btn-outline-success');
+        const successText = currentLanguage === 'zh' ? 
+            '<i class="fas fa-check"></i> 已保存' : 
+            '<i class="fas fa-check"></i> Saved';
+        
+        button.innerHTML = successText;
+        button.classList.add('text-success');
         
         setTimeout(() => {
             button.innerHTML = originalText;
-            button.classList.remove('btn-success');
-            button.classList.add('btn-outline-success');
+            button.classList.remove('text-success');
         }, 2000);
     });
     
-    document.getElementById('clearLocal').addEventListener('click', function() {
+    document.getElementById('clearLocal').addEventListener('click', function(e) {
+        e.preventDefault();
         if (confirm(currentLanguage === 'zh' ? 
                    '确定要清除本地保存的课表吗？此操作无法撤销。' : 
                    'Are you sure you want to clear the locally saved schedule? This action cannot be undone.')) {
@@ -674,9 +678,9 @@ function updateLanguageDisplay() {
         'engineeringTitle': currentLanguage === 'zh' ? 'Elective offered by Faculty of Engineering' : 'Elective offered by Faculty of Engineering',
         'lawTitle': currentLanguage === 'zh' ? 'Elective offered by Faculty of Law' : 'Elective offered by Faculty of Law',
         'hkubsTitle': currentLanguage === 'zh' ? 'HKUBS Programme - Elective' : 'HKUBS Programme - Elective',
-        'localStorageTitle': currentLanguage === 'zh' ? '本地存储' : 'Local Storage',
-        'saveLocalLabel': currentLanguage === 'zh' ? '保存' : 'Save',
-        'clearLocalLabel': currentLanguage === 'zh' ? '清除' : 'Clear',
+        'localStorageLabel': currentLanguage === 'zh' ? '存储' : 'Storage',
+        'saveLocalLabel': currentLanguage === 'zh' ? '保存课表' : 'Save Schedule',
+        'clearLocalLabel': currentLanguage === 'zh' ? '清除课表' : 'Clear Schedule',
         'localStorageNote': currentLanguage === 'zh' ? '课表会自动保存，下次打开时自动恢复' : 'Schedule is auto-saved and will be restored on next visit'
     };
     
