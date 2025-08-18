@@ -8,6 +8,7 @@ let currentLanguage = 'zh'; // 'zh' 或 'en'
 let exemptedCourses = new Set(); // 豁免的课程代码
 let availableElectives = 2; // 基础选修课程数量（无豁免时）
 let currentView = 'calendar'; // 'calendar' 或 'agenda'
+let selectedReminderTime = 15; // 默认15分钟提醒
 
 // 课程分类定义
 const ENGINEERING_COURSES = ['FITE7410', 'DASC7606'];
@@ -572,6 +573,31 @@ function bindEventListeners() {
         exportToICS();
     });
     
+    // 提醒时间选择事件
+    document.querySelectorAll('[data-reminder]').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const reminderValue = this.getAttribute('data-reminder');
+            
+            // 更新选中的提醒时间
+            if (reminderValue === 'none') {
+                selectedReminderTime = null;
+            } else {
+                selectedReminderTime = parseInt(reminderValue);
+            }
+            
+            // 更新UI显示
+            updateReminderSelection(reminderValue);
+            
+            // 关闭下拉菜单
+            const dropdown = document.getElementById('exportDropdown');
+            const bsDropdown = bootstrap.Dropdown.getInstance(dropdown);
+            if (bsDropdown) {
+                bsDropdown.hide();
+            }
+        });
+    });
+    
     document.getElementById('exportExcel').addEventListener('click', function(e) {
         e.preventDefault();
         exportToExcel();
@@ -676,7 +702,17 @@ function updateLanguageDisplay() {
         'localStorageLabel': currentLanguage === 'zh' ? '存储' : 'Storage',
         'saveLocalLabel': currentLanguage === 'zh' ? '保存课表' : 'Save Schedule',
         'clearLocalLabel': currentLanguage === 'zh' ? '清除课表' : 'Clear Schedule',
-        'localStorageNote': currentLanguage === 'zh' ? '课表会自动保存，下次打开时自动恢复' : 'Schedule is auto-saved and will be restored on next visit'
+        'localStorageNote': currentLanguage === 'zh' ? '课表会自动保存，下次打开时自动恢复' : 'Schedule is auto-saved and will be restored on next visit',
+        'reminderNoneLabel': currentLanguage === 'zh' ? '无' : 'None',
+        'reminderAtTimeLabel': currentLanguage === 'zh' ? '日程发生时' : 'At the time of the event',
+        'reminder5minLabel': currentLanguage === 'zh' ? '5分钟前' : '5 minutes before',
+        'reminder10minLabel': currentLanguage === 'zh' ? '10分钟前' : '10 minutes before',
+        'reminder15minLabel': currentLanguage === 'zh' ? '15分钟前' : '15 minutes before',
+        'reminder30minLabel': currentLanguage === 'zh' ? '30分钟前' : '30 minutes before',
+        'reminder1hourLabel': currentLanguage === 'zh' ? '1小时前' : '1 hour before',
+        'reminder2hourLabel': currentLanguage === 'zh' ? '2小时前' : '2 hours before',
+        'reminder1dayLabel': currentLanguage === 'zh' ? '1天前' : '1 day before',
+        'reminder2dayLabel': currentLanguage === 'zh' ? '2天前' : '2 days before'
     };
     
     Object.entries(elements).forEach(([id, text]) => {
@@ -1278,11 +1314,11 @@ DESCRIPTION:${description}
 LOCATION:${event.extendedProps.room}, ${event.extendedProps.campus}
 STATUS:CONFIRMED
 SEQUENCE:0
-BEGIN:VALARM
-TRIGGER:-PT15M
+        ${selectedReminderTime !== null ? `BEGIN:VALARM
+TRIGGER:-PT${selectedReminderTime}M
 DESCRIPTION:课程即将开始
 ACTION:DISPLAY
-END:VALARM
+END:VALARM` : ''}
 END:VEVENT
 `;
     });
@@ -1300,9 +1336,21 @@ END:VEVENT
     
     // Show success message
     setTimeout(() => {
-        alert(currentLanguage === 'zh' ? 
-              '日历文件导出成功！文件包含15分钟课前提醒。' : 
-              'Calendar exported successfully! File includes 15-minute pre-class reminders.');
+        let message;
+        if (selectedReminderTime === null) {
+            message = currentLanguage === 'zh' ? 
+                '日历文件导出成功！文件不包含提醒。' : 
+                'Calendar exported successfully! File includes no reminders.';
+        } else if (selectedReminderTime === 0) {
+            message = currentLanguage === 'zh' ? 
+                '日历文件导出成功！文件包含课程开始时提醒。' : 
+                'Calendar exported successfully! File includes reminders at event time.';
+        } else {
+            message = currentLanguage === 'zh' ? 
+                `日历文件导出成功！文件包含${selectedReminderTime}分钟课前提醒。` : 
+                `Calendar exported successfully! File includes ${selectedReminderTime}-minute pre-class reminders.`;
+        }
+        alert(message);
     }, 100);
 }
 
@@ -1489,6 +1537,29 @@ function exportAgendaToExcel() {
               '议程表格导出成功！按时间顺序显示所有课程安排。' : 
               'Agenda table exported successfully! Shows all course schedules in chronological order.');
     }, 100);
+}
+
+// 更新提醒时间选择的UI显示
+function updateReminderSelection(selectedValue) {
+    // 清除所有选中状态
+    document.querySelectorAll('[data-reminder]').forEach(item => {
+        const icon = item.querySelector('i.fas.fa-check');
+        if (icon) {
+            icon.remove();
+        }
+    });
+    
+    // 为选中的项目添加勾选图标
+    const selectedItem = document.querySelector(`[data-reminder="${selectedValue}"]`);
+    if (selectedItem) {
+        const span = selectedItem.querySelector('span');
+        if (span) {
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-check text-success';
+            icon.style.marginRight = '8px';
+            selectedItem.insertBefore(icon, span);
+        }
+    }
 }
 
 console.log('📚 HKU 金融科技硕士课程日历应用加载完成!');
