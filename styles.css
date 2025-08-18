@@ -415,10 +415,11 @@ body {
 /* 箭头动画样式 */
 .collapse-arrow {
     transition: transform 0.3s ease;
+    transform: rotate(-90deg); /* 默认显示右箭头（收缩状态） */
 }
 
-.collapse-arrow.collapsed {
-    transform: rotate(-90deg);
+.collapse-arrow.expanded {
+    transform: rotate(0deg); /* 展开时显示下箭头 */
 }
 
 /* 确保可收缩面板的平滑动画 */

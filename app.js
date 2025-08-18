@@ -39,15 +39,10 @@ function initializeApp() {
     // 初始化语言显示
     updateLanguageDisplay();
     
-    // 尝试从本地存储加载课表
-    const hasLocalData = loadScheduleFromLocal();
-    if (hasLocalData) {
-        console.log('已从本地存储恢复课表');
-    } else {
-        console.log('未找到本地存储的课表，使用默认状态');
-        // 默认不选择任何课程 - 用户自主选择
-        // selectRecommendedCourses();
-    }
+    // 不自动加载本地存储的课表，保持空状态
+    console.log('应用启动，保持空课表状态');
+    // 默认不选择任何课程 - 用户自主选择
+    // selectRecommendedCourses();
     
     console.log('应用初始化完成');
 }
@@ -727,17 +722,15 @@ function initializeCollapseArrows() {
         
         if (targetElement && arrow) {
             targetElement.addEventListener('show.bs.collapse', function () {
-                arrow.classList.remove('collapsed');
+                arrow.classList.add('expanded');
             });
             
             targetElement.addEventListener('hide.bs.collapse', function () {
-                arrow.classList.add('collapsed');
+                arrow.classList.remove('expanded');
             });
             
-            // 初始状态设置
-            if (!targetElement.classList.contains('show')) {
-                arrow.classList.add('collapsed');
-            }
+            // 初始状态设置 - 所有面板默认收缩
+            arrow.classList.remove('expanded');
         }
     });
 }
