@@ -1241,24 +1241,28 @@ function exportToICS() {
         return;
     }
     
-    let ics = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//HKU//Master of Finance in FinTech//EN
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
-X-WR-CALNAME:HKU FinTech Master Schedule
-X-WR-TIMEZONE:Asia/Hong_Kong
-X-WR-CALDESC:香港大学金融科技硕士课程表
-BEGIN:VTIMEZONE
-TZID:Asia/Hong_Kong
-BEGIN:STANDARD
-DTSTART:20251101T030000
-TZOFFSETFROM:+0800
-TZOFFSETTO:+0800
-TZNAME:HKT
-END:STANDARD
-END:VTIMEZONE
-`;
+    // ICS文件必须使用CRLF行尾
+    const CRLF = '\r\n';
+    
+    let ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//HKU//Master of Finance in FinTech//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'X-WR-CALNAME:HKU FinTech Master Schedule',
+        'X-WR-TIMEZONE:Asia/Hong_Kong',
+        'X-WR-CALDESC:香港大学金融科技硕士课程表',
+        'BEGIN:VTIMEZONE',
+        'TZID:Asia/Hong_Kong',
+        'BEGIN:STANDARD',
+        'DTSTART:20251101T030000',
+        'TZOFFSETFROM:+0800',
+        'TZOFFSETTO:+0800',
+        'TZNAME:HKT',
+        'END:STANDARD',
+        'END:VTIMEZONE'
+    ].join(CRLF) + CRLF;
 
     const events = generateCalendarEvents(selectedCourses);
     
@@ -1280,36 +1284,61 @@ END:VTIMEZONE
         const dtEnd = formatDate(endDate);
         const dtStamp = formatDate(new Date());
         
-        // Create unique UID
-        const uid = `${event.id}@hku-fintech.edu.hk`;
+        // Create unique UID - 移除特殊字符
+        const cleanEventId = event.id.replace(/[^a-zA-Z0-9\-]/g, '');
+        const uid = `${cleanEventId}-${Date.now()}@hku-fintech.edu.hk`;
+        
+        // 转义特殊字符
+        const escapeText = (text) => {
+            return text.replace(/\\/g, '\\\\')
+                      .replace(/;/g, '\\;')
+                      .replace(/,/g, '\\,')
+                      .replace(/\n/g, '\\n')
+                      .replace(/\r/g, '');
+        };
         
         // Event description
-        const description = `课程代码: ${event.extendedProps.course.code}\\n` +
-                          `讲师: ${event.extendedProps.instructor}\\n` +
-                          `地点: ${event.extendedProps.room}\\n` +
-                          `校区: ${event.extendedProps.campus}`;
+        const description = escapeText(
+            `课程代码: ${event.extendedProps.course.code}\\n` +
+            `讲师: ${event.extendedProps.instructor}\\n` +
+            `地点: ${event.extendedProps.room}\\n` +
+            `校区: ${event.extendedProps.campus}`
+        );
         
-        ics += `BEGIN:VEVENT
-UID:${uid}
-DTSTAMP:${dtStamp}Z
-ORGANIZER;CN=HKU Business School:MAILTO:noreply@hku.hk
-DTSTART;TZID=Asia/Hong_Kong:${dtStart}
-DTEND;TZID=Asia/Hong_Kong:${dtEnd}
-SUMMARY:${event.title}
-DESCRIPTION:${description}
-LOCATION:${event.extendedProps.room}, ${event.extendedProps.campus}
-STATUS:CONFIRMED
-SEQUENCE:0
-        ${selectedReminderTime !== null ? `BEGIN:VALARM
-TRIGGER:-PT${selectedReminderTime}M
-DESCRIPTION:课程即将开始
-ACTION:DISPLAY
-END:VALARM` : ''}
-END:VEVENT
-`;
+        const location = escapeText(`${event.extendedProps.room}, ${event.extendedProps.campus}`);
+        const summary = escapeText(event.title);
+        
+        let eventLines = [
+            'BEGIN:VEVENT',
+            `UID:${uid}`,
+            `DTSTAMP:${dtStamp}Z`,
+            `ORGANIZER;CN=HKU Business School:MAILTO:noreply@hku.hk`,
+            `DTSTART;TZID=Asia/Hong_Kong:${dtStart}`,
+            `DTEND;TZID=Asia/Hong_Kong:${dtEnd}`,
+            `SUMMARY:${summary}`,
+            `DESCRIPTION:${description}`,
+            `LOCATION:${location}`,
+            'STATUS:CONFIRMED',
+            'SEQUENCE:0'
+        ];
+        
+        // 添加提醒
+        if (selectedReminderTime !== null) {
+            eventLines.push(
+                'BEGIN:VALARM',
+                `TRIGGER:-PT${selectedReminderTime}M`,
+                'DESCRIPTION:课程即将开始',
+                'ACTION:DISPLAY',
+                'END:VALARM'
+            );
+        }
+        
+        eventLines.push('END:VEVENT');
+        
+        ics += eventLines.join(CRLF) + CRLF;
     });
     
-    ics += 'END:VCALENDAR';
+    ics += 'END:VCALENDAR' + CRLF;
     
     // Download ICS file
     const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
