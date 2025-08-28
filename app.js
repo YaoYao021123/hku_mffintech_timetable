@@ -9,7 +9,7 @@ let exemptedCourses = new Set(); // 豁免的课程代码
 let availableElectives = 2; // 基础选修课程数量（无豁免时）
 let currentView = 'calendar'; // 'calendar' 或 'agenda'
 let selectedReminderTime = 15; // 默认15分钟提醒
-let exportNameFormat = 'zh'; // 导出课程名显示格式: 'zh' | 'en' | 'both'
+let exportNameFormat = 'code-en'; // 导出课程名显示格式: 'code-en' | 'code-zh'
 
 // 课程分类定义
 const ENGINEERING_COURSES = ['FITE7410', 'DASC7606'];
@@ -585,19 +585,15 @@ function bindEventListeners() {
     });
     
     // 导出课程名显示语言选项事件
-    const nameZh = document.getElementById('exportNameZh');
-    const nameEn = document.getElementById('exportNameEn');
-    const nameBoth = document.getElementById('exportNameBoth');
-    if (nameZh && nameEn && nameBoth) {
-        exportNameFormat = currentLanguage === 'zh' ? 'zh' : 'en';
-        nameZh.checked = exportNameFormat === 'zh';
-        nameEn.checked = exportNameFormat === 'en';
-        nameBoth.checked = exportNameFormat === 'both';
-        [nameZh, nameEn, nameBoth].forEach(r => {
+    const codeEn = document.getElementById('exportNameCodeEn');
+    const codeZh = document.getElementById('exportNameCodeZh');
+    if (codeEn && codeZh) {
+        // 默认勾选 编号+英文
+        codeEn.checked = true;
+        [codeEn, codeZh].forEach(r => {
             r.addEventListener('change', () => {
-                if (nameZh.checked) exportNameFormat = 'zh';
-                else if (nameEn.checked) exportNameFormat = 'en';
-                else exportNameFormat = 'both';
+                if (codeEn.checked) exportNameFormat = 'code-en';
+                else exportNameFormat = 'code-zh';
             });
         });
     }
@@ -1325,24 +1321,14 @@ function exportToICS() {
         );
         
         const location = escapeText(`${event.extendedProps.room}, ${event.extendedProps.campus}`);
-        // 根据导出课程名设置生成标题
+        // 根据导出课程名设置生成标题：编号 + 名称（英/中） + (Class X)
         const course = event.extendedProps.course;
-        const nameZhForIcs = getCourseName(course, 'zh');
-        const nameEnForIcs = getCourseName(course, 'en');
-        let displayNameForIcs;
-        switch (exportNameFormat) {
-            case 'en':
-                displayNameForIcs = nameEnForIcs;
-                break;
-            case 'both':
-                displayNameForIcs = `${nameEnForIcs} / ${nameZhForIcs}`;
-                break;
-            case 'zh':
-            default:
-                displayNameForIcs = nameZhForIcs;
-        }
+        const zh = getCourseName(course, 'zh');
+        const en = getCourseName(course, 'en');
+        const baseName = exportNameFormat === 'code-zh' ? `${course.code} ${zh}` : `${course.code} ${en}`;
+        const classLabel = currentLanguage === 'zh' ? `(${course.section})` : `(${course.section})`;
         const isSpecial = event.extendedProps.isSpecialArrangement;
-        const summary = escapeText(`${displayNameForIcs} (${course.section})${isSpecial ? ' - 特殊安排' : ''}`);
+        const summary = escapeText(`${baseName} ${classLabel}${isSpecial ? ' - 特殊安排' : ''}`);
         
         let eventLines = [
             'BEGIN:VEVENT',
@@ -1425,10 +1411,10 @@ function exportToExcel() {
         const courseType = currentLanguage === 'zh' ? 
             getCourseTypeName(course.type, 'zh') : 
             getCourseTypeName(course.type, 'en');
-        // 课程名按导出设置
+        // 课程名按导出设置：编号 + 名称（英/中）
         const zhName = getCourseName(course, 'zh');
         const enName = getCourseName(course, 'en');
-        const courseName = exportNameFormat === 'zh' ? zhName : exportNameFormat === 'en' ? enName : `${enName} / ${zhName}`;
+        const courseName = exportNameFormat === 'code-zh' ? `${course.code} ${zhName}` : `${course.code} ${enName}`;
         
         // Regular class dates
         course.dates.forEach(date => {
@@ -1548,11 +1534,11 @@ function exportAgendaToExcel() {
     
     // 添加数据行
     agendaData.forEach(item => {
-        // 名称按导出设置
+        // 名称按导出设置：编号 + 名称（英/中）
         const course = selectedCourses.find(c => c.code === item.courseCode);
         const zhName = course ? getCourseName(course, 'zh') : item.courseName;
         const enName = course ? getCourseName(course, 'en') : item.courseName;
-        const baseName = exportNameFormat === 'zh' ? zhName : exportNameFormat === 'en' ? enName : `${enName} / ${zhName}`;
+        const baseName = exportNameFormat === 'code-zh' ? `${item.courseCode} ${zhName}` : `${item.courseCode} ${enName}`;
         const finalName = item.isSpecial ? `${baseName} (特殊安排)` : baseName;
         worksheetData.push([
             item.date,
