@@ -9,7 +9,7 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Ms. Lea-Anne Lee",
             schedule: "周四 16:00-19:00",
-            dates: ["2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-16", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13", "2025-11-20"],
+            dates: ["2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-16", "2025-10-23", "2025-11-20"],
             campus: "MC",
             room: "CBC",
             special_arrangements: [
@@ -52,7 +52,7 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Dr. KP Chow",
             schedule: "周一 & 周四 13:00-16:00",
-            dates: ["2025-10-13", "2025-10-20", "2025-10-27", "2025-10-30", "2025-11-03", "2025-11-06", "2025-11-10", "2025-11-13", "2025-11-27"],
+            dates: ["2025-10-13", "2025-10-20", "2025-10-27", "2025-11-03", "2025-11-10", "2025-11-27", "2025-12-01"],
             campus: "MC",
             room: "Mon lectures: CPD-3.04, Thu lectures: MW-T2",
             special_arrangements: [
@@ -157,10 +157,35 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Rujing Meng",
             schedule: "周一 & 周四 14:00-17:00",
-            dates: ["2025-09-01", "2025-09-04", "2025-09-08", "2025-09-11", "2025-09-15", "2025-09-18", "2025-09-22", "2025-09-25", "2025-09-29", "2025-10-02"],
+            dates: ["2025-09-01", "2025-09-04", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: []
+            special_arrangements: [
+                {
+                    date: "2025-09-10",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "TT404 @MC"
+                },
+                {
+                    date: "2025-09-20",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC"
+                },
+                {
+                    date: "2025-09-24",
+                    day: "Wednesday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC"
+                },
+                {
+                    date: "2025-10-03",
+                    day: "Friday",
+                    time: "09:30-12:30",
+                    venue: "Room LTB"
+                }
+            ]
         },
         {
             code: "MFIN7002",
@@ -320,35 +345,10 @@ const COURSE_DATA = {
             type: "elective",
             instructor: "Prof. Matthias Buehlmaier",
             schedule: "周三 & 周六 09:30-12:30",
-            dates: ["2025-12-10", "2025-12-20", "2026-01-03", "2026-01-07"],
+            dates: ["2026-01-29", "2026-02-05", "2026-02-12", "2026-02-26", "2026-03-05", "2026-03-12", "2026-03-19", "2026-03-26", "2026-04-02", "2026-04-09", "2026-04-16"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: [
-                {
-                    date: "2025-12-17",
-                    day: "Wednesday",
-                    time: "09:30-12:30 & 14:00-17:00",
-                    venue: "Room ABC"
-                },
-                {
-                    date: "2026-01-10",
-                    day: "Saturday",
-                    time: "18:30-21:30",
-                    venue: "Room ABC"
-                },
-                {
-                    date: "2026-01-14",
-                    day: "Wednesday",
-                    time: "09:30-12:30 & 14:00-17:00",
-                    venue: "Room ABC & LTA"
-                },
-                {
-                    date: "2026-01-17",
-                    day: "Saturday",
-                    time: "18:30-21:30",
-                    venue: "Room ABC"
-                }
-            ]
+            special_arrangements: []
         },
         {
             code: "MFIN7005",
@@ -376,19 +376,31 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Jack Xiaoyong Fu",
             schedule: "周二 & 周五 18:30-21:30",
-            dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
+            dates: ["2025-12-09", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-20"],
             campus: "CP",
-            room: "Room ABC, Room H (Dec 13 & 20)",
+            room: "Room ABC, Room J (Dec 20), Room H (Jan 21)",
             special_arrangements: [
                 {
                     date: "2025-12-13",
                     day: "Saturday",
-                    time: "18:30-21:30",
-                    venue: "Room H"
+                    time: "14:00-17:00",
+                    venue: "CBA @MC"
+                },
+                {
+                    date: "2025-12-14",
+                    day: "Sunday",
+                    time: "14:00-17:00",
+                    venue: "CBA @MC"
                 },
                 {
                     date: "2025-12-20",
                     day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room J"
+                },
+                {
+                    date: "2026-01-21",
+                    day: "Wednesday",
                     time: "18:30-21:30",
                     venue: "Room H"
                 }
@@ -427,13 +439,31 @@ const COURSE_DATA = {
             schedule: "周二 & 周五 09:30-12:30",
             dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
             campus: "CP & MC",
-            room: "CP - Room H, MC - KK101 (Jan 16)",
+            room: "CP - Room H, MC - CPD-3.28 & CPD-2.42",
             special_arrangements: [
                 {
-                    date: "2026-01-16",
+                    date: "2025-12-13",
                     day: "Friday",
-                    time: "09:30-12:30",
-                    venue: "MC - KK101"
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-14",
+                    day: "Saturday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "CPD-2.42 @MC"
+                },
+                {
+                    date: "2025-12-20",
+                    day: "Friday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-21",
+                    day: "Saturday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "CPD-2.42 @MC"
                 }
             ]
         },
@@ -463,7 +493,7 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Alan Kwan, Prof. Yang You",
             schedule: "周一 & 周四 14:00-17:00",
-            dates: ["2026-01-29", "2026-02-02", "2026-02-05", "2026-02-09", "2026-02-12", "2026-02-23", "2026-02-26", "2026-03-02", "2026-03-05", "2026-03-09"],
+            dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
             campus: "CP",
             room: "Room ABC",
             special_arrangements: []
