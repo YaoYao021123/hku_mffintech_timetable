@@ -12,7 +12,26 @@ const COURSE_DATA = {
             dates: ["2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-16", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13", "2025-11-20"],
             campus: "MC",
             room: "CBC",
-            special_arrangements: []
+            special_arrangements: [
+                {
+                    date: "2025-10-30",
+                    day: "Thursday",
+                    time: "16:10-19:00",
+                    venue: "CBC"
+                },
+                {
+                    date: "2025-11-06",
+                    day: "Thursday",
+                    time: "16:10-19:00",
+                    venue: "CBC"
+                },
+                {
+                    date: "2025-11-13",
+                    day: "Thursday",
+                    time: "16:10-19:00",
+                    venue: "CBC"
+                }
+            ]
         },
         {
             code: "LLAW6046",
@@ -36,7 +55,26 @@ const COURSE_DATA = {
             dates: ["2025-10-13", "2025-10-20", "2025-10-27", "2025-10-30", "2025-11-03", "2025-11-06", "2025-11-10", "2025-11-13", "2025-11-27"],
             campus: "MC",
             room: "Mon lectures: CPD-3.04, Thu lectures: MW-T2",
-            special_arrangements: []
+            special_arrangements: [
+                {
+                    date: "2025-10-30",
+                    day: "Thursday",
+                    time: "13:00-15:50",
+                    venue: "MW-T2"
+                },
+                {
+                    date: "2025-11-06",
+                    day: "Thursday",
+                    time: "13:00-15:50",
+                    venue: "MW-T2"
+                },
+                {
+                    date: "2025-11-13",
+                    day: "Thursday",
+                    time: "13:00-15:50",
+                    venue: "MW-T2"
+                }
+            ]
         },
         {
             code: "DASC7606",
