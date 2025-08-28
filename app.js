@@ -9,6 +9,7 @@ let exemptedCourses = new Set(); // 豁免的课程代码
 let availableElectives = 2; // 基础选修课程数量（无豁免时）
 let currentView = 'calendar'; // 'calendar' 或 'agenda'
 let selectedReminderTime = 15; // 默认15分钟提醒
+let exportNameFormat = 'zh'; // 导出课程名显示格式: 'zh' | 'en' | 'both'
 
 // 课程分类定义
 const ENGINEERING_COURSES = ['FITE7410', 'DASC7606'];
@@ -582,6 +583,24 @@ function bindEventListeners() {
         e.preventDefault();
         exportAgendaToExcel();
     });
+    
+    // 导出课程名显示语言选项事件
+    const nameZh = document.getElementById('exportNameZh');
+    const nameEn = document.getElementById('exportNameEn');
+    const nameBoth = document.getElementById('exportNameBoth');
+    if (nameZh && nameEn && nameBoth) {
+        exportNameFormat = currentLanguage === 'zh' ? 'zh' : 'en';
+        nameZh.checked = exportNameFormat === 'zh';
+        nameEn.checked = exportNameFormat === 'en';
+        nameBoth.checked = exportNameFormat === 'both';
+        [nameZh, nameEn, nameBoth].forEach(r => {
+            r.addEventListener('change', () => {
+                if (nameZh.checked) exportNameFormat = 'zh';
+                else if (nameEn.checked) exportNameFormat = 'en';
+                else exportNameFormat = 'both';
+            });
+        });
+    }
     
     // 箭头动画控制
     initializeCollapseArrows();
@@ -1306,7 +1325,24 @@ function exportToICS() {
         );
         
         const location = escapeText(`${event.extendedProps.room}, ${event.extendedProps.campus}`);
-        const summary = escapeText(event.title);
+        // 根据导出课程名设置生成标题
+        const course = event.extendedProps.course;
+        const nameZhForIcs = getCourseName(course, 'zh');
+        const nameEnForIcs = getCourseName(course, 'en');
+        let displayNameForIcs;
+        switch (exportNameFormat) {
+            case 'en':
+                displayNameForIcs = nameEnForIcs;
+                break;
+            case 'both':
+                displayNameForIcs = `${nameEnForIcs} / ${nameZhForIcs}`;
+                break;
+            case 'zh':
+            default:
+                displayNameForIcs = nameZhForIcs;
+        }
+        const isSpecial = event.extendedProps.isSpecialArrangement;
+        const summary = escapeText(`${displayNameForIcs} (${course.section})${isSpecial ? ' - 特殊安排' : ''}`);
         
         let eventLines = [
             'BEGIN:VEVENT',
@@ -1389,8 +1425,10 @@ function exportToExcel() {
         const courseType = currentLanguage === 'zh' ? 
             getCourseTypeName(course.type, 'zh') : 
             getCourseTypeName(course.type, 'en');
-            
-        const courseName = currentLanguage === 'zh' ? course.name : getCourseName(course, 'en');
+        // 课程名按导出设置
+        const zhName = getCourseName(course, 'zh');
+        const enName = getCourseName(course, 'en');
+        const courseName = exportNameFormat === 'zh' ? zhName : exportNameFormat === 'en' ? enName : `${enName} / ${zhName}`;
         
         // Regular class dates
         course.dates.forEach(date => {
@@ -1510,11 +1548,17 @@ function exportAgendaToExcel() {
     
     // 添加数据行
     agendaData.forEach(item => {
+        // 名称按导出设置
+        const course = selectedCourses.find(c => c.code === item.courseCode);
+        const zhName = course ? getCourseName(course, 'zh') : item.courseName;
+        const enName = course ? getCourseName(course, 'en') : item.courseName;
+        const baseName = exportNameFormat === 'zh' ? zhName : exportNameFormat === 'en' ? enName : `${enName} / ${zhName}`;
+        const finalName = item.isSpecial ? `${baseName} (特殊安排)` : baseName;
         worksheetData.push([
             item.date,
             item.dayOfWeek,
             item.time,
-            item.courseName,
+            finalName,
             item.courseCode,
             item.instructor,
             item.location,
