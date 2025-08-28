@@ -977,7 +977,7 @@ function generateAgendaData() {
                         date: arrangement.date,
                         dayOfWeek: arrangement.day,
                         time: time,
-                        courseName: courseName + ' (特殊安排)',
+                        courseName: courseName + (currentLanguage === 'zh' ? ' (特殊安排)' : ' (Special)'),
                         courseCode: course.code,
                         instructor: course.instructor,
                         location: `${arrangement.venue}, ${course.campus}`,
@@ -1326,9 +1326,11 @@ function exportToICS() {
         const zh = getCourseName(course, 'zh');
         const en = getCourseName(course, 'en');
         const baseName = exportNameFormat === 'code-zh' ? `${course.code} ${zh}` : `${course.code} ${en}`;
-        const classLabel = currentLanguage === 'zh' ? `(${course.section})` : `(${course.section})`;
+        // 班级标签处理：中文"A班" -> 英文"(Class A)"
+        const classLetter = course.section.replace('班', '');
+        const classLabel = exportNameFormat === 'code-zh' ? `(${course.section})` : `(Class ${classLetter})`;
         const isSpecial = event.extendedProps.isSpecialArrangement;
-        const summary = escapeText(`${baseName} ${classLabel}${isSpecial ? ' - 特殊安排' : ''}`);
+        const summary = escapeText(`${baseName} ${classLabel}${isSpecial ? (exportNameFormat === 'code-zh' ? ' - 特殊安排' : ' - Special') : ''}`);
         
         let eventLines = [
             'BEGIN:VEVENT',
@@ -1437,7 +1439,7 @@ function exportToExcel() {
             course.special_arrangements.forEach(arrangement => {
                 worksheetData.push([
                     course.code,
-                    courseName + ' (特殊安排)',
+                    courseName + (exportNameFormat === 'code-zh' ? ' (特殊安排)' : ' (Special)'),
                     course.section,
                     courseType,
                     course.instructor,
@@ -1539,7 +1541,7 @@ function exportAgendaToExcel() {
         const zhName = course ? getCourseName(course, 'zh') : item.courseName;
         const enName = course ? getCourseName(course, 'en') : item.courseName;
         const baseName = exportNameFormat === 'code-zh' ? `${item.courseCode} ${zhName}` : `${item.courseCode} ${enName}`;
-        const finalName = item.isSpecial ? `${baseName} (特殊安排)` : baseName;
+        const finalName = item.isSpecial ? `${baseName} ${exportNameFormat === 'code-zh' ? '(特殊安排)' : '(Special)'}` : baseName;
         worksheetData.push([
             item.date,
             item.dayOfWeek,
