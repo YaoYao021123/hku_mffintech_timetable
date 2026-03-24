@@ -502,26 +502,45 @@ function bindEventListeners() {
     });
     
     // 视图模式切换
-    document.getElementById('selectMode').addEventListener('change', function() {
+    const selectModeRadio = document.getElementById('selectMode');
+    const viewAllModeRadio = document.getElementById('viewAllMode');
+    const selectModeLabel = document.getElementById('selectModeLabel');
+    const viewAllModeLabel = document.getElementById('viewAllModeLabel');
+    
+    function updateModeToggleStyles() {
+        if (selectModeRadio.checked) {
+            selectModeLabel.classList.add('bg-white', 'shadow-sm', 'text-emerald-900');
+            selectModeLabel.classList.remove('text-slate-500');
+            viewAllModeLabel.classList.remove('bg-white', 'shadow-sm', 'text-emerald-900');
+            viewAllModeLabel.classList.add('text-slate-500');
+        } else {
+            viewAllModeLabel.classList.add('bg-white', 'shadow-sm', 'text-emerald-900');
+            viewAllModeLabel.classList.remove('text-slate-500');
+            selectModeLabel.classList.remove('bg-white', 'shadow-sm', 'text-emerald-900');
+            selectModeLabel.classList.add('text-slate-500');
+        }
+    }
+    
+    selectModeRadio.addEventListener('change', function() {
         if (this.checked) {
             isViewAllMode = false;
             currentViewMode = 'select';
             updateCourseDisability();
-            // 在选课模式下，确保每个课程只选一个班级
             ensureOneSectionPerCourse();
+            updateModeToggleStyles();
         }
     });
     
-    document.getElementById('viewAllMode').addEventListener('change', function() {
+    viewAllModeRadio.addEventListener('change', function() {
         if (this.checked) {
             isViewAllMode = true;
             currentViewMode = 'viewAll';
-            // 在查看全部模式下，启用所有课程
             document.querySelectorAll('.course-checkbox').forEach(cb => {
                 cb.disabled = false;
                 const courseItem = cb.closest('.course-item');
                 courseItem.classList.remove('disabled-course');
             });
+            updateModeToggleStyles();
         }
     });
     
@@ -786,8 +805,12 @@ function initializeCollapseArrows() {
                 arrow.classList.remove('expanded');
             });
             
-            // 初始状态设置 - 所有面板默认收缩
-            arrow.classList.remove('expanded');
+            // 初始状态设置 - 检查是否已展开，保持一致
+            if (targetElement.classList.contains('show')) {
+                arrow.classList.add('expanded');
+            } else {
+                arrow.classList.remove('expanded');
+            }
         }
     });
 }
@@ -928,9 +951,11 @@ function updateCourseListDisplay() {
 
 function updateViewButtons(activeButton) {
     document.querySelectorAll('#monthView, #weekView, #dayView, #agendaView').forEach(btn => {
-        btn.classList.remove('active');
+        btn.classList.remove('bg-white', 'shadow-sm', 'text-emerald-900');
+        btn.classList.add('text-slate-500');
     });
-    activeButton.classList.add('active');
+    activeButton.classList.add('bg-white', 'shadow-sm', 'text-emerald-900');
+    activeButton.classList.remove('text-slate-500');
     
     // 根据选择的视图显示相应内容
     const calendarDiv = document.getElementById('calendar');
@@ -938,11 +963,11 @@ function updateViewButtons(activeButton) {
     
     if (activeButton.id === 'agendaView') {
         calendarDiv.style.display = 'none';
-        agendaDiv.classList.remove('d-none');
+        agendaDiv.classList.remove('hidden');
         currentView = 'agenda';
     } else {
         calendarDiv.style.display = 'block';
-        agendaDiv.classList.add('d-none');
+        agendaDiv.classList.add('hidden');
         currentView = 'calendar';
     }
 }
@@ -1081,11 +1106,11 @@ function checkAndDisplayConflicts() {
     const detailsDiv = document.getElementById('conflictDetails');
     
     if (conflicts.length > 0) {
-        warningDiv.classList.remove('d-none');
+        warningDiv.classList.remove('hidden');
         
         let conflictHtml = '';
         conflicts.forEach((group, index) => {
-            conflictHtml += `<div class="mb-2"><strong>冲突 ${index + 1}:</strong><ul class="mb-0">`;
+            conflictHtml += `<div class="mb-2"><strong>冲突 ${index + 1}:</strong><ul class="mb-0 list-disc ml-4">`;
             group.forEach(course => {
                 conflictHtml += `<li>${course.name} (${course.section}) - ${course.schedule}</li>`;
             });
@@ -1094,7 +1119,7 @@ function checkAndDisplayConflicts() {
         
         detailsDiv.innerHTML = conflictHtml;
     } else {
-        warningDiv.classList.add('d-none');
+        warningDiv.classList.add('hidden');
     }
 }
 
