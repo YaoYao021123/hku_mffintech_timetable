@@ -1,242 +1,266 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HKU 金融科技硕士课程日历</title>
-
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>HKU MFFinTech Course Planner</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary": "#ffffff",
+              "primary-fixed-dim": "#95d3ba",
+              "tertiary-fixed": "#ffdbcb",
+              "secondary-container": "#d6e0f1",
+              "on-tertiary-fixed-variant": "#7a3000",
+              "on-tertiary-fixed": "#341000",
+              "background": "#f8f9ff",
+              "surface-container-highest": "#d9e3f6",
+              "on-error": "#ffffff",
+              "on-primary-container": "#80bea6",
+              "outline-variant": "#bfc9c3",
+              "on-background": "#121c2a",
+              "on-secondary-fixed-variant": "#3e4755",
+              "on-secondary": "#ffffff",
+              "surface-container-high": "#dee9fc",
+              "error-container": "#ffdad6",
+              "inverse-primary": "#95d3ba",
+              "secondary-fixed": "#d9e3f4",
+              "primary": "#003527",
+              "on-surface": "#121c2a",
+              "outline": "#707974",
+              "on-tertiary-container": "#ff9762",
+              "primary-container": "#064e3b",
+              "on-surface-variant": "#404944",
+              "on-secondary-container": "#596372",
+              "surface-tint": "#2b6954",
+              "surface-bright": "#f8f9ff",
+              "tertiary-fixed-dim": "#ffb693",
+              "surface-container-low": "#eff4ff",
+              "secondary": "#555f6d",
+              "inverse-on-surface": "#eaf1ff",
+              "surface-container": "#e6eeff",
+              "on-primary": "#ffffff",
+              "on-primary-fixed": "#002117",
+              "inverse-surface": "#27313f",
+              "on-secondary-fixed": "#121c28",
+              "error": "#ba1a1a",
+              "tertiary": "#521e00",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#762e00",
+              "surface-dim": "#d0dbed",
+              "on-primary-fixed-variant": "#0b513d",
+              "surface-variant": "#d9e3f6",
+              "surface": "#f8f9ff",
+              "secondary-fixed-dim": "#bdc7d8",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed": "#b0f0d6"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      /* Ensure FullCalendar fits the container */
+      #calendar {
+        height: 100%;
+        min-height: 800px;
+        background: var(--surface-container-lowest, #fff);
+      }
+      /* Hide Bootstrap dropdown arrow for custom look */
+      .dropdown-toggle::after {
+          display: none;
+      }
+    </style>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="app-shell">
-        <aside class="sidebar">
-            <div class="sidebar-inner p-3">
-                <div class="brand-block mb-3">
-                    <div class="d-flex align-items-start justify-content-between gap-2">
-                        <div>
-                            <p class="brand-eyebrow mb-1">Academic Precision</p>
-                            <h1 class="brand-title mb-1">Course Catalog</h1>
-                            <p class="brand-subtitle mb-0" id="appTitle">课程规划日历 2025-2026</p>
-                        </div>
-                        <button class="btn btn-sm btn-outline-light" id="languageToggle">EN</button>
+<body class="bg-background text-on-background font-body antialiased overflow-hidden">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="w-80 fixed left-0 top-0 h-full z-50 bg-slate-50 dark:bg-slate-950 flex flex-col border-r border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+            <div class="px-6 pt-6 pb-2">
+                <h1 class="text-lg font-black text-emerald-900 dark:text-emerald-500 tracking-tight">Course Catalog</h1>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-widest mt-1">MFFinTech 2025-26</p>
+                
+                <div class="mt-4 relative">
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">search</span>
+                    <input type="text" id="courseSearch" placeholder="Search courses..." 
+                           class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200/60 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/30 shadow-sm text-slate-700 placeholder:text-slate-400 outline-none transition-all">
+                </div>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto px-4 py-2 space-y-6" id="course-selection-panel">
+                <!-- Core Courses -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Core Modules</span>
+                        <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded" id="coreCount">0</span>
                     </div>
+                    <div id="core-courses" class="space-y-1"></div>
                 </div>
 
-                <div class="sidebar-tools mb-3">
-                    <div class="input-group input-group-sm mb-2">
-                        <span class="input-group-text"><i class="fas fa-search"></i></span>
-                        <input type="text" class="form-control" id="courseSearch" placeholder="搜索课程 / 代码 / 教师">
+                <!-- Capstone -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Capstone</span>
                     </div>
-                    <div class="btn-group btn-group-sm w-100">
-                        <button class="btn btn-outline-light" id="expandAllPanels">展开全部</button>
-                        <button class="btn btn-outline-light" id="collapseAllPanels">收起全部</button>
-                    </div>
+                    <div id="capstone-courses" class="space-y-1"></div>
                 </div>
 
-                <div class="selection-toolbar mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0" id="courseSelectionTitle">选择课程</h6>
-                        <div class="btn-group btn-group-sm" role="group">
-                            <input type="radio" class="btn-check" name="viewMode" id="selectMode" checked>
-                            <label class="btn btn-outline-light" for="selectMode" id="selectModeLabel">选课</label>
-                            <input type="radio" class="btn-check" name="viewMode" id="viewAllMode">
-                            <label class="btn btn-outline-light" for="viewAllMode" id="viewAllModeLabel">查看全部</label>
-                        </div>
+                <!-- Electives - Engineering -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Engineering Electives</span>
+                        <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded" id="engineeringLimit">Max 1</span>
                     </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-sm btn-outline-light flex-fill" id="selectAll">全选</button>
-                        <button class="btn btn-sm btn-outline-light flex-fill" id="clearAll">清空</button>
-                    </div>
+                    <div id="engineering-courses" class="space-y-1"></div>
                 </div>
 
-                <section class="exemption-section mb-3">
-                    <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#exemptionCollapse" aria-expanded="false" aria-controls="exemptionCollapse">
-                        <h6 class="mb-0 d-flex align-items-center gap-2"><span class="section-mark" aria-hidden="true"></span><span id="exemptionTitle">豁免课程设置</span></h6>
-                        <i class="fas fa-chevron-down collapse-arrow" data-target="#exemptionCollapse"></i>
+                <!-- Electives - Law -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Law Electives</span>
+                        <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded" id="lawLimit">Max 1</span>
                     </div>
-                    <div class="collapse" id="exemptionCollapse">
-                        <div class="mt-3">
-                            <div class="exemption-group mb-2">
-                                <small class="text-muted d-block mb-2" id="fundamentalTitle">基础核心课程:</small>
-                                <div id="fundamentalCourses"></div>
-                            </div>
-                            <div class="exemption-group mb-2">
-                                <small class="text-muted d-block mb-2" id="advancedTitle">高级核心课程:</small>
-                                <div id="advancedCourses"></div>
-                            </div>
-                            <div class="alert alert-info exemption-note mb-0">
-                                <small id="exemptionInfo">豁免 0 门核心课程 = 可选 2 门选修课</small>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="course-selection">
-                    <div class="course-category mb-2">
-                        <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#coreCollapse" aria-expanded="false" aria-controls="coreCollapse">
-                            <h6 class="mb-0" id="coreTitle">Core</h6>
-                            <i class="fas fa-chevron-down collapse-arrow" data-target="#coreCollapse"></i>
-                        </div>
-                        <div class="collapse" id="coreCollapse">
-                            <div class="course-group mt-2" id="core-courses"></div>
-                        </div>
-                    </div>
-
-                    <div class="course-category mb-2">
-                        <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#capstoneCollapse" aria-expanded="false" aria-controls="capstoneCollapse">
-                            <h6 class="mb-0" id="capstoneTitle">Capstone Core</h6>
-                            <i class="fas fa-chevron-down collapse-arrow" data-target="#capstoneCollapse"></i>
-                        </div>
-                        <div class="collapse" id="capstoneCollapse">
-                            <div class="course-group mt-2" id="capstone-courses"></div>
-                        </div>
-                    </div>
-
-                    <div class="course-category mb-2">
-                        <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#engineeringCollapse" aria-expanded="false" aria-controls="engineeringCollapse">
-                            <h6 class="mb-0" id="engineeringTitle">Elective offered by Faculty of Engineering</h6>
-                            <div class="d-flex align-items-center gap-2">
-                                <small class="text-muted" id="engineeringLimit">限选1门</small>
-                                <i class="fas fa-chevron-down collapse-arrow" data-target="#engineeringCollapse"></i>
-                            </div>
-                        </div>
-                        <div class="collapse" id="engineeringCollapse">
-                            <div class="course-group mt-2" id="engineering-courses"></div>
-                        </div>
-                    </div>
-
-                    <div class="course-category mb-2">
-                        <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#lawCollapse" aria-expanded="false" aria-controls="lawCollapse">
-                            <h6 class="mb-0" id="lawTitle">Elective offered by Faculty of Law</h6>
-                            <div class="d-flex align-items-center gap-2">
-                                <small class="text-muted" id="lawLimit">限选1门</small>
-                                <i class="fas fa-chevron-down collapse-arrow" data-target="#lawCollapse"></i>
-                            </div>
-                        </div>
-                        <div class="collapse" id="lawCollapse">
-                            <div class="course-group mt-2" id="law-courses"></div>
-                        </div>
-                    </div>
-
-                    <div class="course-category mb-2">
-                        <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#hkubsCollapse" aria-expanded="false" aria-controls="hkubsCollapse">
-                            <h6 class="mb-0" id="hkubsTitle">HKUBS Programme - Elective</h6>
-                            <i class="fas fa-chevron-down collapse-arrow" data-target="#hkubsCollapse"></i>
-                        </div>
-                        <div class="collapse" id="hkubsCollapse">
-                            <div class="course-group mt-2" id="hkubs-courses"></div>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="alert alert-warning d-none mt-3" id="conflictWarning">
-                    <h6 class="mb-2"><i class="fas fa-exclamation-triangle"></i> 时间冲突警告</h6>
-                    <div id="conflictDetails"></div>
+                    <div id="law-courses" class="space-y-1"></div>
                 </div>
 
-                <section class="stats-section mt-3">
-                    <h6 class="stats-title mb-2">Load Statistics</h6>
-                    <div class="stats">
-                        <p class="mb-1">已选课程 <span id="selectedCount">0</span></p>
-                        <p class="mb-1">核心课程 <span id="coreCount">0</span></p>
-                        <p class="mb-1">选修课程 <span id="electiveCount">0</span></p>
-                        <p class="mb-0">时间冲突 <span id="conflictCount" class="conflict-count">0</span></p>
+                <!-- Electives - HKUBS -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Business Electives</span>
                     </div>
-                </section>
+                    <div id="hkubs-courses" class="space-y-1"></div>
+                </div>
+                
+                <div id="fundamentalCourses" class="d-none"></div>
+                <div id="advancedCourses" class="d-none"></div>
+            </nav>
+
+            <div class="p-4 bg-surface-container-low border-t border-slate-200/50 z-10">
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
+                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">Selected</p>
+                        <p class="text-2xl font-bold text-emerald-900" id="selectedCount">0</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
+                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">Electives</p>
+                        <p class="text-2xl font-bold text-slate-700" id="electiveCount">0</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2">
+                     <button id="viewAllMode" class="d-none"></button>
+                     <button id="selectMode" class="d-none"></button>
+                     <!-- Hidden buttons for functionality if needed -->
+                     <button id="selectAll" class="d-none"></button>
+                     <button id="clearAll" class="d-none"></button>
+                     
+                     <div class="bg-slate-200/50 p-1 rounded-lg flex w-full">
+                        <label for="selectMode" class="flex-1 text-center cursor-pointer px-3 py-1.5 text-xs font-bold text-emerald-900 bg-white rounded-md shadow-sm transition-all" id="selectModeLabel">Select</label>
+                        <label for="viewAllMode" class="flex-1 text-center cursor-pointer px-3 py-1.5 text-xs font-bold text-slate-500 hover:text-slate-700 transition-all" id="viewAllModeLabel">View All</label>
+                     </div>
+                </div>
             </div>
         </aside>
 
-        <main class="main-content">
-            <header class="topbar">
-                <div class="topbar-inner px-4 py-3">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <span class="topbar-brand">Academic Precision</span>
-                            <span class="topbar-divider"></span>
-                            <h2 class="topbar-title mb-0">HKU MFFinTech Schedule</h2>
-                        </div>
-                        <div class="d-flex align-items-center flex-wrap gap-2">
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-download"></i> <span id="exportLabel">导出</span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="exportDropdown">
-                                    <li class="dropdown-header small">课程名显示</li>
-                                    <li>
-                                        <div class="px-3 py-1">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="exportNameFormat" id="exportNameCodeEn" value="code-en">
-                                                <label class="form-check-label" for="exportNameCodeEn">编号 + English</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="exportNameFormat" id="exportNameCodeZh" value="code-zh">
-                                                <label class="form-check-label" for="exportNameCodeZh">编号 + 中文</label>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#" id="exportICS"><i class="fas fa-calendar-alt"></i> <span id="exportICSLabel">日历文件 (.ics)</span></a></li>
-                                    <li><a class="dropdown-item" href="#" id="exportExcel"><i class="fas fa-file-excel"></i> <span id="exportExcelLabel">Excel表格 (.xlsx)</span></a></li>
-                                    <li><a class="dropdown-item" href="#" id="exportAgenda"><i class="fas fa-list"></i> <span id="exportAgendaLabel">议程表格 (.xlsx)</span></a></li>
-                                </ul>
-                            </div>
-
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" id="localStorageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-save"></i> <span id="localStorageLabel">存储</span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="localStorageDropdown">
-                                    <li><a class="dropdown-item" href="#" id="saveLocal"><i class="fas fa-save"></i> <span id="saveLocalLabel">保存课表</span></a></li>
-                                    <li><a class="dropdown-item text-danger" href="#" id="clearLocal"><i class="fas fa-trash"></i> <span id="clearLocalLabel">清除课表</span></a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><span class="dropdown-item-text small text-muted" id="localStorageNote">课表会自动保存，下次打开时自动恢复</span></li>
-                                </ul>
-                            </div>
-                        </div>
+        <!-- Main Content -->
+        <main class="ml-80 flex-1 flex flex-col h-screen overflow-hidden relative bg-white">
+            <!-- TopAppBar -->
+            <header class="bg-slate-50/90 backdrop-blur-md z-40 flex justify-between items-center w-full px-8 py-4 border-b border-slate-200/50 sticky top-0">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <h2 class="font-headline text-lg font-bold tracking-tight text-slate-900">Timetable</h2>
+                        <span class="h-4 w-[1px] bg-slate-300"></span>
+                        <span class="text-sm font-medium text-slate-500">2025-2026 Academic Year</span>
+                    </div>
+                    
+                    <!-- View Switcher -->
+                    <div class="flex bg-slate-200/50 p-1 rounded-lg">
+                        <button id="weekView" class="px-4 py-1.5 text-xs font-bold text-emerald-900 bg-white rounded-md shadow-sm">Week</button>
+                        <button id="monthView" class="px-4 py-1.5 text-xs font-bold text-slate-500 hover:text-emerald-800 transition-colors">Month</button>
+                        <button id="dayView" class="px-4 py-1.5 text-xs font-bold text-slate-500 hover:text-emerald-800 transition-colors">Day</button>
+                        <button id="agendaView" class="px-4 py-1.5 text-xs font-bold text-slate-500 hover:text-emerald-800 transition-colors">List</button>
+                    </div>
+                    
+                    <button id="languageToggle" class="text-[10px] font-bold text-slate-500 border border-slate-200 px-2 py-1 rounded hover:bg-slate-100 uppercase tracking-wide">EN / 中</button>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div id="conflictWarning" class="d-none flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 rounded-full border border-red-100 text-xs font-bold animate-pulse">
+                        <span class="material-symbols-outlined text-sm">warning</span>
+                        <span id="conflictCount">0</span> Conflicts
                     </div>
 
-                    <div class="topbar-bottom mt-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <div class="view-controls btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-outline-primary" id="monthView">月视图</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary active" id="weekView">周视图</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" id="dayView">日视图</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" id="agendaView">议程视图</button>
+                    <div class="flex items-center gap-2">
+                        <button id="saveBtn" class="px-4 py-2 text-sm font-bold border border-slate-200 text-slate-600 rounded-full hover:bg-slate-50 transition-colors">Save</button>
+                        
+                        <!-- Export Dropdown -->
+                        <div class="dropdown">
+                            <button id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle px-5 py-2 text-sm font-bold bg-emerald-900 text-white rounded-full flex items-center gap-2 hover:bg-emerald-800 transition-colors shadow-lg shadow-emerald-900/20">
+                                <span class="material-symbols-outlined text-sm">ios_share</span>
+                                Export
+                            </button>
+                            <ul class="dropdown-menu shadow-lg border-0 rounded-xl p-2 mt-2">
+                                <li><a class="dropdown-item rounded-lg text-sm font-medium py-2 px-3 hover:bg-emerald-50 text-slate-700" href="#" id="exportICS">To Calendar (ICS)</a></li>
+                                <li><a class="dropdown-item rounded-lg text-sm font-medium py-2 px-3 hover:bg-emerald-50 text-slate-700" href="#" id="exportExcel">To Excel</a></li>
+                                <li><a class="dropdown-item rounded-lg text-sm font-medium py-2 px-3 hover:bg-emerald-50 text-slate-700" href="#" id="exportAgenda">To Agenda List</a></li>
+                            </ul>
                         </div>
-                        <div class="legend">
-                            <small class="text-muted">课程类型</small>
-                            <span class="legend-item core-course">核心课程</span>
-                            <span class="legend-item elective-course">选修课程</span>
-                            <span class="legend-item project-course">毕业项目</span>
-                            <span class="legend-item conflict-course">时间冲突</span>
-                        </div>
+                    </div>
+                    
+                     <div class="w-8 h-8 rounded-full bg-slate-100 overflow-hidden ml-2 border-2 border-slate-200 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-slate-400 text-sm">person</span>
                     </div>
                 </div>
             </header>
 
-            <div class="calendar-stage p-3 p-lg-4">
-                <div id="calendar"></div>
-                <div id="agenda-view" class="d-none">
-                    <div class="agenda-container">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover mb-0" id="agenda-table">
-                                <thead>
-                                    <tr>
-                                        <th width="12%">日期</th>
-                                        <th width="8%">星期</th>
-                                        <th width="12%">时间</th>
-                                        <th width="25%">课程</th>
-                                        <th width="15%">讲师</th>
-                                        <th width="15%">地点</th>
-                                        <th width="8%">类型</th>
-                                        <th width="5%">特殊</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="agenda-tbody"></tbody>
-                            </table>
+            <!-- Timetable Area -->
+            <div class="p-6 flex-1 overflow-hidden flex flex-col bg-slate-50/30">
+                <div class="w-full h-full flex flex-col max-w-[1600px] mx-auto">
+                    <div class="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden p-1 relative">
+                        <!-- Calendar / Agenda Container -->
+                        <div id="calendar" class="h-full w-full"></div>
+                        <div id="agenda-view" class="d-none h-full w-full p-4 overflow-y-auto"></div>
+                    </div>
+                    
+                    <div class="mt-4 flex flex-wrap gap-6 items-center px-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#003527]"></span>
+                            <span class="text-xs font-bold text-slate-500">Core</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#762e00]"></span>
+                            <span class="text-xs font-bold text-slate-500">Capstone</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#555f6d]"></span>
+                            <span class="text-xs font-bold text-slate-500">Elective</span>
+                        </div>
+                         <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#ba1a1a]"></span>
+                            <span class="text-xs font-bold text-slate-500">Conflict</span>
                         </div>
                     </div>
                 </div>
@@ -244,67 +268,48 @@
         </main>
     </div>
 
-    <div class="modal fade" id="courseModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="courseModalTitle">课程详情</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <!-- Hidden elements -->
+    <div id="conflictDetails" class="d-none"></div>
+    <button id="expandAllPanels" class="d-none"></button>
+    <button id="collapseAllPanels" class="d-none"></button>
+    <button id="selectAll" class="d-none"></button>
+    <button id="clearAll" class="d-none"></button>
+
+    <!-- Course Modal -->
+    <div class="modal fade" id="courseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-2xl rounded-2xl overflow-hidden">
+                <div class="modal-header border-b border-slate-100 bg-emerald-900 p-4">
+                    <h5 class="modal-title text-white font-bold text-lg" id="courseModalTitle">Course Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="courseModalBody"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                <div class="modal-body p-6 bg-slate-50" id="courseModalBody"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reminder Modal (needed for exportICS flow) -->
+    <div class="modal fade" id="reminderModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-2xl rounded-2xl overflow-hidden">
+                <div class="modal-header border-b border-slate-100 bg-white p-4">
+                    <h5 class="modal-title text-slate-900 font-bold" id="reminderModalTitle">Set Reminder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-slate-50" id="reminderModalBody">
+                     <!-- Populated by app.js -->
+                </div>
+                 <div class="modal-footer border-t border-slate-100 p-3 bg-white">
+                    <button type="button" class="px-4 py-2 text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-lg transition-colors" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="px-4 py-2 text-sm font-bold bg-emerald-900 text-white rounded-lg shadow-sm hover:opacity-90 transition-opacity" id="saveReminderBtn">Export</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="reminderModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reminderModalTitle">选择提醒时间</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="reminder-options">
-                        <div class="reminder-option" data-reminder="none"><span id="reminderNoneLabel">无</span></div>
-                        <div class="reminder-option" data-reminder="0"><span id="reminderAtTimeLabel">日程发生时</span></div>
-                        <div class="reminder-option" data-reminder="5"><span id="reminder5minLabel">5分钟前</span></div>
-                        <div class="reminder-option" data-reminder="10"><span id="reminder10minLabel">10分钟前</span></div>
-                        <div class="reminder-option selected" data-reminder="15"><i class="fas fa-check reminder-check-icon"></i><span id="reminder15minLabel">15分钟前</span></div>
-                        <div class="reminder-option" data-reminder="30"><span id="reminder30minLabel">30分钟前</span></div>
-                        <div class="reminder-option" data-reminder="60"><span id="reminder1hourLabel">1小时前</span></div>
-                        <div class="reminder-option" data-reminder="120"><span id="reminder2hourLabel">2小时前</span></div>
-                        <div class="reminder-option" data-reminder="1440"><span id="reminder1dayLabel">1天前</span></div>
-                        <div class="reminder-option" data-reminder="2880"><span id="reminder2dayLabel">2天前</span></div>
-                        <hr>
-                        <div class="custom-reminder">
-                            <label for="customReminderInput" id="customReminderLabel">自定义时间:</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="customReminderInput" min="1" max="10080" placeholder="15">
-                                <select class="form-select" id="customReminderUnit">
-                                    <option value="minutes" id="customMinutesLabel">分钟</option>
-                                    <option value="hours" id="customHoursLabel">小时</option>
-                                    <option value="days" id="customDaysLabel">天</option>
-                                </select>
-                                <button class="btn btn-outline-primary" type="button" id="customReminderBtn"><span id="customReminderBtnLabel">使用自定义</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelReminderBtn">取消</button>
-                    <button type="button" class="btn btn-primary" id="confirmReminderBtn"><span id="confirmReminderBtnLabel">确认导出</span></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/locales/zh-cn.global.min.js"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <script src="course-data.js"></script>
     <script src="app.js"></script>
 </body>
