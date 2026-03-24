@@ -1,4 +1,4 @@
-// 课程数据 - 基于time.json自动生成，包含完整的特殊时间安排
+// 课程数据 - 基于V10 PDF教学计划重建
 const COURSE_DATA = {
     // 第一学期课程
     semester1: [
@@ -7,30 +7,12 @@ const COURSE_DATA = {
             name: "金融市场监管",
             section: "C班",
             type: "core",
-            instructor: "Ms. Lea-Anne Lee",
-            schedule: "周四 16:00-19:00",
-            dates: ["2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-16", "2025-10-23", "2025-11-20"],
+            instructor: "Ms Lea-Anne Lee",
+            schedule: "周四 16:00 - 19:00",
+            dates: ["2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-16", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13", "2025-11-20", "2025-11-27"],
             campus: "MC",
             room: "CBC",
             special_arrangements: [
-                {
-                    date: "2025-10-30",
-                    day: "Thursday",
-                    time: "16:10-19:00",
-                    venue: "CBC"
-                },
-                {
-                    date: "2025-11-06",
-                    day: "Thursday",
-                    time: "16:10-19:00",
-                    venue: "CBC"
-                },
-                {
-                    date: "2025-11-13",
-                    day: "Thursday",
-                    time: "16:10-19:00",
-                    venue: "CBC"
-                }
             ]
         },
         {
@@ -38,42 +20,25 @@ const COURSE_DATA = {
             name: "隐私与数据保护",
             section: "A班",
             type: "elective",
-            instructor: "Mr. Adam Au",
+            instructor: "Mr Adam Au",
             schedule: "周三 19:00-22:00",
             dates: ["2025-09-10", "2025-09-17", "2025-09-24", "2025-10-08", "2025-10-15", "2025-10-22", "2025-11-05", "2025-11-12"],
             campus: "MC",
             room: "KK101",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "FITE7409",
             name: "区块链与加密货币",
             section: "A班",
             type: "core",
-            instructor: "Dr. KP Chow",
+            instructor: "Dr KP Chow",
             schedule: "周一 & 周四 13:00-16:00",
-            dates: ["2025-10-13", "2025-10-20", "2025-10-27", "2025-11-03", "2025-11-10", "2025-11-27", "2025-12-01"],
+            dates: ["2025-10-13", "2025-10-20", "2025-10-27", "2025-10-30", "2025-11-03", "2025-11-06", "2025-11-10", "2025-11-13", "2025-11-27", "2025-12-01"],
             campus: "MC",
-            room: "Mon lectures: CPD-3.04, Thu lectures: MW-T2",
+            room: "Mon lectures: CPD-3.04 / Thu lectures: MW-T2",
             special_arrangements: [
-                {
-                    date: "2025-10-30",
-                    day: "Thursday",
-                    time: "13:00-15:50",
-                    venue: "MW-T2"
-                },
-                {
-                    date: "2025-11-06",
-                    day: "Thursday",
-                    time: "13:00-15:50",
-                    venue: "MW-T2"
-                },
-                {
-                    date: "2025-11-13",
-                    day: "Thursday",
-                    time: "13:00-15:50",
-                    venue: "MW-T2"
-                }
             ]
         },
         {
@@ -81,24 +46,26 @@ const COURSE_DATA = {
             name: "深度学习",
             section: "A班",
             type: "elective",
-            instructor: "Prof. Francis Chin & Dr. Bethany Chan",
-            schedule: "周四 13:00-16:00",
+            instructor: "Prof Francis Chin & Dr Bethany Chan",
+            schedule: "周四 13:00 - 16:00",
             dates: ["2025-09-04", "2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13"],
             campus: "MC",
             room: "LE-1",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "FITE7410",
             name: "金融欺诈分析",
             section: "A班",
             type: "elective",
-            instructor: "Dr. Vivien Chan & Ms. Annie Chan",
-            schedule: "周三 19:00-22:00",
+            instructor: "Dr Vivien Chan & Ms Annie Chan",
+            schedule: "周三 19:00 - 22:00",
             dates: ["2025-09-03", "2025-09-10", "2025-09-17", "2025-09-24", "2025-10-08", "2025-10-22", "2025-11-05", "2025-11-12", "2025-11-19", "2025-11-26"],
             campus: "MC",
             room: "LE-5",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN6003",
@@ -109,7 +76,7 @@ const COURSE_DATA = {
             schedule: "周二 & 周五 14:00-17:00",
             dates: ["2025-09-02", "2025-09-09", "2025-09-12", "2025-09-16", "2025-09-19", "2025-09-26", "2025-09-30", "2025-10-03"],
             campus: "CP",
-            room: "Room ABC, LTB (Sep 27)",
+            room: "Room ABC / LTB (Sep 27)",
             special_arrangements: [
                 {
                     date: "2025-09-13",
@@ -134,13 +101,13 @@ const COURSE_DATA = {
             schedule: "周二 & 周五 18:30-21:30",
             dates: ["2025-09-02", "2025-09-09", "2025-09-12", "2025-09-16", "2025-09-19", "2025-09-26", "2025-09-30", "2025-10-03"],
             campus: "CP",
-            room: "Room ABC",
+            room: "Room ABC / LTB (Sep 27)",
             special_arrangements: [
                 {
                     date: "2025-09-17",
                     day: "Wednesday",
                     time: "18:30-21:30",
-                    venue: "Room ABC"
+                    venue: "Room ABC / LTB (Sep 27)"
                 },
                 {
                     date: "2025-09-27",
@@ -158,8 +125,8 @@ const COURSE_DATA = {
             instructor: "Prof. Rujing Meng",
             schedule: "周一 & 周四 14:00-17:00",
             dates: ["2025-09-01", "2025-09-04", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29"],
-            campus: "CP",
-            room: "Room ABC",
+            campus: "CP / MC",
+            room: "Room ABC / MC - TT404 (Sep 10) / LTB (Oct 3)",
             special_arrangements: [
                 {
                     date: "2025-09-10",
@@ -171,13 +138,13 @@ const COURSE_DATA = {
                     date: "2025-09-20",
                     day: "Saturday",
                     time: "18:30-21:30",
-                    venue: "Room ABC"
+                    venue: "Room ABC / MC - TT404 (Sep 10) / LTB (Oct 3)"
                 },
                 {
                     date: "2025-09-24",
                     day: "Wednesday",
                     time: "18:30-21:30",
-                    venue: "Room ABC"
+                    venue: "Room ABC / MC - TT404 (Sep 10) / LTB (Oct 3)"
                 },
                 {
                     date: "2025-10-03",
@@ -197,7 +164,8 @@ const COURSE_DATA = {
             dates: ["2025-09-01", "2025-09-04", "2025-09-08", "2025-09-11", "2025-09-15", "2025-09-18", "2025-09-22", "2025-09-25", "2025-09-29", "2025-10-02"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7031",
@@ -209,7 +177,8 @@ const COURSE_DATA = {
             dates: ["2025-08-31", "2025-09-07", "2025-09-14", "2025-09-21", "2025-09-28"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7003",
@@ -245,17 +214,17 @@ const COURSE_DATA = {
             schedule: "周二 & 周五 14:00-17:00",
             dates: ["2025-10-14", "2025-10-21", "2025-10-24", "2025-10-28", "2025-10-31", "2025-11-04", "2025-11-07", "2025-11-11"],
             campus: "CP",
-            room: "Room ABC, Room H (Oct 17), LTA (Nov 14)",
+            room: "Room ABC / Room H (Oct 17) / LTA (Nov 14)",
             special_arrangements: [
                 {
                     date: "2025-10-17",
-                    day: "Friday",
+                    day: "Thursday",
                     time: "18:30-21:30",
                     venue: "Room H"
                 },
                 {
                     date: "2025-11-14",
-                    day: "Friday",
+                    day: "Thursday",
                     time: "18:30-21:30",
                     venue: "LTA"
                 }
@@ -268,33 +237,15 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Jiantao Huang",
             schedule: "周三 & 周六 14:00-17:00",
-            dates: ["2025-10-15", "2025-10-22", "2025-11-05", "2025-11-12", "2025-11-19"],
-            campus: "CP",
-            room: "Room ABC",
+            dates: ["2025-10-15", "2025-10-18", "2025-10-22", "2025-11-01", "2025-11-05", "2025-11-08", "2025-11-12", "2025-11-15", "2025-11-19"],
+            campus: "CP / MC",
+            room: "Room ABC / MC - MB237 (Oct 25) / MC - KK102 (Nov 1, Nov 8, Nov 15)",
             special_arrangements: [
                 {
-                    date: "2025-10-20",
-                    day: "Monday",
-                    time: "18:30-21:30",
-                    venue: "Room ABC"
-                },
-                {
-                    date: "2025-10-27",
-                    day: "Monday",
-                    time: "18:30-21:30",
-                    venue: "Room ABC"
-                },
-                {
-                    date: "2025-11-03",
-                    day: "Monday",
-                    time: "18:30-21:30",
-                    venue: "Room ABC"
-                },
-                {
-                    date: "2025-11-17",
-                    day: "Monday",
-                    time: "14:00-17:00 & 18:30-21:30",
-                    venue: "Room ABC"
+                    date: "2025-10-25",
+                    day: "Friday",
+                    time: "09:30-12:30",
+                    venue: "MB237 @MC"
                 }
             ]
         },
@@ -305,10 +256,17 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Jiantao Huang",
             schedule: "周三 & 周六 18:30-21:30",
-            dates: ["2025-10-15", "2025-10-18", "2025-10-22", "2025-10-25", "2025-11-01", "2025-11-05", "2025-11-08", "2025-11-12", "2025-11-15", "2025-11-19"],
-            campus: "CP",
-            room: "Room ABC",
-            special_arrangements: []
+            dates: ["2025-10-15", "2025-10-18", "2025-10-22", "2025-11-01", "2025-11-05", "2025-11-08", "2025-11-12", "2025-11-15", "2025-11-19"],
+            campus: "CP / MC",
+            room: "Room ABC / MC - MB237 (Oct 25) / MC - KK101 (Nov 1, Nov 8, Nov 15)",
+            special_arrangements: [
+                {
+                    date: "2025-10-25",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "MB237 @MC"
+                }
+            ]
         }
     ],
 
@@ -320,11 +278,12 @@ const COURSE_DATA = {
             section: "D班",
             type: "core",
             instructor: "Ms Lea-Anne Lee",
-            schedule: "周五 14:00-17:00",
-            dates: ["2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-10"],
+            schedule: "周五 14:00 - 17:00",
+            dates: ["2026-01-30", "2026-02-06", "2026-02-13", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-10", "2026-04-17", "2026-04-24"],
             campus: "MC",
             room: "CPD-3.04",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "LLAW6256",
@@ -332,11 +291,44 @@ const COURSE_DATA = {
             section: "A班",
             type: "elective",
             instructor: "Dr John Lee",
-            schedule: "周五 19:00-22:00",
-            dates: ["2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-10"],
+            schedule: "周五 19:00-22:00 Occasionally on 周六 14:30-17:30 (Apr 25)",
+            dates: ["2026-01-30", "2026-02-06", "2026-02-13", "2026-02-27", "2026-03-06", "2026-03-20", "2026-03-27", "2026-04-10", "2026-04-17", "2026-04-24"],
             campus: "MC",
-            room: "CPD-2.16",
-            special_arrangements: []
+            room: "CPD-2.16 / CPD-2.42 (Apr 25)",
+            special_arrangements: [
+                {
+                    date: "2026-04-25",
+                    day: "Saturday",
+                    time: "14:30-17:30",
+                    venue: "CPD-2.16 / CPD-2.42 (Apr 25)"
+                }
+            ]
+        },
+        {
+            code: "LLAW6046",
+            name: "隐私与数据保护",
+            section: "C班",
+            type: "elective",
+            instructor: "Dr Angus Young",
+            schedule: "周四 19:00-22:00",
+            dates: ["2026-01-29", "2026-02-05", "2026-02-12", "2026-02-26", "2026-03-05", "2026-03-19", "2026-03-26", "2026-04-09", "2026-04-16", "2026-04-23", "2026-04-30"],
+            campus: "MC",
+            room: "TT404",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "FITE7410",
+            name: "金融欺诈分析",
+            section: "C班",
+            type: "elective",
+            instructor: "Dr Vivien Chan & Ms Annie Chan",
+            schedule: "周二 19:00 - 22:00",
+            dates: ["2026-01-20", "2026-01-27", "2026-02-03", "2026-02-10", "2026-02-24", "2026-03-03", "2026-03-10", "2026-03-24", "2026-03-31", "2026-04-14"],
+            campus: "MC",
+            room: "MW-T1",
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7036",
@@ -345,10 +337,35 @@ const COURSE_DATA = {
             type: "elective",
             instructor: "Prof. Matthias Buehlmaier",
             schedule: "周三 & 周六 09:30-12:30",
-            dates: ["2026-01-29", "2026-02-05", "2026-02-12", "2026-02-26", "2026-03-05", "2026-03-12", "2026-03-19", "2026-03-26", "2026-04-02", "2026-04-09", "2026-04-16"],
-            campus: "CP",
-            room: "Room ABC",
-            special_arrangements: []
+            dates: ["2025-12-10", "2025-12-17", "2025-12-20", "2026-01-03", "2026-01-07", "2026-01-14"],
+            campus: "CP / MC",
+            room: "Room ABC / MC - CBA (Dec 15) / MC - KK101 (Jan 12)",
+            special_arrangements: [
+                {
+                    date: "2025-12-15",
+                    day: "Sunday",
+                    time: "14:00-17:00",
+                    venue: "CBA1@MC"
+                },
+                {
+                    date: "2026-01-10",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / MC - CBA (Dec 15) / MC - KK101 (Jan 12)"
+                },
+                {
+                    date: "2026-01-12",
+                    day: "Sunday",
+                    time: "14:00-17:00",
+                    venue: "KK101@MC"
+                },
+                {
+                    date: "2026-01-17",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / MC - CBA (Dec 15) / MC - KK101 (Jan 12)"
+                }
+            ]
         },
         {
             code: "MFIN7005",
@@ -358,27 +375,8 @@ const COURSE_DATA = {
             instructor: "Prof. Jack Xiaoyong Fu",
             schedule: "周二 & 周五 14:00-17:00",
             dates: ["2025-12-09", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-20"],
-            campus: "CP",
-            room: "Room ABC, Room J (Dec 20)",
-            special_arrangements: [
-                {
-                    date: "2025-12-20",
-                    day: "Saturday",
-                    time: "14:00-17:00",
-                    venue: "Room J"
-                }
-            ]
-        },
-        {
-            code: "MFIN7005",
-            name: "公司金融与资产估值",
-            section: "F班",
-            type: "core",
-            instructor: "Prof. Jack Xiaoyong Fu",
-            schedule: "周二 & 周五 18:30-21:30",
-            dates: ["2025-12-09", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-20"],
-            campus: "CP",
-            room: "Room ABC, Room J (Dec 20), Room H (Jan 21)",
+            campus: "CP / MC",
+            room: "Room ABC (Dec 9, 16, Jan 13, 20) / MC - CBA (Dec 13, Dec 14) / Room D (Dec 19, Jan 9) / Room J (Dec 20) / Room H (Jan 21)",
             special_arrangements: [
                 {
                     date: "2025-12-13",
@@ -393,16 +391,41 @@ const COURSE_DATA = {
                     venue: "CBA @MC"
                 },
                 {
-                    date: "2025-12-20",
-                    day: "Saturday",
-                    time: "18:30-21:30",
-                    venue: "Room J"
-                },
-                {
                     date: "2026-01-21",
                     day: "Wednesday",
                     time: "18:30-21:30",
                     venue: "Room H"
+                },
+                {
+                    date: "2025-12-20",
+                    day: "Saturday",
+                    time: "14:00-17:00",
+                    venue: "Room ABC (Dec 9, 16, Jan 13, 20) / MC - CBA (Dec 13, Dec 14) / Room D (Dec 19, Jan 9) / Room J (Dec 20) / Room H (Jan 21)"
+                }
+            ]
+        },
+        {
+            code: "MFIN7005",
+            name: "公司金融与资产估值",
+            section: "F班",
+            type: "core",
+            instructor: "Prof. Jack Xiaoyong Fu",
+            schedule: "周二 & 周五 18:30-21:30",
+            dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
+            campus: "CP",
+            room: "Room ABC / Room H (Dec 13 & 20)",
+            special_arrangements: [
+                {
+                    date: "2025-12-13",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / Room H (Dec 13 & 20)"
+                },
+                {
+                    date: "2025-12-20",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / Room H (Dec 13 & 20)"
                 }
             ]
         },
@@ -416,7 +439,8 @@ const COURSE_DATA = {
             dates: ["2025-12-08", "2025-12-11", "2025-12-15", "2025-12-18", "2026-01-05", "2026-01-08", "2026-01-12", "2026-01-15", "2026-01-19", "2026-01-22"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7054",
@@ -426,9 +450,34 @@ const COURSE_DATA = {
             instructor: "Prof. Henri Arslanian",
             schedule: "周六 & 周日 Block Mode",
             dates: [],
-            campus: "CP",
-            room: "TBC",
-            special_arrangements: []
+            campus: "MC",
+            room: "MC - CPD-3.28",
+            special_arrangements: [
+                {
+                    date: "2025-12-13",
+                    day: "Friday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-14",
+                    day: "Saturday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-20",
+                    day: "Friday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-21",
+                    day: "Saturday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                }
+            ]
         },
         {
             code: "MFIN7004",
@@ -438,33 +487,9 @@ const COURSE_DATA = {
             instructor: "Prof. Berry Hsu",
             schedule: "周二 & 周五 09:30-12:30",
             dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
-            campus: "CP & MC",
-            room: "CP - Room H, MC - CPD-3.28 & CPD-2.42",
+            campus: "CP",
+            room: "CP - Room H / MC - KK101 (Jan 16)",
             special_arrangements: [
-                {
-                    date: "2025-12-13",
-                    day: "Friday",
-                    time: "09:30-12:30 & 14:00-18:30",
-                    venue: "CPD-3.28 @MC"
-                },
-                {
-                    date: "2025-12-14",
-                    day: "Saturday",
-                    time: "09:30-12:30 & 14:00-18:30",
-                    venue: "CPD-2.42 @MC"
-                },
-                {
-                    date: "2025-12-20",
-                    day: "Friday",
-                    time: "09:30-12:30 & 14:00-18:30",
-                    venue: "CPD-3.28 @MC"
-                },
-                {
-                    date: "2025-12-21",
-                    day: "Saturday",
-                    time: "09:30-12:30 & 14:00-18:30",
-                    venue: "CPD-2.42 @MC"
-                }
             ]
         },
         {
@@ -475,15 +500,9 @@ const COURSE_DATA = {
             instructor: "Prof. Berry Hsu",
             schedule: "周二 & 周五 14:00-17:00",
             dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
-            campus: "CP & MC",
-            room: "CP - Room H, MC - KK101 (Jan 16)",
+            campus: "CP",
+            room: "CP - Room H / MC - KK101 (Jan 16)",
             special_arrangements: [
-                {
-                    date: "2026-01-16",
-                    day: "Friday",
-                    time: "14:00-17:00",
-                    venue: "MC - KK101"
-                }
             ]
         },
         {
@@ -493,10 +512,11 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Alan Kwan, Prof. Yang You",
             schedule: "周一 & 周四 14:00-17:00",
-            dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
+            dates: ["2026-01-29", "2026-02-02", "2026-02-05", "2026-02-09", "2026-02-12", "2026-02-23", "2026-02-26", "2026-03-02", "2026-03-05", "2026-03-09"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7037",
@@ -508,7 +528,8 @@ const COURSE_DATA = {
             dates: ["2026-01-29", "2026-02-02", "2026-02-05", "2026-02-09", "2026-02-12", "2026-02-23", "2026-02-26", "2026-03-02", "2026-03-05", "2026-03-09"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7034",
@@ -517,10 +538,17 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Ye Luo",
             schedule: "周二 & 周五 14:00-17:00",
-            dates: ["2026-01-30", "2026-02-03", "2026-02-06", "2026-02-10", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"],
+            dates: ["2026-01-30", "2026-02-03", "2026-02-06", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"],
             campus: "CP",
-            room: "Room ABC",
-            special_arrangements: []
+            room: "Room ABC / Room J (Mar 11)",
+            special_arrangements: [
+                {
+                    date: "2026-03-11",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "Room ABC / Room J (Mar 11)"
+                }
+            ]
         },
         {
             code: "MFIN7034",
@@ -529,10 +557,17 @@ const COURSE_DATA = {
             type: "core",
             instructor: "Prof. Ye Luo",
             schedule: "周二 & 周五 18:30-21:30",
-            dates: ["2026-01-30", "2026-02-03", "2026-02-06", "2026-02-10", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"],
+            dates: ["2026-01-30", "2026-02-03", "2026-02-06", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"],
             campus: "CP",
-            room: "Room ABC",
-            special_arrangements: []
+            room: "Room ABC / Room EFG (Mar 11)",
+            special_arrangements: [
+                {
+                    date: "2026-03-11",
+                    day: "Wednesday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / Room EFG (Mar 11)"
+                }
+            ]
         },
         {
             code: "MFIN7060",
@@ -541,39 +576,21 @@ const COURSE_DATA = {
             type: "elective",
             instructor: "Prof. Alan Chow",
             schedule: "周三 & 周六 14:00-17:00",
-            dates: ["2026-03-21", "2026-04-01", "2026-04-08", "2026-04-15", "2026-04-22"],
+            dates: ["2026-03-21", "2026-03-25", "2026-04-01", "2026-04-08", "2026-04-11", "2026-04-15", "2026-04-22", "2026-04-25"],
             campus: "CP",
-            room: "LTA",
+            room: "LTA / Room EFG (Mar 25, Apr 11) / Room 205-1&2 (Apr 25)",
             special_arrangements: [
                 {
-                    date: "2026-03-25",
-                    day: "Wednesday",
-                    time: "14:00-17:00",
-                    venue: "Room EFG"
-                },
-                {
                     date: "2026-03-28",
-                    day: "Saturday",
+                    day: "Friday",
                     time: "18:30-21:30",
-                    venue: "LTA"
-                },
-                {
-                    date: "2026-04-11",
-                    day: "Saturday",
-                    time: "14:00-17:00",
-                    venue: "Room EFG"
+                    venue: "LTA / Room EFG (Mar 25, Apr 11) / Room 205-1&2 (Apr 25)"
                 },
                 {
                     date: "2026-04-18",
-                    day: "Saturday",
+                    day: "Friday",
                     time: "18:30-21:30",
-                    venue: "LTA"
-                },
-                {
-                    date: "2026-04-25",
-                    day: "Saturday",
-                    time: "14:00-17:00",
-                    venue: "Room 205-1&2"
+                    venue: "LTA / Room EFG (Mar 25, Apr 11) / Room 205-1&2 (Apr 25)"
                 }
             ]
         },
@@ -582,7 +599,7 @@ const COURSE_DATA = {
             name: "金融大数据",
             section: "A班",
             type: "project",
-            instructor: "Prof. Alan Kwan",
+            instructor: "Prof. Alan Kwan Dr. Sandro Lera",
             schedule: "周一 & 周四 14:00-17:00",
             dates: ["2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-20", "2026-04-23"],
             campus: "CP",
@@ -601,12 +618,13 @@ const COURSE_DATA = {
             name: "金融大数据",
             section: "B班",
             type: "project",
-            instructor: "Prof. Alan Kwan",
+            instructor: "Prof. Alan Kwan Dr. Sandro Lera",
             schedule: "周一 & 周四 18:30-21:30",
             dates: ["2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-16", "2026-04-20", "2026-04-23"],
             campus: "CP",
             room: "Room ABC",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7016",
@@ -615,10 +633,11 @@ const COURSE_DATA = {
             type: "elective",
             instructor: "Prof. Keith K. P. Wong",
             schedule: "周二 & 周五 18:30-21:30",
-            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-07", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"],
-            campus: "CP",
-            room: "Room D",
-            special_arrangements: []
+            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"],
+            campus: "MC",
+            room: "Tuesdays: MC-MB201 / Fridays: MC-MB217",
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7049",
@@ -630,7 +649,8 @@ const COURSE_DATA = {
             dates: ["2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-16", "2026-04-20", "2026-04-23"],
             campus: "CP",
             room: "Room H",
-            special_arrangements: []
+            special_arrangements: [
+            ]
         },
         {
             code: "MFIN7052",
@@ -638,39 +658,103 @@ const COURSE_DATA = {
             section: "A班",
             type: "elective",
             instructor: "Prof. Dragon Yongjun Tang",
-            schedule: "周二 & 周五 09:30-12:30",
-            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-07", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"],
+            schedule: "周二 & 周五 09:30-12:30 Occasionally on 周三 14:00-17:00 (Apr 15)",
+            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"],
             campus: "CP",
-            room: "Room H",
-            special_arrangements: []
+            room: "Room H / Room 205-01 & 02 (Apr 15)",
+            special_arrangements: [
+                {
+                    date: "2026-04-15",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "Room 205-01 & 02"
+                }
+            ]
+        },
+        {
+            code: "MFIN7066",
+            name: "大语言模型应用",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Hailiang Chen",
+            schedule: "周二 & 周五 14:00-17:00",
+            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-10", "2026-04-14", "2026-04-21"],
+            campus: "CP / TC",
+            room: "CP- LTA (Mar 20, 24, 31, Apr 8, 14, 21) / CP-Room D (Mar 27, Apr 10, 20) / TC-B4 (Apr 24)",
+            special_arrangements: [
+                {
+                    date: "2026-04-08",
+                    day: "Wednesday",
+                    time: "09:30-12:30",
+                    venue: "CP-Room LTA"
+                },
+                {
+                    date: "2026-04-20",
+                    day: "Monday",
+                    time: "14:00-17:00",
+                    venue: "CP-Room D"
+                },
+                {
+                    date: "2026-04-24",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "TC-B4"
+                }
+            ]
+        },
+        {
+            code: "MFIN7067",
+            name: "商业中的生成式人工智能内容",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Dawei Wang",
+            schedule: "周三 & 周六 14:00-17:00",
+            dates: ["2026-03-25", "2026-03-28", "2026-04-01", "2026-04-08", "2026-04-11", "2026-04-15", "2026-04-18", "2026-04-22", "2026-04-25"],
+            campus: "CP / MC",
+            room: "CP-LTB / CP - Room 205-1&2 (Mar 25, Apr 11) / CP - LTA (Mar 28) / CP - Room EFG (Apr 18) / MC - KKL G102 (Apr 25)",
+            special_arrangements: [
+                {
+                    date: "2026-04-27",
+                    day: "Monday",
+                    time: "14:00-17:00",
+                    venue: "CP-LTB / CP - Room 205-1&2 (Mar 25, Apr 11) / CP - LTA (Mar 28) / CP - Room EFG (Apr 18) / MC - KKL G102 (Apr 25)"
+                }
+            ]
         }
     ],
 
     // 夏季学期课程
     summer: [
         {
-            code: "MFIN7013",
-            name: "商业银行与房地产金融研讨会",
-            section: "A班",
-            type: "elective",
-            instructor: "Prof. Berry Hsu & Dr. Maurice K.S. Tse",
-            schedule: "周二 & 周五 09:30-12:30",
-            dates: ["2026-05-05", "2026-05-08", "2026-05-12", "2026-05-15", "2026-05-19", "2026-05-22", "2026-05-26", "2026-05-29", "2026-06-02", "2026-06-05"],
-            campus: "CP",
-            room: "Room H",
-            special_arrangements: []
-        },
-        {
             code: "MFIN7014",
             name: "基金管理与另类投资",
             section: "A班",
             type: "elective",
             instructor: "Prof. Fangzhou Lu",
-            schedule: "周一 & 周四 18:30-21:30",
-            dates: ["2026-05-04", "2026-05-07", "2026-05-11", "2026-05-14", "2026-05-18", "2026-05-21", "2026-05-28", "2026-06-01", "2026-06-04", "2026-06-08"],
+            schedule: "周一 & 周四 18:30-21:30 Occasionally on 周二 09:30-12:30 (May 12 & May 26) Occasionally on 周二 18:30-21:30 (Jun 9)",
+            dates: ["2026-05-04", "2026-05-11", "2026-05-14", "2026-05-18", "2026-05-21", "2026-05-28", "2026-06-01", "2026-06-04", "2026-06-08"],
             campus: "CP",
-            room: "Room H",
-            special_arrangements: []
+            room: "Room H / Room J (May 26)",
+            special_arrangements: [
+                {
+                    date: "2026-05-12",
+                    day: "Tuesday",
+                    time: "09:30-12:30",
+                    venue: "Room H"
+                },
+                {
+                    date: "2026-05-26",
+                    day: "Tuesday",
+                    time: "09:30-12:30",
+                    venue: "Room J"
+                },
+                {
+                    date: "2026-06-09",
+                    day: "Tuesday",
+                    time: "18:30-21:30",
+                    venue: "Room H"
+                }
+            ]
         },
         {
             code: "MFIN7014",
@@ -678,18 +762,46 @@ const COURSE_DATA = {
             section: "B班",
             type: "elective",
             instructor: "Prof. Fangzhou Lu",
-            schedule: "周二 & 周五 18:30-21:30",
+            schedule: "周二 & 周五 18:30-21:30 Occasionally on 周六 14:00-17:00 (May 9) Occasionally on 周三 14:00-17:00 (May 27)",
             dates: ["2026-05-05", "2026-05-08", "2026-05-12", "2026-05-15", "2026-05-19", "2026-05-22", "2026-05-26", "2026-05-29", "2026-06-02", "2026-06-05"],
             campus: "CP",
+            room: "Room H / Room LT (May 9)",
+            special_arrangements: [
+                {
+                    date: "2026-05-09",
+                    day: "Saturday",
+                    time: "14:00-17:00",
+                    venue: "Room LT"
+                },
+                {
+                    date: "2026-05-27",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "Room H"
+                }
+            ]
+        },
+        {
+            code: "MFIN7063",
+            name: "投资高级专题",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Pingyang Gao",
+            schedule: "周一 & 周四 09:30-12:30 Occasionally on 周五 09:30-12:30 (May 8)",
+            dates: ["2026-05-04", "2026-05-11", "2026-05-14", "2026-05-18", "2026-05-21", "2026-05-28", "2026-06-01", "2026-06-04", "2026-06-08"],
+            campus: "CP",
             room: "Room H",
-            special_arrangements: []
+            special_arrangements: [
+                {
+                    date: "2026-05-08",
+                    day: "Friday",
+                    time: "09:30-12:30",
+                    venue: "Room H"
+                }
+            ]
         }
     ]
-
 };
-
-
-
 // 豁免课程配置
 const EXEMPTION_COURSES = {
     fundamental: [
@@ -727,41 +839,42 @@ const COURSE_TRANSLATIONS = {
     "MFIN7016": { name: "实物期权与动态公司金融", nameEn: "Real Options and Dynamic Corporate Finance" },
     "MFIN7049": { name: "货币、金融机构与市场", nameEn: "Money, Financial Institutions and Markets" },
     "MFIN7052": { name: "绿色金融与ESG", nameEn: "Green Finance and ESG" },
+    "MFIN7066": { name: "大语言模型应用", nameEn: "Applied Large Language Models" },
+    "MFIN7067": { name: "商业中的生成式人工智能内容", nameEn: "Artificial Intelligence Generated Content in Business" },
     "MFIN7013": { name: "商业银行与房地产金融研讨会", nameEn: "Commercial Banking and Real Estate Finance Seminar" },
-    "MFIN7014": { name: "基金管理与另类投资", nameEn: "Fund Management and Alternative Investments" }
+    "MFIN7014": { name: "基金管理与另类投资", nameEn: "Fund Management and Alternative Investments" },
+    "MFIN7063": { name: "投资高级专题", nameEn: "Advanced Topics in Investment" }
 };
 
-// 课程颜色配置 - 为每个课程分配独特颜色，便于区分
+// 课程颜色配置 - 低饱和统一配色
 const COURSE_COLORS = {
-    // 核心课程 - 红色系渐变
-    "LLAW6093": "#dc3545", // 金融市场监管 - 深红
-    "FITE7409": "#e74c3c", // 区块链与加密货币 - 鲜红  
-    "MFIN6003": "#c0392b", // 衍生证券 - 暗红
-    "MFIN7002": "#d63384", // 投资分析与投资组合管理 - 玫红
-    "MFIN7031": "#e83e8c", // 金融科技简介 - 粉红
-    "MFIN7033": "#fd7e14", // 高级金融编程 - 橙红
-    "MFIN7005": "#ff6b6b", // 公司金融与资产估值 - 浅红
-    "MFIN7037": "#d32f2f", // 量化交易 - 材料红
-    "MFIN7034": "#f44336", // 机器学习与AI - Android红
-    
-    // 选修课程 - 多彩系列，便于区分
-    "LLAW6046": "#28a745", // 隐私与数据保护 - 绿色
-    "DASC7606": "#17a2b8", // 深度学习 - 青色
-    "FITE7410": "#6610f2", // 金融欺诈分析 - 紫色
-    "MFIN7003": "#6c757d", // 金融数学技术 - 灰色
-    "LLAW6256": "#007bff", // 反洗钱法 - 蓝色
-    "MFIN7036": "#20c997", // 文本分析与NLP - 湖蓝
-    "MFIN7054": "#ffc107", // 加密货币导论 - 黄色
-    "MFIN7004": "#795548", // 金融服务法规 - 棕色
-    "MFIN7060": "#9c27b0", // 网络安全 - 品红
-    "MFIN7016": "#607d8b", // 实物期权 - 蓝灰
-    "MFIN7049": "#4caf50", // 货币与金融机构 - 材料绿
-    "MFIN7052": "#009688", // 绿色金融 - 鸭绿
-    "MFIN7013": "#3f51b5", // 商业银行 - 靛蓝
-    "MFIN7014": "#ff9800", // 基金管理 - 橙色
-    
-    // 毕业项目 - 橙色系
-    "MFIN7035": "#ff5722"  // 金融大数据 - 深橙
+    "LLAW6093": "#7d5964",
+    "FITE7409": "#8a646f",
+    "MFIN6003": "#6f525a",
+    "MFIN7002": "#84606c",
+    "MFIN7031": "#91707b",
+    "MFIN7033": "#8b725c",
+    "MFIN7005": "#9a6f78",
+    "MFIN7037": "#735059",
+    "MFIN7034": "#805b65",
+    "LLAW6046": "#6f7f76",
+    "DASC7606": "#688083",
+    "FITE7410": "#6a667f",
+    "MFIN7003": "#7a7b80",
+    "LLAW6256": "#627587",
+    "MFIN7036": "#5f7f78",
+    "MFIN7054": "#9b8a65",
+    "MFIN7004": "#7a6a5d",
+    "MFIN7060": "#776282",
+    "MFIN7016": "#66757d",
+    "MFIN7049": "#70806e",
+    "MFIN7052": "#5e7e77",
+    "MFIN7066": "#6f6480",
+    "MFIN7067": "#5e687c",
+    "MFIN7013": "#626d82",
+    "MFIN7014": "#9a7f5d",
+    "MFIN7063": "#5f857f",
+    "MFIN7035": "#8d7458"
 };
 
 // 课程类型配置
@@ -769,19 +882,19 @@ const COURSE_TYPES = {
     core: {
         name: "核心课程",
         nameEn: "Core Course",
-        color: "#dc3545",
+        color: "#7d5964",
         priority: 1
     },
     elective: {
         name: "选修课程", 
         nameEn: "Elective Course",
-        color: "#28a745",
+        color: "#6f7f76",
         priority: 2
     },
     project: {
         name: "毕业项目",
         nameEn: "Capstone Project",
-        color: "#fd7e14", 
+        color: "#8d7458", 
         priority: 1
     }
 };
@@ -792,6 +905,7 @@ const COURSE_TYPES = {
 const CAMPUS_INFO = {
     CP: "数码港 (Cyberport)",
     MC: "主校区 (Main Campus)",
+    TC: "金钟教学中心 (Town Center)",
     CPD: "百周年校园赛马会教学楼",
     KK: "梁銶琚楼",
     CBC: "周亦卿楼",
@@ -894,8 +1008,6 @@ function generateCalendarEvents(selectedCourses, showAllMode = false) {
     
     selectedCourses.forEach(course => {
         const scheduleInfo = parseScheduleTime(course.schedule);
-        if (!scheduleInfo) return;
-        
         const courseId = `${course.code}-${course.section}`;
         const isConflicted = conflictGroups.some(group => 
             group.some(conflictCourse => 
@@ -906,16 +1018,17 @@ function generateCalendarEvents(selectedCourses, showAllMode = false) {
         const courseName = getCourseName(course, currentLanguage);
         
         // 处理常规日期和时间 - 修改以支持多个时间段
-        course.dates.forEach(dateStr => {
-            const date = new Date(dateStr);
-            const dayOfWeek = date.getDay();
-            
-            scheduleInfo.days.forEach(expectedDay => {
-                if (dayOfWeek === expectedDay) {
-                    // 检查是否包含多个时间段（例如 "09:30-12:30 & 14:00-17:00"）
-                    const timeRanges = parseAllTimeRanges(course.schedule);
-                    
-                    timeRanges.forEach((timeRange, index) => {
+        if (scheduleInfo) {
+            course.dates.forEach(dateStr => {
+                const date = new Date(dateStr);
+                const dayOfWeek = date.getDay();
+                
+                scheduleInfo.days.forEach(expectedDay => {
+                    if (dayOfWeek === expectedDay) {
+                        // 检查是否包含多个时间段（例如 "09:30-12:30 & 14:00-17:00"）
+                        const timeRanges = parseAllTimeRanges(course.schedule);
+                        
+                        timeRanges.forEach((timeRange, index) => {
                         const startDateTime = dateStr + 'T' + timeRange.startTime + ':00';
                         const endDateTime = dateStr + 'T' + timeRange.endTime + ':00';
                         
@@ -924,8 +1037,8 @@ function generateCalendarEvents(selectedCourses, showAllMode = false) {
                             title: `${courseName} (${course.section})${timeRanges.length > 1 ? ` - 第${index + 1}节` : ''}`,
                             start: startDateTime,
                             end: endDateTime,
-                            backgroundColor: isConflicted ? '#6f42c1' : course.color,
-                            borderColor: isConflicted ? '#6f42c1' : course.color,
+                            backgroundColor: isConflicted ? '#7b6670' : course.color,
+                            borderColor: isConflicted ? '#7b6670' : course.color,
                             textColor: 'white',
                             extendedProps: {
                                 course: course,
@@ -947,28 +1060,27 @@ function generateCalendarEvents(selectedCourses, showAllMode = false) {
                         });
                     });
                 }
+                });
             });
-        });
+        }
 
         // 处理特殊时间安排
         if (course.special_arrangements && course.special_arrangements.length > 0) {
             course.special_arrangements.forEach(arrangement => {
-                const timePattern = /(\d{2}:\d{2})-(\d{2}:\d{2})/;
-                const timeMatch = arrangement.time.match(timePattern);
-                
-                if (timeMatch) {
-                    const startTime = timeMatch[1];
-                    const endTime = timeMatch[2];
-                    const startDateTime = arrangement.date + 'T' + startTime + ':00';
-                    const endDateTime = arrangement.date + 'T' + endTime + ':00';
-                    
+                const timeRanges = parseAllTimeRanges(arrangement.time);
+
+                timeRanges.forEach((timeRange, index) => {
+                    const startDateTime = arrangement.date + 'T' + timeRange.startTime + ':00';
+                    const endDateTime = arrangement.date + 'T' + timeRange.endTime + ':00';
+                    const hasMultipleRanges = timeRanges.length > 1;
+
                     events.push({
-                        id: `${courseId}-${arrangement.date}-special`,
-                        title: `${courseName} (${course.section}) - 特殊安排`,
+                        id: `${courseId}-${arrangement.date}-special${hasMultipleRanges ? `-${index}` : ''}`,
+                        title: `${courseName} (${course.section}) - 特殊安排${hasMultipleRanges ? `${index + 1}` : ''}`,
                         start: startDateTime,
                         end: endDateTime,
-                        backgroundColor: '#ff9800', // 橙色表示特殊安排
-                        borderColor: '#ff9800',
+                        backgroundColor: '#8f7c5d', // 特殊安排低饱和色
+                        borderColor: '#8f7c5d',
                         textColor: 'white',
                         extendedProps: {
                             course: course,
@@ -989,47 +1101,7 @@ function generateCalendarEvents(selectedCourses, showAllMode = false) {
                             'special-arrangement'
                         ]
                     });
-                } else if (arrangement.time.includes('&')) {
-                    // 处理包含多个时间段的特殊安排，如 "09:30-12:30 & 14:00-17:00"
-                    const timeParts = arrangement.time.split(' & ');
-                    timeParts.forEach((timePart, index) => {
-                        const timeMatch = timePart.trim().match(timePattern);
-                        if (timeMatch) {
-                            const startTime = timeMatch[1];
-                            const endTime = timeMatch[2];
-                            const startDateTime = arrangement.date + 'T' + startTime + ':00';
-                            const endDateTime = arrangement.date + 'T' + endTime + ':00';
-                            
-                            events.push({
-                                id: `${courseId}-${arrangement.date}-special-${index}`,
-                                title: `${courseName} (${course.section}) - 特殊安排${index + 1}`,
-                                start: startDateTime,
-                                end: endDateTime,
-                                backgroundColor: '#ff9800',
-                                borderColor: '#ff9800',
-                                textColor: 'white',
-                                extendedProps: {
-                                    course: course,
-                                    courseId: courseId,
-                                    instructor: course.instructor,
-                                    room: arrangement.venue,
-                                    campus: course.campus,
-                                    type: course.type,
-                                    isConflicted: false,
-                                    courseName: courseName,
-                                    courseNameEn: getCourseName(course, 'en'),
-                                    courseNameZh: getCourseName(course, 'zh'),
-                                    isSpecialArrangement: true,
-                                    specialArrangementDetails: arrangement
-                                },
-                                classNames: [
-                                    `${course.type}-course`,
-                                    'special-arrangement'
-                                ]
-                            });
-                        }
-                    });
-                }
+                });
             });
         }
     });

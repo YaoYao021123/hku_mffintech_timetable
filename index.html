@@ -4,275 +4,246 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HKU 金融科技硕士课程日历</title>
-    
-    <!-- FullCalendar CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap CSS for better styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar for course selection -->
-            <div class="col-md-3 sidebar p-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="app-shell">
+        <aside class="sidebar p-3 p-lg-4">
+            <div class="sidebar-header mb-3">
+                <div class="d-flex justify-content-between align-items-start gap-3">
                     <div>
-                        <h3 class="mb-1">🎓 HKU 金融科技硕士</h3>
-                        <h5 class="mb-0" id="appTitle">课程规划日历 2025-2026</h5>
+                        <div class="app-mark mb-2">
+                            <span class="hku-mark" aria-hidden="true"></span>
+                            <span class="app-kicker">Academic Precision</span>
+                        </div>
+                        <h2 class="sidebar-title mb-1">HKU MFFinTech</h2>
+                        <p class="sidebar-subtitle mb-0" id="appTitle">课程规划日历 2025-2026</p>
                     </div>
-                    <button class="btn btn-sm btn-outline-light" id="languageToggle">🌍 EN</button>
+                    <button class="btn btn-sm btn-outline-light" id="languageToggle">EN</button>
                 </div>
-                
-                <!-- Exemption Settings -->
-                <div class="exemption-section mb-4">
-                    <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#exemptionCollapse" aria-expanded="false" aria-controls="exemptionCollapse" style="cursor: pointer;">
-                        <h6 class="mb-0">🎓 <span id="exemptionTitle">豁免课程设置</span></h6>
-                        <i class="fas fa-chevron-down collapse-arrow" data-target="#exemptionCollapse"></i>
-                    </div>
-                    <div class="collapse" id="exemptionCollapse">
-                        <div class="mt-3">
-                            <div class="exemption-group mb-3">
-                                <small class="text-muted d-block mb-2" id="fundamentalTitle">基础核心课程:</small>
-                                <div id="fundamentalCourses"></div>
-                            </div>
-                            <div class="exemption-group mb-3">
-                                <small class="text-muted d-block mb-2" id="advancedTitle">高级核心课程:</small>
-                                <div id="advancedCourses"></div>
-                            </div>
-                            <div class="alert alert-info" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
-                                <small id="exemptionInfo">豁免 0 门核心课程 = 可选 2 门选修课</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Course Selection -->
-                <div class="course-selection">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 id="courseSelectionTitle">选择课程</h6>
-                        <div>
-                            <div class="btn-group me-2" role="group">
-                                <input type="radio" class="btn-check" name="viewMode" id="selectMode" checked>
-                                <label class="btn btn-sm btn-outline-light" for="selectMode" id="selectModeLabel">选课</label>
-                                
-                                <input type="radio" class="btn-check" name="viewMode" id="viewAllMode">
-                                <label class="btn btn-sm btn-outline-light" for="viewAllMode" id="viewAllModeLabel">查看全部</label>
-                            </div>
-                            <button class="btn btn-sm btn-outline-primary me-1" id="selectAll">全选</button>
-                            <button class="btn btn-sm btn-outline-secondary" id="clearAll">清空</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Core Courses -->
-                    <div class="course-category mb-3">
-                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#coreCollapse" aria-expanded="false" aria-controls="coreCollapse" style="cursor: pointer;">
-                            <h6 class="mb-0" id="coreTitle">Core</h6>
-                            <i class="fas fa-chevron-down collapse-arrow" data-target="#coreCollapse"></i>
-                        </div>
-                        <div class="collapse" id="coreCollapse">
-                            <div class="course-group mt-2" id="core-courses">
-                                <!-- Core courses will be dynamically generated -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Capstone Core -->
-                    <div class="course-category mb-3">
-                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#capstoneCollapse" aria-expanded="false" aria-controls="capstoneCollapse" style="cursor: pointer;">
-                            <h6 class="mb-0" id="capstoneTitle">Capstone Core</h6>
-                            <i class="fas fa-chevron-down collapse-arrow" data-target="#capstoneCollapse"></i>
-                        </div>
-                        <div class="collapse" id="capstoneCollapse">
-                            <div class="course-group mt-2" id="capstone-courses">
-                                <!-- Capstone courses will be dynamically generated -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Engineering Electives -->
-                    <div class="course-category mb-3">
-                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#engineeringCollapse" aria-expanded="false" aria-controls="engineeringCollapse" style="cursor: pointer;">
-                            <h6 class="mb-0" id="engineeringTitle">Elective offered by Faculty of Engineering</h6>
-                            <div class="d-flex align-items-center">
-                                <small class="text-muted me-2" id="engineeringLimit">限选1门</small>
-                                <i class="fas fa-chevron-down collapse-arrow" data-target="#engineeringCollapse"></i>
-                            </div>
-                        </div>
-                        <div class="collapse" id="engineeringCollapse">
-                            <div class="course-group mt-2" id="engineering-courses">
-                                <!-- Engineering elective courses will be dynamically generated -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Law Electives -->
-                    <div class="course-category mb-3">
-                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#lawCollapse" aria-expanded="false" aria-controls="lawCollapse" style="cursor: pointer;">
-                            <h6 class="mb-0" id="lawTitle">Elective offered by Faculty of Law</h6>
-                            <div class="d-flex align-items-center">
-                                <small class="text-muted me-2" id="lawLimit">限选1门</small>
-                                <i class="fas fa-chevron-down collapse-arrow" data-target="#lawCollapse"></i>
-                            </div>
-                        </div>
-                        <div class="collapse" id="lawCollapse">
-                            <div class="course-group mt-2" id="law-courses">
-                                <!-- Law elective courses will be dynamically generated -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- HKUBS Programme Electives -->
-                    <div class="course-category mb-3">
-                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#hkubsCollapse" aria-expanded="false" aria-controls="hkubsCollapse" style="cursor: pointer;">
-                            <h6 class="mb-0" id="hkubsTitle">HKUBS Programme - Elective</h6>
-                            <i class="fas fa-chevron-down collapse-arrow" data-target="#hkubsCollapse"></i>
-                        </div>
-                        <div class="collapse" id="hkubsCollapse">
-                            <div class="course-group mt-2" id="hkubs-courses">
-                                <!-- HKUBS elective courses will be dynamically generated -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Conflict Warning -->
-                <div class="alert alert-warning d-none" id="conflictWarning">
-                    <h6><i class="fas fa-exclamation-triangle"></i> 时间冲突警告</h6>
-                    <div id="conflictDetails"></div>
-                </div>
-                
-                <!-- Statistics -->
-                <div class="stats-section mt-4">
-                    <h6>统计信息</h6>
-                    <div class="stats">
-                        <p class="mb-1">已选课程: <span id="selectedCount">0</span></p>
-                        <p class="mb-1">核心课程: <span id="coreCount">0</span></p>
-                        <p class="mb-1">选修课程: <span id="electiveCount">0</span></p>
-                        <p class="mb-0">时间冲突: <span id="conflictCount" class="text-danger">0</span></p>
-                    </div>
-                </div>
-                
+            </div>
 
+            <div class="sidebar-tools mb-3">
+                <div class="input-group input-group-sm mb-2">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" class="form-control" id="courseSearch" placeholder="搜索课程 / 代码 / 教师">
+                </div>
+                <div class="btn-group btn-group-sm w-100" role="group">
+                    <button class="btn btn-outline-light" id="expandAllPanels">展开全部</button>
+                    <button class="btn btn-outline-light" id="collapseAllPanels">收起全部</button>
+                </div>
             </div>
-            
-            <!-- Main content area for calendar -->
-            <div class="col-md-9 main-content">
-                <div class="calendar-header p-3">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4>📅 课程日历</h4>
-                        <div class="d-flex align-items-center">
-                            <!-- Export Dropdown -->
-                            <div class="dropdown me-3">
-                                <button class="btn btn-sm btn-success dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-download"></i> <span id="exportLabel">导出</span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-                                    <li class="dropdown-header small">课程名显示</li>
-                                    <li>
-                                        <div class="px-3 py-1">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="exportNameFormat" id="exportNameCodeEn" value="code-en">
-                                                <label class="form-check-label" for="exportNameCodeEn">编号 + English</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="exportNameFormat" id="exportNameCodeZh" value="code-zh">
-                                                <label class="form-check-label" for="exportNameCodeZh">编号 + 中文</label>
-                                            </div>
+
+            <section class="exemption-section mb-3">
+                <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#exemptionCollapse" aria-expanded="false" aria-controls="exemptionCollapse">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"><span class="section-mark" aria-hidden="true"></span><span id="exemptionTitle">豁免课程设置</span></h6>
+                    <i class="fas fa-chevron-down collapse-arrow" data-target="#exemptionCollapse"></i>
+                </div>
+                <div class="collapse" id="exemptionCollapse">
+                    <div class="mt-3">
+                        <div class="exemption-group mb-2">
+                            <small class="text-muted d-block mb-2" id="fundamentalTitle">基础核心课程:</small>
+                            <div id="fundamentalCourses"></div>
+                        </div>
+                        <div class="exemption-group mb-2">
+                            <small class="text-muted d-block mb-2" id="advancedTitle">高级核心课程:</small>
+                            <div id="advancedCourses"></div>
+                        </div>
+                        <div class="alert alert-info exemption-note mb-0">
+                            <small id="exemptionInfo">豁免 0 门核心课程 = 可选 2 门选修课</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="selection-toolbar mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0" id="courseSelectionTitle">选择课程</h6>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <input type="radio" class="btn-check" name="viewMode" id="selectMode" checked>
+                        <label class="btn btn-outline-light" for="selectMode" id="selectModeLabel">选课</label>
+
+                        <input type="radio" class="btn-check" name="viewMode" id="viewAllMode">
+                        <label class="btn btn-outline-light" for="viewAllMode" id="viewAllModeLabel">查看全部</label>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-light flex-fill" id="selectAll">全选</button>
+                    <button class="btn btn-sm btn-outline-light flex-fill" id="clearAll">清空</button>
+                </div>
+            </section>
+
+            <div class="course-selection">
+                <div class="course-category mb-2">
+                    <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#coreCollapse" aria-expanded="false" aria-controls="coreCollapse">
+                        <h6 class="mb-0" id="coreTitle">Core</h6>
+                        <i class="fas fa-chevron-down collapse-arrow" data-target="#coreCollapse"></i>
+                    </div>
+                    <div class="collapse" id="coreCollapse">
+                        <div class="course-group mt-2" id="core-courses"></div>
+                    </div>
+                </div>
+
+                <div class="course-category mb-2">
+                    <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#capstoneCollapse" aria-expanded="false" aria-controls="capstoneCollapse">
+                        <h6 class="mb-0" id="capstoneTitle">Capstone Core</h6>
+                        <i class="fas fa-chevron-down collapse-arrow" data-target="#capstoneCollapse"></i>
+                    </div>
+                    <div class="collapse" id="capstoneCollapse">
+                        <div class="course-group mt-2" id="capstone-courses"></div>
+                    </div>
+                </div>
+
+                <div class="course-category mb-2">
+                    <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#engineeringCollapse" aria-expanded="false" aria-controls="engineeringCollapse">
+                        <h6 class="mb-0" id="engineeringTitle">Elective offered by Faculty of Engineering</h6>
+                        <div class="d-flex align-items-center gap-2">
+                            <small class="text-muted" id="engineeringLimit">限选1门</small>
+                            <i class="fas fa-chevron-down collapse-arrow" data-target="#engineeringCollapse"></i>
+                        </div>
+                    </div>
+                    <div class="collapse" id="engineeringCollapse">
+                        <div class="course-group mt-2" id="engineering-courses"></div>
+                    </div>
+                </div>
+
+                <div class="course-category mb-2">
+                    <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#lawCollapse" aria-expanded="false" aria-controls="lawCollapse">
+                        <h6 class="mb-0" id="lawTitle">Elective offered by Faculty of Law</h6>
+                        <div class="d-flex align-items-center gap-2">
+                            <small class="text-muted" id="lawLimit">限选1门</small>
+                            <i class="fas fa-chevron-down collapse-arrow" data-target="#lawCollapse"></i>
+                        </div>
+                    </div>
+                    <div class="collapse" id="lawCollapse">
+                        <div class="course-group mt-2" id="law-courses"></div>
+                    </div>
+                </div>
+
+                <div class="course-category mb-2">
+                    <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#hkubsCollapse" aria-expanded="false" aria-controls="hkubsCollapse">
+                        <h6 class="mb-0" id="hkubsTitle">HKUBS Programme - Elective</h6>
+                        <i class="fas fa-chevron-down collapse-arrow" data-target="#hkubsCollapse"></i>
+                    </div>
+                    <div class="collapse" id="hkubsCollapse">
+                        <div class="course-group mt-2" id="hkubs-courses"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning d-none mt-3" id="conflictWarning">
+                <h6 class="mb-2"><i class="fas fa-exclamation-triangle"></i> 时间冲突警告</h6>
+                <div id="conflictDetails"></div>
+            </div>
+
+            <section class="stats-section mt-3">
+                <h6 class="mb-2">统计信息</h6>
+                <div class="stats">
+                    <p class="mb-1">已选课程 <span id="selectedCount">0</span></p>
+                    <p class="mb-1">核心课程 <span id="coreCount">0</span></p>
+                    <p class="mb-1">选修课程 <span id="electiveCount">0</span></p>
+                    <p class="mb-0">时间冲突 <span id="conflictCount" class="conflict-count">0</span></p>
+                </div>
+            </section>
+        </aside>
+
+        <main class="main-content">
+            <header class="calendar-header p-3 p-lg-4">
+                <div class="topbar-row d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+                    <div>
+                        <p class="calendar-kicker mb-1">HKU Business School</p>
+                        <h4 class="mb-0 d-flex align-items-center gap-2"><span class="section-mark" aria-hidden="true"></span>课程日历</h4>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-download"></i> <span id="exportLabel">导出</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="exportDropdown">
+                                <li class="dropdown-header small">课程名显示</li>
+                                <li>
+                                    <div class="px-3 py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="exportNameFormat" id="exportNameCodeEn" value="code-en">
+                                            <label class="form-check-label" for="exportNameCodeEn">编号 + English</label>
                                         </div>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#" id="exportICS">
-                                        <i class="fas fa-calendar-alt"></i> <span id="exportICSLabel">日历文件 (.ics)</span>
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="#" id="exportExcel">
-                                        <i class="fas fa-file-excel"></i> <span id="exportExcelLabel">Excel表格 (.xlsx)</span>
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="#" id="exportAgenda">
-                                        <i class="fas fa-list"></i> <span id="exportAgendaLabel">议程表格 (.xlsx)</span>
-                                    </a></li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Local Storage Controls -->
-                            <div class="dropdown me-3">
-                                <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" id="localStorageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-save"></i> <span id="localStorageLabel">存储</span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="localStorageDropdown">
-                                    <li><a class="dropdown-item" href="#" id="saveLocal">
-                                        <i class="fas fa-save"></i> <span id="saveLocalLabel">保存课表</span>
-                                    </a></li>
-                                    <li><a class="dropdown-item text-danger" href="#" id="clearLocal">
-                                        <i class="fas fa-trash"></i> <span id="clearLocalLabel">清除课表</span>
-                                    </a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><span class="dropdown-item-text small text-muted" id="localStorageNote">
-                                        课表会自动保存，下次打开时自动恢复
-                                    </span></li>
-                                </ul>
-                            </div>
-                            
-                            <!-- View Controls -->
-                            <div class="view-controls">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-sm btn-outline-primary" id="monthView">月视图</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary active" id="weekView">周视图</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" id="dayView">日视图</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" id="agendaView">议程视图</button>
-                                </div>
-                            </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="exportNameFormat" id="exportNameCodeZh" value="code-zh">
+                                            <label class="form-check-label" for="exportNameCodeZh">编号 + 中文</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="exportICS"><i class="fas fa-calendar-alt"></i> <span id="exportICSLabel">日历文件 (.ics)</span></a></li>
+                                <li><a class="dropdown-item" href="#" id="exportExcel"><i class="fas fa-file-excel"></i> <span id="exportExcelLabel">Excel表格 (.xlsx)</span></a></li>
+                                <li><a class="dropdown-item" href="#" id="exportAgenda"><i class="fas fa-list"></i> <span id="exportAgendaLabel">议程表格 (.xlsx)</span></a></li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" id="localStorageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-save"></i> <span id="localStorageLabel">存储</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="localStorageDropdown">
+                                <li><a class="dropdown-item" href="#" id="saveLocal"><i class="fas fa-save"></i> <span id="saveLocalLabel">保存课表</span></a></li>
+                                <li><a class="dropdown-item text-danger" href="#" id="clearLocal"><i class="fas fa-trash"></i> <span id="clearLocalLabel">清除课表</span></a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><span class="dropdown-item-text small text-muted" id="localStorageNote">课表会自动保存，下次打开时自动恢复</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="view-controls btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="monthView">月视图</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary active" id="weekView">周视图</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="dayView">日视图</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="agendaView">议程视图</button>
                         </div>
                     </div>
-                    
-                    <!-- Legend -->
-                    <div class="legend mb-3">
-                        <small class="text-muted">课程类型: </small>
-                        <span class="legend-item core-course">核心课程</span>
-                        <span class="legend-item elective-course">选修课程</span>
-                        <span class="legend-item project-course">毕业项目</span>
-                        <span class="legend-item conflict-course">时间冲突</span>
-                    </div>
                 </div>
-                
-                <!-- Calendar -->
-                <div id="calendar"></div>
-                
-                <!-- Agenda View -->
-                <div id="agenda-view" class="d-none">
-                    <div class="agenda-container">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="agenda-table">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th width="12%">日期</th>
-                                        <th width="8%">星期</th>
-                                        <th width="12%">时间</th>
-                                        <th width="25%">课程</th>
-                                        <th width="15%">讲师</th>
-                                        <th width="15%">地点</th>
-                                        <th width="8%">类型</th>
-                                        <th width="5%">特殊</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="agenda-tbody">
-                                    <!-- Agenda items will be dynamically generated -->
-                                </tbody>
-                            </table>
+
+                <div class="legend">
+                    <small class="text-muted">课程类型</small>
+                    <span class="legend-item core-course">核心课程</span>
+                    <span class="legend-item elective-course">选修课程</span>
+                    <span class="legend-item project-course">毕业项目</span>
+                    <span class="legend-item conflict-course">时间冲突</span>
+                </div>
+            </header>
+
+            <div id="calendar"></div>
+
+            <div id="agenda-view" class="d-none">
+                <div class="agenda-container p-3 p-lg-4">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover mb-0" id="agenda-table">
+                                    <thead>
+                                        <tr>
+                                            <th width="12%">日期</th>
+                                            <th width="8%">星期</th>
+                                            <th width="12%">时间</th>
+                                            <th width="25%">课程</th>
+                                            <th width="15%">讲师</th>
+                                            <th width="15%">地点</th>
+                                            <th width="8%">类型</th>
+                                            <th width="5%">特殊</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="agenda-tbody"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
-    
-    <!-- Course Detail Modal -->
+
     <div class="modal fade" id="courseModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -280,9 +251,7 @@
                     <h5 class="modal-title" id="courseModalTitle">课程详情</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body" id="courseModalBody">
-                    <!-- Course details will be populated here -->
-                </div>
+                <div class="modal-body" id="courseModalBody"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
                 </div>
@@ -290,7 +259,6 @@
         </div>
     </div>
 
-    <!-- Reminder Time Selection Modal -->
     <div class="modal fade" id="reminderModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -300,37 +268,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="reminder-options">
-                        <div class="reminder-option" data-reminder="none">
-                            <span id="reminderNoneLabel">无</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="0">
-                            <span id="reminderAtTimeLabel">日程发生时</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="5">
-                            <span id="reminder5minLabel">5分钟前</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="10">
-                            <span id="reminder10minLabel">10分钟前</span>
-                        </div>
-                        <div class="reminder-option selected" data-reminder="15">
-                            <i class="fas fa-check text-success"></i>
-                            <span id="reminder15minLabel">15分钟前</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="30">
-                            <span id="reminder30minLabel">30分钟前</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="60">
-                            <span id="reminder1hourLabel">1小时前</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="120">
-                            <span id="reminder2hourLabel">2小时前</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="1440">
-                            <span id="reminder1dayLabel">1天前</span>
-                        </div>
-                        <div class="reminder-option" data-reminder="2880">
-                            <span id="reminder2dayLabel">2天前</span>
-                        </div>
+                        <div class="reminder-option" data-reminder="none"><span id="reminderNoneLabel">无</span></div>
+                        <div class="reminder-option" data-reminder="0"><span id="reminderAtTimeLabel">日程发生时</span></div>
+                        <div class="reminder-option" data-reminder="5"><span id="reminder5minLabel">5分钟前</span></div>
+                        <div class="reminder-option" data-reminder="10"><span id="reminder10minLabel">10分钟前</span></div>
+                        <div class="reminder-option selected" data-reminder="15"><i class="fas fa-check reminder-check-icon"></i><span id="reminder15minLabel">15分钟前</span></div>
+                        <div class="reminder-option" data-reminder="30"><span id="reminder30minLabel">30分钟前</span></div>
+                        <div class="reminder-option" data-reminder="60"><span id="reminder1hourLabel">1小时前</span></div>
+                        <div class="reminder-option" data-reminder="120"><span id="reminder2hourLabel">2小时前</span></div>
+                        <div class="reminder-option" data-reminder="1440"><span id="reminder1dayLabel">1天前</span></div>
+                        <div class="reminder-option" data-reminder="2880"><span id="reminder2dayLabel">2天前</span></div>
                         <hr>
                         <div class="custom-reminder">
                             <label for="customReminderInput" id="customReminderLabel">自定义时间:</label>
@@ -341,32 +288,23 @@
                                     <option value="hours" id="customHoursLabel">小时</option>
                                     <option value="days" id="customDaysLabel">天</option>
                                 </select>
-                                <button class="btn btn-outline-primary" type="button" id="customReminderBtn">
-                                    <span id="customReminderBtnLabel">使用自定义</span>
-                                </button>
+                                <button class="btn btn-outline-primary" type="button" id="customReminderBtn"><span id="customReminderBtnLabel">使用自定义</span></button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelReminderBtn">取消</button>
-                    <button type="button" class="btn btn-primary" id="confirmReminderBtn">
-                        <span id="confirmReminderBtnLabel">确认导出</span>
-                    </button>
+                    <button type="button" class="btn btn-primary" id="confirmReminderBtn"><span id="confirmReminderBtnLabel">确认导出</span></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/locales/zh-cn.global.min.js"></script>
-    
-    <!-- SheetJS for Excel export -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-    
-    <!-- Custom JavaScript -->
     <script src="course-data.js"></script>
     <script src="app.js"></script>
 </body>
