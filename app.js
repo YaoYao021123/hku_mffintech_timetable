@@ -128,7 +128,7 @@ function createCourseElement(course, courseId) {
                 <div class="course-name">${courseName}</div>
                 <div class="course-code">${course.code} ${course.section}</div>
                 <div class="course-type ${displayType}">${getCourseTypeName(displayType)}</div>
-                ${isExempted ? '<small class="badge bg-info">Exempted</small>' : ''}
+                ${isExempted ? '<small class="badge exemption-badge">Exempted</small>' : ''}
                 <small class="text-muted d-block mt-1">
                     ${course.instructor}<br>
                     ${course.schedule}<br>
@@ -324,8 +324,8 @@ function initializeCalendar() {
         slotLabelInterval: '01:00:00',
         eventDisplay: 'block',
         eventTextColor: 'white',
-        eventBackgroundColor: '#667eea',
-        eventBorderColor: '#667eea',
+        eventBackgroundColor: '#6c5b63',
+        eventBorderColor: '#6c5b63',
         nowIndicator: true,
         weekends: true,
         businessHours: {
@@ -351,7 +351,7 @@ function initializeCalendar() {
             // 为冲突课程添加特殊标记
             if (info.event.extendedProps.isConflicted) {
                 info.el.style.animation = 'pulse 2s infinite';
-                info.el.title = '⚠️ 时间冲突 - ' + info.event.title;
+                info.el.title = '时间冲突 - ' + info.event.title;
             }
         }
     });
@@ -392,6 +392,7 @@ function initializeExemptionSettings() {
 function createExemptionElement(course) {
     const exemptionItem = document.createElement('div');
     exemptionItem.className = 'exemption-item mb-1';
+    exemptionItem.dataset.courseCode = course.code;  // Put data-course-code on the parent element
     
     exemptionItem.innerHTML = `
         <div class="form-check">
@@ -545,6 +546,16 @@ function bindEventListeners() {
             }
         });
     });
+
+    // 课程搜索与面板展开收起
+    const courseSearchInput = document.getElementById('courseSearch');
+    if (courseSearchInput) {
+        courseSearchInput.addEventListener('input', function() {
+            filterCourseList(this.value);
+        });
+    }
+    document.getElementById('expandAllPanels')?.addEventListener('click', () => setAllPanels(true));
+    document.getElementById('collapseAllPanels')?.addEventListener('click', () => setAllPanels(false));
     
     // 视图切换按钮
     document.getElementById('monthView').addEventListener('click', function() {
@@ -616,11 +627,11 @@ function bindEventListeners() {
             '<i class="fas fa-check"></i> Saved';
         
         button.innerHTML = successText;
-        button.classList.add('text-success');
+        button.classList.add('text-theme-success');
         
         setTimeout(() => {
             button.innerHTML = originalText;
-            button.classList.remove('text-success');
+            button.classList.remove('text-theme-success');
         }, 2000);
     });
     
@@ -682,7 +693,9 @@ function updateLanguageDisplay() {
         'viewAllModeLabel': currentLanguage === 'zh' ? '查看全部' : 'View All',
         'selectAll': currentLanguage === 'zh' ? '全选' : 'Select All',
         'clearAll': currentLanguage === 'zh' ? '清空' : 'Clear All',
-        'languageToggle': currentLanguage === 'zh' ? '🌍 EN' : '🌍 中文',
+        'expandAllPanels': currentLanguage === 'zh' ? '展开全部' : 'Expand All',
+        'collapseAllPanels': currentLanguage === 'zh' ? '收起全部' : 'Collapse All',
+        'languageToggle': currentLanguage === 'zh' ? 'EN' : '中文',
         'exportLabel': currentLanguage === 'zh' ? '导出' : 'Export',
         'exportICSLabel': currentLanguage === 'zh' ? '日历文件 (.ics)' : 'Calendar File (.ics)',
         'exportExcelLabel': currentLanguage === 'zh' ? 'Excel表格 (.xlsx)' : 'Excel Spreadsheet (.xlsx)',
@@ -722,6 +735,13 @@ function updateLanguageDisplay() {
             element.textContent = text;
         }
     });
+
+    const searchInput = document.getElementById('courseSearch');
+    if (searchInput) {
+        searchInput.placeholder = currentLanguage === 'zh'
+            ? '搜索课程 / 代码 / 教师'
+            : 'Search course / code / instructor';
+    }
     
     // 更新课程名称显示
     document.querySelectorAll('.course-name-display').forEach(element => {
@@ -768,6 +788,35 @@ function initializeCollapseArrows() {
             
             // 初始状态设置 - 所有面板默认收缩
             arrow.classList.remove('expanded');
+        }
+    });
+}
+
+function filterCourseList(keyword = '') {
+    const normalized = keyword.trim().toLowerCase();
+    const categories = document.querySelectorAll('.course-category');
+
+    categories.forEach(category => {
+        const items = category.querySelectorAll('.course-item');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+            const matched = !normalized || item.textContent.toLowerCase().includes(normalized);
+            item.classList.toggle('filtered-out', !matched);
+            if (matched) visibleCount++;
+        });
+
+        category.classList.toggle('hidden-by-filter', visibleCount === 0);
+    });
+}
+
+function setAllPanels(expand = true) {
+    document.querySelectorAll('.sidebar .collapse').forEach(panel => {
+        const instance = bootstrap.Collapse.getOrCreateInstance(panel, { toggle: false });
+        if (expand) {
+            instance.show();
+        } else {
+            instance.hide();
         }
     });
 }
@@ -925,7 +974,7 @@ function updateAgendaView() {
             <td>${item.instructor}</td>
             <td>${item.location}</td>
             <td>
-                <span class="badge bg-${item.typeColor}">${item.type}</span>
+                <span class="badge agenda-type-badge ${item.typeColor}">${item.type}</span>
             </td>
             <td>${item.isSpecial ? '✓' : ''}</td>
         `;
@@ -939,8 +988,8 @@ function generateAgendaData() {
     
     selectedCourses.forEach(course => {
         const courseName = getCourseName(course);
-        const typeColor = course.type === 'core' ? 'primary' : 
-                         course.type === 'project' ? 'success' : 'secondary';
+        const typeColor = course.type === 'core' ? 'agenda-type-core' : 
+                         course.type === 'project' ? 'agenda-type-project' : 'agenda-type-elective';
         const typeName = getCourseTypeName(course.type);
         
         // 处理常规日期
@@ -982,7 +1031,7 @@ function generateAgendaData() {
                         instructor: course.instructor,
                         location: `${arrangement.venue}, ${course.campus}`,
                         type: typeName,
-                        typeColor: 'warning',
+                        typeColor: 'agenda-type-special',
                         isSpecial: true,
                         sortKey: `${arrangement.date}T${time.split('-')[0]}`
                     });
@@ -1067,7 +1116,7 @@ function showCourseModal(event) {
         schedule: '上课时间',
         location: '校区教室',
         dates: '上课日期',
-        conflict: '⚠️ 此课程与其他已选课程存在时间冲突',
+        conflict: '此课程与其他已选课程存在时间冲突',
         tbd: '待定'
     } : {
         code: 'Course Code',
@@ -1076,7 +1125,7 @@ function showCourseModal(event) {
         schedule: 'Schedule',
         location: 'Campus & Room',
         dates: 'Class Dates',
-        conflict: '⚠️ Time conflict with other selected courses',
+        conflict: 'Time conflict with other selected courses',
         tbd: 'TBD'
     };
     
@@ -1090,7 +1139,7 @@ function showCourseModal(event) {
             <div class="course-detail-label">${labels.type}</div>
             <div class="course-detail-value">
                 <span class="course-type ${displayType}">${getCourseTypeName(displayType)}</span>
-                ${isExempted ? '<span class="badge bg-info ms-2">Exempted</span>' : ''}
+                ${isExempted ? '<span class="badge exemption-badge ms-2">Exempted</span>' : ''}
             </div>
         </div>
         <div class="course-detail-item">
@@ -1220,6 +1269,12 @@ function printSchedule() {
 
 // 键盘快捷键
 document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+        e.preventDefault();
+        document.getElementById('courseSearch')?.focus();
+        return;
+    }
+
     if (e.ctrlKey || e.metaKey) {
         switch(e.key) {
             case 'a':
@@ -1603,6 +1658,11 @@ function showReminderModal() {
 
 // 重置提醒时间选择模态框
 function resetReminderModal() {
+    const customOption = document.querySelector('.custom-reminder');
+    if (customOption) {
+        customOption.classList.remove('active');
+    }
+
     // 清除所有选中状态
     document.querySelectorAll('.reminder-option').forEach(option => {
         option.classList.remove('selected');
@@ -1619,7 +1679,7 @@ function resetReminderModal() {
         const span = defaultOption.querySelector('span');
         if (span) {
             const icon = document.createElement('i');
-            icon.className = 'fas fa-check text-success';
+            icon.className = 'fas fa-check reminder-check-icon';
             defaultOption.insertBefore(icon, span);
         }
     }
@@ -1633,6 +1693,11 @@ function resetReminderModal() {
 
 // 更新提醒时间选择的UI显示
 function updateReminderSelection(selectedValue) {
+    const customOption = document.querySelector('.custom-reminder');
+    if (customOption) {
+        customOption.classList.remove('active');
+    }
+
     // 清除所有选中状态
     document.querySelectorAll('.reminder-option').forEach(option => {
         option.classList.remove('selected');
@@ -1649,7 +1714,7 @@ function updateReminderSelection(selectedValue) {
         const span = selectedOption.querySelector('span');
         if (span) {
             const icon = document.createElement('i');
-            icon.className = 'fas fa-check text-success';
+            icon.className = 'fas fa-check reminder-check-icon';
             selectedOption.insertBefore(icon, span);
         }
     }
@@ -1721,8 +1786,7 @@ function initializeReminderModalEvents() {
         // 显示自定义选中状态
         const customOption = document.querySelector('.custom-reminder');
         if (customOption) {
-            customOption.style.backgroundColor = '#e3f2fd';
-            customOption.style.border = '1px solid #2196f3';
+            customOption.classList.add('active');
         }
     });
     
@@ -1744,4 +1808,4 @@ function initializeReminderModalEvents() {
     });
 }
 
-console.log('📚 HKU 金融科技硕士课程日历应用加载完成!');
+console.log('HKU 金融科技硕士课程日历应用加载完成');

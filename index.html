@@ -135,7 +135,7 @@
                 <section class="exemption-section mb-3">
                     <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#exemptionCollapse" aria-expanded="true" aria-controls="exemptionCollapse">
                         <h6 class="mb-0 d-flex align-items-center gap-2"><span class="section-mark" aria-hidden="true"></span><span id="exemptionTitle">豁免课程设置</span></h6>
-                        <i class="fas fa-chevron-down collapse-arrow expanded" data-target="#exemptionCollapse"></i>
+                        <span class="material-symbols-outlined collapse-arrow expanded" data-target="#exemptionCollapse">expand_more</span>
                     </div>
                     <div class="collapse show" id="exemptionCollapse">
                         <div class="mt-3">
@@ -158,7 +158,7 @@
                     <div class="course-category mb-2">
                         <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#coreCollapse" aria-expanded="true" aria-controls="coreCollapse">
                             <h6 class="mb-0" id="coreTitle">Core</h6>
-                            <i class="fas fa-chevron-down collapse-arrow expanded" data-target="#coreCollapse"></i>
+                            <span class="material-symbols-outlined collapse-arrow expanded" data-target="#coreCollapse">expand_more</span>
                         </div>
                         <div class="collapse show" id="coreCollapse">
                             <div class="course-group mt-2" id="core-courses"></div>
@@ -168,7 +168,7 @@
                     <div class="course-category mb-2">
                         <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#capstoneCollapse" aria-expanded="true" aria-controls="capstoneCollapse">
                             <h6 class="mb-0" id="capstoneTitle">Capstone Core</h6>
-                            <i class="fas fa-chevron-down collapse-arrow expanded" data-target="#capstoneCollapse"></i>
+                            <span class="material-symbols-outlined collapse-arrow expanded" data-target="#capstoneCollapse">expand_more</span>
                         </div>
                         <div class="collapse show" id="capstoneCollapse">
                             <div class="course-group mt-2" id="capstone-courses"></div>
@@ -180,7 +180,7 @@
                             <h6 class="mb-0" id="engineeringTitle">Elective offered by Faculty of Engineering</h6>
                             <div class="d-flex align-items-center gap-2">
                                 <small class="text-muted" id="engineeringLimit">限选1门</small>
-                                <i class="fas fa-chevron-down collapse-arrow expanded" data-target="#engineeringCollapse"></i>
+                                <span class="material-symbols-outlined collapse-arrow expanded" data-target="#engineeringCollapse">expand_more</span>
                             </div>
                         </div>
                         <div class="collapse show" id="engineeringCollapse">
@@ -193,7 +193,7 @@
                             <h6 class="mb-0" id="lawTitle">Elective offered by Faculty of Law</h6>
                             <div class="d-flex align-items-center gap-2">
                                 <small class="text-muted" id="lawLimit">限选1门</small>
-                                <i class="fas fa-chevron-down collapse-arrow expanded" data-target="#lawCollapse"></i>
+                                <span class="material-symbols-outlined collapse-arrow expanded" data-target="#lawCollapse">expand_more</span>
                             </div>
                         </div>
                         <div class="collapse show" id="lawCollapse">
@@ -204,7 +204,7 @@
                     <div class="course-category mb-2">
                         <div class="d-flex justify-content-between align-items-center collapse-trigger" data-bs-toggle="collapse" data-bs-target="#hkubsCollapse" aria-expanded="true" aria-controls="hkubsCollapse">
                             <h6 class="mb-0" id="hkubsTitle">HKUBS Programme - Elective</h6>
-                            <i class="fas fa-chevron-down collapse-arrow expanded" data-target="#hkubsCollapse"></i>
+                            <span class="material-symbols-outlined collapse-arrow expanded" data-target="#hkubsCollapse">expand_more</span>
                         </div>
                         <div class="collapse show" id="hkubsCollapse">
                         <div class="course-group mt-2" id="hkubs-courses"></div>
@@ -226,8 +226,8 @@
 
                 <section class="mt-3 mb-2">
                     <div class="d-flex gap-2">
-                        <a class="btn btn-sm btn-outline-light flex-fill" href="#" id="saveLocal"><i class="fas fa-save"></i> <span id="saveLocalLabel">保存课表</span></a>
-                        <a class="btn btn-sm btn-outline-light flex-fill text-danger" href="#" id="clearLocal"><i class="fas fa-trash"></i> <span id="clearLocalLabel">清除课表</span></a>
+                        <a class="btn btn-sm btn-outline-light flex-fill" href="#" id="saveLocal"><span class="material-symbols-outlined text-sm mr-1">save</span> <span id="saveLocalLabel">保存课表</span></a>
+                        <a class="btn btn-sm btn-outline-light flex-fill text-danger" href="#" id="clearLocal"><span class="material-symbols-outlined text-sm mr-1">delete</span> <span id="clearLocalLabel">清除课表</span></a>
                     </div>
                     <small class="d-block text-muted mt-2" id="localStorageNote">课表会自动保存，下次打开时自动恢复</small>
                 </section>
@@ -378,7 +378,7 @@
                         <div class="reminder-option" data-reminder="0"><span id="reminderAtTimeLabel">日程发生时</span></div>
                         <div class="reminder-option" data-reminder="5"><span id="reminder5minLabel">5分钟前</span></div>
                         <div class="reminder-option" data-reminder="10"><span id="reminder10minLabel">10分钟前</span></div>
-                        <div class="reminder-option selected" data-reminder="15"><i class="fas fa-check reminder-check-icon"></i><span id="reminder15minLabel">15分钟前</span></div>
+                        <div class="reminder-option selected" data-reminder="15"><span class="material-symbols-outlined reminder-check-icon">check</span><span id="reminder15minLabel">15分钟前</span></div>
                         <div class="reminder-option" data-reminder="30"><span id="reminder30minLabel">30分钟前</span></div>
                         <div class="reminder-option" data-reminder="60"><span id="reminder1hourLabel">1小时前</span></div>
                         <div class="reminder-option" data-reminder="120"><span id="reminder2hourLabel">2小时前</span></div>
