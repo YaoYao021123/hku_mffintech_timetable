@@ -1,349 +1,2722 @@
 <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MFFinTech Course Schedule | HKU Business School</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+// 课程数据 - 基于V10 PDF教学计划重建
+// Global state variables (managed by UI script where needed)
+let exemptedCourses = new Set();
+let availableElectives = 2;
 
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "on-tertiary": "#ffffff",
-              "primary-fixed-dim": "#95d3ba",
-              "tertiary-fixed": "#ffdbcb",
-              "secondary-container": "#d6e0f1",
-              "on-tertiary-fixed-variant": "#7a3000",
-              "on-tertiary-fixed": "#341000",
-              "background": "#f8f9ff",
-              "surface-container-highest": "#d9e3f6",
-              "on-error": "#ffffff",
-              "on-primary-container": "#80bea6",
-              "outline-variant": "#bfc9c3",
-              "on-background": "#121c2a",
-              "on-secondary-fixed-variant": "#3e4755",
-              "on-secondary": "#ffffff",
-              "surface-container-high": "#dee9fc",
-              "error-container": "#ffdad6",
-              "inverse-primary": "#95d3ba",
-              "secondary-fixed": "#d9e3f4",
-              "primary": "#003527",
-              "on-surface": "#121c2a",
-              "outline": "#707974",
-              "on-tertiary-container": "#ff9762",
-              "primary-container": "#064e3b",
-              "on-surface-variant": "#404944",
-              "on-secondary-container": "#596372",
-              "surface-tint": "#2b6954",
-              "surface-bright": "#f8f9ff",
-              "tertiary-fixed-dim": "#ffb693",
-              "surface-container-low": "#eff4ff",
-              "secondary": "#555f6d",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-container": "#e6eeff",
-              "on-primary": "#ffffff",
-              "on-primary-fixed": "#002117",
-              "inverse-surface": "#27313f",
-              "on-secondary-fixed": "#121c28",
-              "error": "#ba1a1a",
-              "tertiary": "#521e00",
-              "on-error-container": "#93000a",
-              "tertiary-container": "#762e00",
-              "surface-dim": "#d0dbed",
-              "on-primary-fixed-variant": "#0b513d",
-              "surface-variant": "#d9e3f6",
-              "surface": "#f8f9ff",
-              "secondary-fixed-dim": "#bdc7d8",
-              "surface-container-lowest": "#ffffff",
-              "primary-fixed": "#b0f0d6"
-            },
-            fontFamily: {
-              "headline": ["Inter"],
-              "body": ["Inter"],
-              "label": ["Inter"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
+const COURSE_DATA = {
+    // 第一学期课程
+    semester1: [
+        {
+            code: "LLAW6093",
+            module: "1&2",
+            name: "金融市场监管",
+            section: "C班",
+            type: "core",
+            instructor: "Ms Lea-Anne Lee",
+            schedule: "周四 16:00 - 19:00",
+            dates: ["2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-16", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13", "2025-11-20", "2025-11-27"],
+            campus: "MC",
+            room: "CBC",
+            special_arrangements: [
+            ]
         },
-      }
+        {
+            code: "LLAW6046",
+            module: "1&2",
+            name: "隐私与数据保护",
+            section: "A班",
+            type: "elective",
+            instructor: "Mr Adam Au",
+            schedule: "周三 19:00-22:00",
+            dates: ["2025-09-10", "2025-09-17", "2025-09-24", "2025-10-08", "2025-10-15", "2025-10-22", "2025-11-05", "2025-11-12"],
+            campus: "MC",
+            room: "KK101",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "FITE7409",
+            module: "2",
+            name: "区块链与加密货币",
+            section: "A班",
+            type: "core",
+            instructor: "Dr KP Chow",
+            schedule: "周一 & 周四 13:00-16:00",
+            dates: ["2025-10-13", "2025-10-20", "2025-10-27", "2025-10-30", "2025-11-03", "2025-11-06", "2025-11-10", "2025-11-13", "2025-11-27", "2025-12-01"],
+            campus: "MC",
+            room: "Mon lectures: CPD-3.04 / Thu lectures: MW-T2",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "DASC7606",
+            module: "1&2",
+            name: "深度学习",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof Francis Chin & Dr Bethany Chan",
+            schedule: "周四 13:00 - 16:00",
+            dates: ["2025-09-04", "2025-09-11", "2025-09-18", "2025-09-25", "2025-10-02", "2025-10-09", "2025-10-23", "2025-10-30", "2025-11-06", "2025-11-13"],
+            campus: "MC",
+            room: "LE-1",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "FITE7410",
+            module: "1&2",
+            name: "金融欺诈分析",
+            section: "A班",
+            type: "elective",
+            instructor: "Dr Vivien Chan & Ms Annie Chan",
+            schedule: "周三 19:00 - 22:00",
+            dates: ["2025-09-03", "2025-09-10", "2025-09-17", "2025-09-24", "2025-10-08", "2025-10-22", "2025-11-05", "2025-11-12", "2025-11-19", "2025-11-26"],
+            campus: "MC",
+            room: "LE-5",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN6003",
+            module: "1",
+            name: "衍生证券",
+            section: "E班",
+            type: "core",
+            instructor: "Prof. Hongye Guo",
+            schedule: "周二 & 周五 14:00-17:00",
+            dates: ["2025-09-02", "2025-09-09", "2025-09-12", "2025-09-16", "2025-09-19", "2025-09-26", "2025-09-30", "2025-10-03"],
+            campus: "CP",
+            room: "Room ABC / LTB (Sep 27)",
+            special_arrangements: [
+                {
+                    date: "2025-09-13",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC"
+                },
+                {
+                    date: "2025-09-27",
+                    day: "Saturday",
+                    time: "14:00-17:00",
+                    venue: "LTB"
+                }
+            ]
+        },
+        {
+            code: "MFIN6003",
+            module: "1",
+            name: "衍生证券",
+            section: "F班",
+            type: "core",
+            instructor: "Prof. Hongye Guo",
+            schedule: "周二 & 周五 18:30-21:30",
+            dates: ["2025-09-02", "2025-09-09", "2025-09-12", "2025-09-16", "2025-09-19", "2025-09-26", "2025-09-30", "2025-10-03"],
+            campus: "CP",
+            room: "Room ABC / LTB (Sep 27)",
+            special_arrangements: [
+                {
+                    date: "2025-09-17",
+                    day: "Wednesday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / LTB (Sep 27)"
+                },
+                {
+                    date: "2025-09-27",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "LTB"
+                }
+            ]
+        },
+        {
+            code: "MFIN7002",
+            module: "1",
+            name: "投资分析与投资组合管理",
+            section: "E班",
+            type: "core",
+            instructor: "Prof. Rujing Meng",
+            schedule: "周一 & 周四 14:00-17:00",
+            dates: ["2025-09-01", "2025-09-04", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29"],
+            campus: "CP / MC",
+            room: "Room ABC / MC - TT404 (Sep 10) / LTB (Oct 3)",
+            special_arrangements: [
+                {
+                    date: "2025-09-10",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "TT404 @MC"
+                },
+                {
+                    date: "2025-09-20",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / MC - TT404 (Sep 10) / LTB (Oct 3)"
+                },
+                {
+                    date: "2025-09-24",
+                    day: "Wednesday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / MC - TT404 (Sep 10) / LTB (Oct 3)"
+                },
+                {
+                    date: "2025-10-03",
+                    day: "Friday",
+                    time: "09:30-12:30",
+                    venue: "Room LTB"
+                }
+            ]
+        },
+        {
+            code: "MFIN7002",
+            module: "1",
+            name: "投资分析与投资组合管理",
+            section: "F班",
+            type: "core",
+            instructor: "Prof. Rujing Meng",
+            schedule: "周一 & 周四 18:30-21:30",
+            dates: ["2025-09-01", "2025-09-04", "2025-09-08", "2025-09-11", "2025-09-15", "2025-09-18", "2025-09-22", "2025-09-25", "2025-09-29", "2025-10-02"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7031",
+            module: "1",
+            name: "金融科技及其对未来银行和金融的影响简介",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Fangzhou Lu",
+            schedule: "周日 09:30-12:30 & 14:00-17:00",
+            dates: ["2025-08-31", "2025-09-07", "2025-09-14", "2025-09-21", "2025-09-28"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7003",
+            module: "2",
+            name: "金融数学技术",
+            section: "E班",
+            type: "core",
+            instructor: "Dr. Jinghan Meng",
+            schedule: "周二 & 周五 09:30-12:30",
+            dates: ["2025-10-14", "2025-10-21", "2025-10-24", "2025-10-28", "2025-10-31", "2025-11-04", "2025-11-07", "2025-11-11"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+                {
+                    date: "2025-10-13",
+                    day: "Monday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC"
+                },
+                {
+                    date: "2025-11-10",
+                    day: "Monday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC"
+                }
+            ]
+        },
+        {
+            code: "MFIN7003",
+            module: "2",
+            name: "金融数学技术",
+            section: "F班",
+            type: "core",
+            instructor: "Dr. Jinghan Meng",
+            schedule: "周二 & 周五 14:00-17:00",
+            dates: ["2025-10-14", "2025-10-21", "2025-10-24", "2025-10-28", "2025-10-31", "2025-11-04", "2025-11-07", "2025-11-11"],
+            campus: "CP",
+            room: "Room ABC / Room H (Oct 17) / LTA (Nov 14)",
+            special_arrangements: [
+                {
+                    date: "2025-10-17",
+                    day: "Thursday",
+                    time: "18:30-21:30",
+                    venue: "Room H"
+                },
+                {
+                    date: "2025-11-14",
+                    day: "Thursday",
+                    time: "18:30-21:30",
+                    venue: "LTA"
+                }
+            ]
+        },
+        {
+            code: "MFIN7033",
+            module: "2",
+            name: "高级金融编程与数据库",
+            section: "A班",
+            type: "core",
+            instructor: "Prof. Jiantao Huang",
+            schedule: "周三 & 周六 14:00-17:00",
+            dates: ["2025-10-15", "2025-10-18", "2025-10-22", "2025-11-01", "2025-11-05", "2025-11-08", "2025-11-12", "2025-11-15", "2025-11-19"],
+            campus: "CP / MC",
+            room: "Room ABC / MC - MB237 (Oct 25) / MC - KK102 (Nov 1, Nov 8, Nov 15)",
+            special_arrangements: [
+                {
+                    date: "2025-10-25",
+                    day: "Friday",
+                    time: "09:30-12:30",
+                    venue: "MB237 @MC"
+                }
+            ]
+        },
+        {
+            code: "MFIN7033",
+            module: "2",
+            name: "高级金融编程与数据库",
+            section: "B班",
+            type: "core",
+            instructor: "Prof. Jiantao Huang",
+            schedule: "周三 & 周六 18:30-21:30",
+            dates: ["2025-10-15", "2025-10-18", "2025-10-22", "2025-11-01", "2025-11-05", "2025-11-08", "2025-11-12", "2025-11-15", "2025-11-19"],
+            campus: "CP / MC",
+            room: "Room ABC / MC - MB237 (Oct 25) / MC - KK101 (Nov 1, Nov 8, Nov 15)",
+            special_arrangements: [
+                {
+                    date: "2025-10-25",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "MB237 @MC"
+                }
+            ]
+        }
+    ],
+
+    // 第二学期课程
+    semester2: [
+        {
+            code: "LLAW6093",
+            module: "3-5",
+            name: "金融市场监管",
+            section: "D班",
+            type: "core",
+            instructor: "Ms Lea-Anne Lee",
+            schedule: "周五 14:00 - 17:00",
+            dates: ["2026-01-30", "2026-02-06", "2026-02-13", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-10", "2026-04-17", "2026-04-24"],
+            campus: "MC",
+            room: "CPD-3.04",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "LLAW6256",
+            module: "3-5",
+            name: "反洗钱、反恐怖融资法及合规问题",
+            section: "A班",
+            type: "elective",
+            instructor: "Dr John Lee",
+            schedule: "周五 19:00-22:00 Occasionally on 周六 14:30-17:30 (Apr 25)",
+            dates: ["2026-01-30", "2026-02-06", "2026-02-13", "2026-02-27", "2026-03-06", "2026-03-20", "2026-03-27", "2026-04-10", "2026-04-17", "2026-04-24"],
+            campus: "MC",
+            room: "CPD-2.16 / CPD-2.42 (Apr 25)",
+            special_arrangements: [
+                {
+                    date: "2026-04-25",
+                    day: "Saturday",
+                    time: "14:30-17:30",
+                    venue: "CPD-2.16 / CPD-2.42 (Apr 25)"
+                }
+            ]
+        },
+        {
+            code: "LLAW6046",
+            module: "3-5",
+            name: "隐私与数据保护",
+            section: "C班",
+            type: "elective",
+            instructor: "Dr Angus Young",
+            schedule: "周四 19:00-22:00",
+            dates: ["2026-01-29", "2026-02-05", "2026-02-12", "2026-02-26", "2026-03-05", "2026-03-19", "2026-03-26", "2026-04-09", "2026-04-16", "2026-04-23", "2026-04-30"],
+            campus: "MC",
+            room: "TT404",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "FITE7410",
+            module: "3-5",
+            name: "金融欺诈分析",
+            section: "C班",
+            type: "elective",
+            instructor: "Dr Vivien Chan & Ms Annie Chan",
+            schedule: "周二 19:00 - 22:00",
+            dates: ["2026-01-20", "2026-01-27", "2026-02-03", "2026-02-10", "2026-02-24", "2026-03-03", "2026-03-10", "2026-03-24", "2026-03-31", "2026-04-14"],
+            campus: "MC",
+            room: "MW-T1",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7036",
+            module: "3",
+            name: "金融与金融科技中的文本分析与自然语言处理",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Matthias Buehlmaier",
+            schedule: "周三 & 周六 09:30-12:30",
+            dates: ["2025-12-10", "2025-12-17", "2025-12-20", "2026-01-03", "2026-01-07", "2026-01-14"],
+            campus: "CP / MC",
+            room: "Room ABC / MC - CBA (Dec 15) / MC - KK101 (Jan 12)",
+            special_arrangements: [
+                {
+                    date: "2025-12-15",
+                    day: "Sunday",
+                    time: "14:00-17:00",
+                    venue: "CBA1@MC"
+                },
+                {
+                    date: "2026-01-10",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / MC - CBA (Dec 15) / MC - KK101 (Jan 12)"
+                },
+                {
+                    date: "2026-01-12",
+                    day: "Sunday",
+                    time: "14:00-17:00",
+                    venue: "KK101@MC"
+                },
+                {
+                    date: "2026-01-17",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / MC - CBA (Dec 15) / MC - KK101 (Jan 12)"
+                }
+            ]
+        },
+        {
+            code: "MFIN7005",
+            module: "3",
+            name: "公司金融与资产估值",
+            section: "E班",
+            type: "core",
+            instructor: "Prof. Jack Xiaoyong Fu",
+            schedule: "周二 & 周五 14:00-17:00",
+            dates: ["2025-12-09", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-20"],
+            campus: "CP / MC",
+            room: "Room ABC (Dec 9, 16, Jan 13, 20) / MC - CBA (Dec 13, Dec 14) / Room D (Dec 19, Jan 9) / Room J (Dec 20) / Room H (Jan 21)",
+            special_arrangements: [
+                {
+                    date: "2025-12-13",
+                    day: "Saturday",
+                    time: "14:00-17:00",
+                    venue: "CBA @MC"
+                },
+                {
+                    date: "2025-12-14",
+                    day: "Sunday",
+                    time: "14:00-17:00",
+                    venue: "CBA @MC"
+                },
+                {
+                    date: "2026-01-21",
+                    day: "Wednesday",
+                    time: "18:30-21:30",
+                    venue: "Room H"
+                },
+                {
+                    date: "2025-12-20",
+                    day: "Saturday",
+                    time: "14:00-17:00",
+                    venue: "Room ABC (Dec 9, 16, Jan 13, 20) / MC - CBA (Dec 13, Dec 14) / Room D (Dec 19, Jan 9) / Room J (Dec 20) / Room H (Jan 21)"
+                }
+            ]
+        },
+        {
+            code: "MFIN7005",
+            module: "3",
+            name: "公司金融与资产估值",
+            section: "F班",
+            type: "core",
+            instructor: "Prof. Jack Xiaoyong Fu",
+            schedule: "周二 & 周五 18:30-21:30",
+            dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
+            campus: "CP",
+            room: "Room ABC / Room H (Dec 13 & 20)",
+            special_arrangements: [
+                {
+                    date: "2025-12-13",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / Room H (Dec 13 & 20)"
+                },
+                {
+                    date: "2025-12-20",
+                    day: "Saturday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / Room H (Dec 13 & 20)"
+                }
+            ]
+        },
+        {
+            code: "MFIN7002",
+            module: "3",
+            name: "投资分析与投资组合管理",
+            section: "G班",
+            type: "core",
+            instructor: "Prof. Rujing Meng",
+            schedule: "周一 & 周四 18:30-21:30",
+            dates: ["2025-12-08", "2025-12-11", "2025-12-15", "2025-12-18", "2026-01-05", "2026-01-08", "2026-01-12", "2026-01-15", "2026-01-19", "2026-01-22"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7054",
+            module: "3",
+            name: "加密货币与数字资产导论",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Henri Arslanian",
+            schedule: "周六 & 周日 Block Mode",
+            dates: [],
+            campus: "MC",
+            room: "MC - CPD-3.28",
+            special_arrangements: [
+                {
+                    date: "2025-12-13",
+                    day: "Friday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-14",
+                    day: "Saturday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-20",
+                    day: "Friday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                },
+                {
+                    date: "2025-12-21",
+                    day: "Saturday",
+                    time: "09:30-12:30 & 14:00-18:30",
+                    venue: "& CPD-3.28 @MC"
+                }
+            ]
+        },
+        {
+            code: "MFIN7004",
+            module: "3",
+            name: "金融服务法规",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Berry Hsu",
+            schedule: "周二 & 周五 09:30-12:30",
+            dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
+            campus: "CP",
+            room: "CP - Room H / MC - KK101 (Jan 16)",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7004",
+            module: "3",
+            name: "金融服务法规",
+            section: "B班",
+            type: "elective",
+            instructor: "Prof. Berry Hsu",
+            schedule: "周二 & 周五 14:00-17:00",
+            dates: ["2025-12-09", "2025-12-12", "2025-12-16", "2025-12-19", "2026-01-02", "2026-01-06", "2026-01-09", "2026-01-13", "2026-01-16", "2026-01-20"],
+            campus: "CP",
+            room: "CP - Room H / MC - KK101 (Jan 16)",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7037",
+            module: "4",
+            name: "量化交易",
+            section: "A班",
+            type: "core",
+            instructor: "Prof. Alan Kwan, Prof. Yang You",
+            schedule: "周一 & 周四 14:00-17:00",
+            dates: ["2026-01-29", "2026-02-02", "2026-02-05", "2026-02-09", "2026-02-12", "2026-02-23", "2026-02-26", "2026-03-02", "2026-03-05", "2026-03-09"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7037",
+            module: "4",
+            name: "量化交易",
+            section: "B班",
+            type: "core",
+            instructor: "Prof. Alan Kwan, Prof. Yang You",
+            schedule: "周一 & 周四 18:30-21:30",
+            dates: ["2026-01-29", "2026-02-02", "2026-02-05", "2026-02-09", "2026-02-12", "2026-02-23", "2026-02-26", "2026-03-02", "2026-03-05", "2026-03-09"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7034",
+            module: "4",
+            name: "金融中的机器学习与人工智能",
+            section: "A班",
+            type: "core",
+            instructor: "Prof. Ye Luo",
+            schedule: "周二 & 周五 14:00-17:00",
+            dates: ["2026-01-30", "2026-02-03", "2026-02-06", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"],
+            campus: "CP",
+            room: "Room ABC / Room J (Mar 11)",
+            special_arrangements: [
+                {
+                    date: "2026-03-11",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "Room ABC / Room J (Mar 11)"
+                }
+            ]
+        },
+        {
+            code: "MFIN7034",
+            module: "4",
+            name: "金融中的机器学习与人工智能",
+            section: "B班",
+            type: "core",
+            instructor: "Prof. Ye Luo",
+            schedule: "周二 & 周五 18:30-21:30",
+            dates: ["2026-01-30", "2026-02-03", "2026-02-06", "2026-02-13", "2026-02-24", "2026-02-27", "2026-03-03", "2026-03-06", "2026-03-10"],
+            campus: "CP",
+            room: "Room ABC / Room EFG (Mar 11)",
+            special_arrangements: [
+                {
+                    date: "2026-03-11",
+                    day: "Wednesday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC / Room EFG (Mar 11)"
+                }
+            ]
+        },
+        {
+            code: "MFIN7060",
+            module: "5",
+            name: "金融科技网络安全与风险管理",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Alan Chow",
+            schedule: "周三 & 周六 14:00-17:00",
+            dates: ["2026-03-21", "2026-03-25", "2026-04-01", "2026-04-08", "2026-04-11", "2026-04-15", "2026-04-22", "2026-04-25"],
+            campus: "CP",
+            room: "LTA / Room EFG (Mar 25, Apr 11) / Room 205-1&2 (Apr 25)",
+            special_arrangements: [
+                {
+                    date: "2026-03-28",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "LTA / Room EFG (Mar 25, Apr 11) / Room 205-1&2 (Apr 25)"
+                },
+                {
+                    date: "2026-04-18",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "LTA / Room EFG (Mar 25, Apr 11) / Room 205-1&2 (Apr 25)"
+                }
+            ]
+        },
+        {
+            code: "MFIN7035",
+            module: "5",
+            name: "金融大数据",
+            section: "A班",
+            type: "project",
+            instructor: "Prof. Alan Kwan Dr. Sandro Lera",
+            schedule: "周一 & 周四 14:00-17:00",
+            dates: ["2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-20", "2026-04-23"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+                {
+                    date: "2026-04-15",
+                    day: "Wednesday",
+                    time: "18:30-21:30",
+                    venue: "Room ABC"
+                }
+            ]
+        },
+        {
+            code: "MFIN7035",
+            module: "5",
+            name: "金融大数据",
+            section: "B班",
+            type: "project",
+            instructor: "Prof. Alan Kwan Dr. Sandro Lera",
+            schedule: "周一 & 周四 18:30-21:30",
+            dates: ["2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-16", "2026-04-20", "2026-04-23"],
+            campus: "CP",
+            room: "Room ABC",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7016",
+            module: "5",
+            name: "实物期权与动态公司金融",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Keith K. P. Wong",
+            schedule: "周二 & 周五 18:30-21:30",
+            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"],
+            campus: "MC",
+            room: "Tuesdays: MC-MB201 / Fridays: MC-MB217",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7049",
+            module: "5",
+            name: "货币、金融机构与市场",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Xuewen Liu",
+            schedule: "周一 & 周四 18:30-21:30",
+            dates: ["2026-03-19", "2026-03-23", "2026-03-26", "2026-03-30", "2026-04-02", "2026-04-09", "2026-04-13", "2026-04-16", "2026-04-20", "2026-04-23"],
+            campus: "CP",
+            room: "Room H",
+            special_arrangements: [
+            ]
+        },
+        {
+            code: "MFIN7052",
+            module: "5",
+            name: "绿色金融与ESG",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Dragon Yongjun Tang",
+            schedule: "周二 & 周五 09:30-12:30 Occasionally on 周三 14:00-17:00 (Apr 15)",
+            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-10", "2026-04-14", "2026-04-17", "2026-04-21", "2026-04-24"],
+            campus: "CP",
+            room: "Room H / Room 205-01 & 02 (Apr 15)",
+            special_arrangements: [
+                {
+                    date: "2026-04-15",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "Room 205-01 & 02"
+                }
+            ]
+        },
+        {
+            code: "MFIN7066",
+            module: "5",
+            name: "大语言模型应用",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Hailiang Chen",
+            schedule: "周二 & 周五 14:00-17:00",
+            dates: ["2026-03-20", "2026-03-24", "2026-03-27", "2026-03-31", "2026-04-10", "2026-04-14", "2026-04-21"],
+            campus: "CP / TC",
+            room: "CP- LTA (Mar 20, 24, 31, Apr 8, 14, 21) / CP-Room D (Mar 27, Apr 10, 20) / TC-B4 (Apr 24)",
+            special_arrangements: [
+                {
+                    date: "2026-04-08",
+                    day: "Wednesday",
+                    time: "09:30-12:30",
+                    venue: "CP-Room LTA"
+                },
+                {
+                    date: "2026-04-20",
+                    day: "Monday",
+                    time: "14:00-17:00",
+                    venue: "CP-Room D"
+                },
+                {
+                    date: "2026-04-24",
+                    day: "Friday",
+                    time: "18:30-21:30",
+                    venue: "TC-B4"
+                }
+            ]
+        },
+        {
+            code: "MFIN7067",
+            module: "5",
+            name: "商业中的生成式人工智能内容",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Dawei Wang",
+            schedule: "周三 & 周六 14:00-17:00",
+            dates: ["2026-03-25", "2026-03-28", "2026-04-01", "2026-04-08", "2026-04-11", "2026-04-15", "2026-04-18", "2026-04-22", "2026-04-25"],
+            campus: "CP / MC",
+            room: "CP-LTB / CP - Room 205-1&2 (Mar 25, Apr 11) / CP - LTA (Mar 28) / CP - Room EFG (Apr 18) / MC - KKL G102 (Apr 25)",
+            special_arrangements: [
+                {
+                    date: "2026-04-27",
+                    day: "Monday",
+                    time: "14:00-17:00",
+                    venue: "CP-LTB / CP - Room 205-1&2 (Mar 25, Apr 11) / CP - LTA (Mar 28) / CP - Room EFG (Apr 18) / MC - KKL G102 (Apr 25)"
+                }
+            ]
+        }
+    ],
+
+    // 夏季学期课程
+    summer: [
+        {
+            code: "MFIN7014",
+            module: "6",
+            name: "基金管理与另类投资",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Fangzhou Lu",
+            schedule: "周一 & 周四 18:30-21:30 Occasionally on 周二 09:30-12:30 (May 12 & May 26) Occasionally on 周二 18:30-21:30 (Jun 9)",
+            dates: ["2026-05-04", "2026-05-11", "2026-05-14", "2026-05-18", "2026-05-21", "2026-05-28", "2026-06-01", "2026-06-04", "2026-06-08"],
+            campus: "CP",
+            room: "Room H / Room J (May 26)",
+            special_arrangements: [
+                {
+                    date: "2026-05-12",
+                    day: "Tuesday",
+                    time: "09:30-12:30",
+                    venue: "Room H"
+                },
+                {
+                    date: "2026-05-26",
+                    day: "Tuesday",
+                    time: "09:30-12:30",
+                    venue: "Room J"
+                },
+                {
+                    date: "2026-06-09",
+                    day: "Tuesday",
+                    time: "18:30-21:30",
+                    venue: "Room H"
+                }
+            ]
+        },
+        {
+            code: "MFIN7014",
+            module: "6",
+            name: "基金管理与另类投资",
+            section: "B班",
+            type: "elective",
+            instructor: "Prof. Fangzhou Lu",
+            schedule: "周二 & 周五 18:30-21:30 Occasionally on 周六 14:00-17:00 (May 9) Occasionally on 周三 14:00-17:00 (May 27)",
+            dates: ["2026-05-05", "2026-05-08", "2026-05-12", "2026-05-15", "2026-05-19", "2026-05-22", "2026-05-26", "2026-05-29", "2026-06-02", "2026-06-05"],
+            campus: "CP",
+            room: "Room H / Room LT (May 9)",
+            special_arrangements: [
+                {
+                    date: "2026-05-09",
+                    day: "Saturday",
+                    time: "14:00-17:00",
+                    venue: "Room LT"
+                },
+                {
+                    date: "2026-05-27",
+                    day: "Wednesday",
+                    time: "14:00-17:00",
+                    venue: "Room H"
+                }
+            ]
+        },
+        {
+            code: "MFIN7063",
+            module: "6",
+            name: "投资高级专题",
+            section: "A班",
+            type: "elective",
+            instructor: "Prof. Pingyang Gao",
+            schedule: "周一 & 周四 09:30-12:30 Occasionally on 周五 09:30-12:30 (May 8)",
+            dates: ["2026-05-04", "2026-05-11", "2026-05-14", "2026-05-18", "2026-05-21", "2026-05-28", "2026-06-01", "2026-06-04", "2026-06-08"],
+            campus: "CP",
+            room: "Room H",
+            special_arrangements: [
+                {
+                    date: "2026-05-08",
+                    day: "Friday",
+                    time: "09:30-12:30",
+                    venue: "Room H"
+                }
+            ]
+        }
+    ]
+};
+// 豁免课程配置
+const EXEMPTION_COURSES = {
+    fundamental: [
+        { code: "MFIN7002", name: "投资分析与投资组合管理", nameEn: "Investment Analysis and Portfolio Management" },
+        { code: "MFIN7005", name: "公司金融与资产估值", nameEn: "Corporate Finance and Asset Valuation" }
+    ],
+    advanced: [
+        { code: "MFIN6003", name: "衍生证券", nameEn: "Derivative Securities" },
+        { code: "MFIN7003", name: "金融数学技术", nameEn: "Mathematical Techniques in Finance" },
+        { code: "MFIN7033", name: "高级金融编程与数据库", nameEn: "Advanced Financial Programming and Databases" }
+    ]
+};
+
+// 课程英文翻译
+const COURSE_TRANSLATIONS = {
+    "LLAW6093": { name: "金融市场监管", nameEn: "Financial Market Regulation" },
+    "LLAW6046": { name: "隐私与数据保护", nameEn: "Privacy and Data Protection" },
+    "FITE7409": { name: "区块链与加密货币", nameEn: "Blockchain and Cryptocurrency" },
+    "DASC7606": { name: "深度学习", nameEn: "Deep Learning" },
+    "FITE7410": { name: "金融欺诈分析", nameEn: "Financial Fraud Analytics" },
+    "MFIN6003": { name: "衍生证券", nameEn: "Derivative Securities" },
+    "MFIN7002": { name: "投资分析与投资组合管理", nameEn: "Investment Analysis and Portfolio Management" },
+    "MFIN7031": { name: "金融科技及其对未来银行和金融的影响简介", nameEn: "Introduction to FinTech and Its Impact on the Future of Banking and Finance" },
+    "MFIN7003": { name: "金融数学技术", nameEn: "Mathematical Techniques in Finance" },
+    "MFIN7033": { name: "高级金融编程与数据库", nameEn: "Advanced Financial Programming and Databases" },
+    "LLAW6256": { name: "反洗钱、反恐怖融资法及合规问题", nameEn: "Anti-Money Laundering, Counter-Terrorist Financing Law and Compliance Issues" },
+    "MFIN7036": { name: "金融与金融科技中的文本分析与自然语言处理", nameEn: "Text Analytics and Natural Language Processing in Finance and FinTech" },
+    "MFIN7005": { name: "公司金融与资产估值", nameEn: "Corporate Finance and Asset Valuation" },
+    "MFIN7054": { name: "加密货币与数字资产导论", nameEn: "Introduction to Cryptocurrencies and Digital Assets" },
+    "MFIN7004": { name: "金融服务法规", nameEn: "Financial Services Regulation" },
+    "MFIN7037": { name: "量化交易", nameEn: "Quantitative Trading" },
+    "MFIN7034": { name: "金融中的机器学习与人工智能", nameEn: "Machine Learning and Artificial Intelligence in Finance" },
+    "MFIN7060": { name: "金融科技网络安全与风险管理", nameEn: "FinTech Cybersecurity and Risk Management" },
+    "MFIN7035": { name: "金融大数据", nameEn: "Financial Big Data" },
+    "MFIN7016": { name: "实物期权与动态公司金融", nameEn: "Real Options and Dynamic Corporate Finance" },
+    "MFIN7049": { name: "货币、金融机构与市场", nameEn: "Money, Financial Institutions and Markets" },
+    "MFIN7052": { name: "绿色金融与ESG", nameEn: "Green Finance and ESG" },
+    "MFIN7066": { name: "大语言模型应用", nameEn: "Applied Large Language Models" },
+    "MFIN7067": { name: "商业中的生成式人工智能内容", nameEn: "Artificial Intelligence Generated Content in Business" },
+    "MFIN7013": { name: "商业银行与房地产金融研讨会", nameEn: "Commercial Banking and Real Estate Finance Seminar" },
+    "MFIN7014": { name: "基金管理与另类投资", nameEn: "Fund Management and Alternative Investments" },
+    "MFIN7063": { name: "投资高级专题", nameEn: "Advanced Topics in Investment" }
+};
+
+// 课程颜色配置 - 低饱和统一配色
+const COURSE_COLORS = {
+    "LLAW6093": "#7d5964",
+    "FITE7409": "#8a646f",
+    "MFIN6003": "#6f525a",
+    "MFIN7002": "#84606c",
+    "MFIN7031": "#91707b",
+    "MFIN7033": "#8b725c",
+    "MFIN7005": "#9a6f78",
+    "MFIN7037": "#735059",
+    "MFIN7034": "#805b65",
+    "LLAW6046": "#6f7f76",
+    "DASC7606": "#688083",
+    "FITE7410": "#6a667f",
+    "MFIN7003": "#7a7b80",
+    "LLAW6256": "#627587",
+    "MFIN7036": "#5f7f78",
+    "MFIN7054": "#9b8a65",
+    "MFIN7004": "#7a6a5d",
+    "MFIN7060": "#776282",
+    "MFIN7016": "#66757d",
+    "MFIN7049": "#70806e",
+    "MFIN7052": "#5e7e77",
+    "MFIN7066": "#6f6480",
+    "MFIN7067": "#5e687c",
+    "MFIN7013": "#626d82",
+    "MFIN7014": "#9a7f5d",
+    "MFIN7063": "#5f857f",
+    "MFIN7035": "#8d7458"
+};
+
+// 课程类型配置
+const COURSE_TYPES = {
+    core: {
+        name: "核心课程",
+        nameEn: "Core Course",
+        color: "#7d5964",
+        priority: 1
+    },
+    elective: {
+        name: "选修课程", 
+        nameEn: "Elective Course",
+        color: "#6f7f76",
+        priority: 2
+    },
+    project: {
+        name: "毕业项目",
+        nameEn: "Capstone Project",
+        color: "#8d7458", 
+        priority: 1
+    }
+};
+
+// 应用状态变量将在app.js中声明
+
+// 校区信息
+const CAMPUS_INFO = {
+    CP: "数码港 (Cyberport)",
+    MC: "主校区 (Main Campus)",
+    TC: "金钟教学中心 (Town Center)",
+    CPD: "百周年校园赛马会教学楼",
+    KK: "梁銶琚楼",
+    CBC: "周亦卿楼",
+    LE: "图书馆新翼",
+    MW: "孟华综合大楼"
+};
+
+// 工具函数
+function getAllCourses() {
+    const allCourses = [
+        ...COURSE_DATA.semester1,
+        ...COURSE_DATA.semester2,
+        ...COURSE_DATA.summer
+    ];
+    
+    // 为每个课程分配独特颜色
+    allCourses.forEach(course => {
+        course.color = COURSE_COLORS[course.code] || COURSE_TYPES[course.type].color;
+    });
+    
+    return allCourses;
+}
+
+function getCourseById(courseId) {
+    const allCourses = getAllCourses();
+    return allCourses.find(course => 
+        `${course.code}-${course.section}` === courseId
+    );
+}
+
+function getCourseName(course, language = currentLanguage) {
+    if (language === 'en' && COURSE_TRANSLATIONS[course.code]) {
+        return COURSE_TRANSLATIONS[course.code].nameEn;
+    }
+    return course.name;
+}
+
+function getCourseTypeName(type, language = currentLanguage) {
+    if (language === 'en') {
+        return COURSE_TYPES[type].nameEn;
+    }
+    return COURSE_TYPES[type].name;
+}
+
+function isExemptedCourse(courseCode) {
+    return exemptedCourses.has(courseCode);
+}
+
+function updateElectiveCount() {
+    availableElectives = 2 + exemptedCourses.size;
+}
+
+function parseScheduleTime(schedule) {
+    // 解析上课时间，例如 "周一 & 周四 14:00-17:00" 或 "周四 16:00-19:00"
+    const timePattern = /(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})/;
+    const timeMatch = schedule.match(timePattern);
+    
+    if (!timeMatch) return null;
+    
+    const startTime = timeMatch[1];
+    const endTime = timeMatch[2];
+    
+    // 解析星期几
+    const days = [];
+    if (schedule.includes('周一')) days.push(1);
+    if (schedule.includes('周二')) days.push(2);
+    if (schedule.includes('周三')) days.push(3);
+    if (schedule.includes('周四')) days.push(4);
+    if (schedule.includes('周五')) days.push(5);
+    if (schedule.includes('周六')) days.push(6);
+    if (schedule.includes('周日')) days.push(0);
+    
+    return {
+        days,
+        startTime,
+        endTime
+    };
+}
+
+function parseAllTimeRanges(schedule) {
+    // 解析包含多个时间段的课程表，例如 "周日 09:30-12:30 & 14:00-17:00"
+    const timeRanges = [];
+    const timePattern = /(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})/g;
+    let match;
+    
+    while ((match = timePattern.exec(schedule)) !== null) {
+        timeRanges.push({
+            startTime: match[1],
+            endTime: match[2]
+        });
+    }
+    
+    // 如果没有找到时间范围，返回空数组
+    return timeRanges.length > 0 ? timeRanges : [];
+}
+
+function generateCalendarEvents(selectedCourses, showAllMode = false) {
+    const events = [];
+    const conflictGroups = detectTimeConflicts(selectedCourses);
+    
+    selectedCourses.forEach(course => {
+        const scheduleInfo = parseScheduleTime(course.schedule);
+        const courseId = `${course.code}-${course.section}`;
+        const isConflicted = conflictGroups.some(group => 
+            group.some(conflictCourse => 
+                `${conflictCourse.code}-${conflictCourse.section}` === courseId
+            )
+        );
+        
+        const courseName = getCourseName(course, currentLanguage);
+        
+        // 处理常规日期和时间 - 修改以支持多个时间段
+        if (scheduleInfo) {
+            course.dates.forEach(dateStr => {
+                const date = new Date(dateStr);
+                const dayOfWeek = date.getDay();
+                
+                scheduleInfo.days.forEach(expectedDay => {
+                    if (dayOfWeek === expectedDay) {
+                        // 检查是否包含多个时间段（例如 "09:30-12:30 & 14:00-17:00"）
+                        const timeRanges = parseAllTimeRanges(course.schedule);
+                        
+                        timeRanges.forEach((timeRange, index) => {
+                        const startDateTime = dateStr + 'T' + timeRange.startTime + ':00';
+                        const endDateTime = dateStr + 'T' + timeRange.endTime + ':00';
+                        
+                        events.push({
+                            id: `${courseId}-${dateStr}-${expectedDay}${timeRanges.length > 1 ? `-${index}` : ''}`,
+                            title: `${courseName} (${course.section})${timeRanges.length > 1 ? ` - 第${index + 1}节` : ''}`,
+                            start: startDateTime,
+                            end: endDateTime,
+                            backgroundColor: isConflicted ? '#7b6670' : course.color,
+                            borderColor: isConflicted ? '#7b6670' : course.color,
+                            textColor: 'white',
+                            extendedProps: {
+                                course: course,
+                                courseId: courseId,
+                                instructor: course.instructor,
+                                room: course.room,
+                                campus: course.campus,
+                                type: course.type,
+                                isConflicted: isConflicted,
+                                courseName: courseName,
+                                courseNameEn: getCourseName(course, 'en'),
+                                courseNameZh: getCourseName(course, 'zh'),
+                                isSpecialArrangement: false
+                            },
+                            classNames: [
+                                `${course.type}-course`,
+                                isConflicted ? 'conflict-course' : ''
+                            ].filter(Boolean)
+                        });
+                    });
+                }
+                });
+            });
+        }
+
+        // 处理特殊时间安排
+        if (course.special_arrangements && course.special_arrangements.length > 0) {
+            course.special_arrangements.forEach(arrangement => {
+                const timeRanges = parseAllTimeRanges(arrangement.time);
+
+                timeRanges.forEach((timeRange, index) => {
+                    const startDateTime = arrangement.date + 'T' + timeRange.startTime + ':00';
+                    const endDateTime = arrangement.date + 'T' + timeRange.endTime + ':00';
+                    const hasMultipleRanges = timeRanges.length > 1;
+
+                    events.push({
+                        id: `${courseId}-${arrangement.date}-special${hasMultipleRanges ? `-${index}` : ''}`,
+                        title: `${courseName} (${course.section}) - 特殊安排${hasMultipleRanges ? `${index + 1}` : ''}`,
+                        start: startDateTime,
+                        end: endDateTime,
+                        backgroundColor: '#8f7c5d', // 特殊安排低饱和色
+                        borderColor: '#8f7c5d',
+                        textColor: 'white',
+                        extendedProps: {
+                            course: course,
+                            courseId: courseId,
+                            instructor: course.instructor,
+                            room: arrangement.venue,
+                            campus: course.campus,
+                            type: course.type,
+                            isConflicted: false, // 特殊安排一般不检查冲突
+                            courseName: courseName,
+                            courseNameEn: getCourseName(course, 'en'),
+                            courseNameZh: getCourseName(course, 'zh'),
+                            isSpecialArrangement: true,
+                            specialArrangementDetails: arrangement
+                        },
+                        classNames: [
+                            `${course.type}-course`,
+                            'special-arrangement'
+                        ]
+                    });
+                });
+            });
+        }
+    });
+    
+    return events;
+}
+
+function detectTimeConflicts(courses) {
+    const conflicts = [];
+    
+    for (let i = 0; i < courses.length; i++) {
+        for (let j = i + 1; j < courses.length; j++) {
+            const course1 = courses[i];
+            const course2 = courses[j];
+            
+            if (hasTimeConflict(course1, course2)) {
+                // 查找是否已存在包含这两个课程的冲突组
+                let conflictGroup = conflicts.find(group => 
+                    group.includes(course1) || group.includes(course2)
+                );
+                
+                if (conflictGroup) {
+                    // 添加到现有组
+                    if (!conflictGroup.includes(course1)) conflictGroup.push(course1);
+                    if (!conflictGroup.includes(course2)) conflictGroup.push(course2);
+                } else {
+                    // 创建新的冲突组
+                    conflicts.push([course1, course2]);
+                }
+            }
+        }
+    }
+    
+    return conflicts;
+}
+
+function hasTimeConflict(course1, course2) {
+    const schedule1 = parseScheduleTime(course1.schedule);
+    const schedule2 = parseScheduleTime(course2.schedule);
+    
+    if (!schedule1 || !schedule2) return false;
+    
+    // 检查是否有相同的上课日期
+    const commonDates = course1.dates.filter(date => course2.dates.includes(date));
+    if (commonDates.length === 0) return false;
+    
+    // 检查是否有相同的星期几
+    const commonDays = schedule1.days.filter(day => schedule2.days.includes(day));
+    if (commonDays.length === 0) return false;
+    
+    // 检查时间是否重叠
+    const start1 = parseTime(schedule1.startTime);
+    const end1 = parseTime(schedule1.endTime);
+    const start2 = parseTime(schedule2.startTime);
+    const end2 = parseTime(schedule2.endTime);
+    
+    return !(end1 <= start2 || end2 <= start1);
+}
+
+function parseTime(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+}
+
+// 导出数据和函数
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        COURSE_DATA,
+        COURSE_TYPES,
+        CAMPUS_INFO,
+        EXEMPTION_COURSES,
+        COURSE_TRANSLATIONS,
+        COURSE_COLORS,
+        getAllCourses,
+        getCourseById,
+        getCourseName,
+        getCourseTypeName,
+        isExemptedCourse,
+        updateElectiveCount,
+        parseScheduleTime,
+        parseAllTimeRanges,
+        generateCalendarEvents,
+        detectTimeConflicts,
+        hasTimeConflict
+    };
+}
+
+</script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#95d3ba",
+                        "tertiary-fixed": "#ffdbcb",
+                        "secondary-container": "#d6e0f1",
+                        "on-tertiary-fixed-variant": "#7a3000",
+                        "on-tertiary-fixed": "#341000",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d9e3f6",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#80bea6",
+                        "outline-variant": "#bfc9c3",
+                        "on-background": "#121c2a",
+                        "on-secondary-fixed-variant": "#3e4755",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#dee9fc",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#95d3ba",
+                        "secondary-fixed": "#d9e3f4",
+                        "primary": "#003527",
+                        "on-surface": "#121c2a",
+                        "outline": "#707974",
+                        "on-tertiary-container": "#ff9762",
+                        "primary-container": "#064e3b",
+                        "on-surface-variant": "#404944",
+                        "on-secondary-container": "#596372",
+                        "surface-tint": "#2b6954",
+                        "surface-bright": "#f8f9ff",
+                        "tertiary-fixed-dim": "#ffb693",
+                        "surface-container-low": "#eff4ff",
+                        "secondary": "#555f6d",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container": "#e6eeff",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#002117",
+                        "inverse-surface": "#27313f",
+                        "on-secondary-fixed": "#121c28",
+                        "error": "#ba1a1a",
+                        "tertiary": "#521e00",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#762e00",
+                        "surface-dim": "#d0dbed",
+                        "on-primary-fixed-variant": "#0b513d",
+                        "surface-variant": "#d9e3f6",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed-dim": "#bdc7d8",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#b0f0d6"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter", "system-ui", "sans-serif"],
+                        "body": ["Inter", "system-ui", "sans-serif"],
+                        "label": ["Inter", "system-ui", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "18": "4.5rem",
+                        "22": "5.5rem"
+                    }
+                },
+            },
+        }
     </script>
-<style>
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-      }
-      .timetable-grid {
-        display: grid;
-        grid-template-columns: 80px repeat(5, 1fr);
-        grid-template-rows: repeat(11, 80px);
-      }
-      .glass-morphism {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Glass morphism per DESIGN.md */
+        .glass-morphism {
+            background: rgba(248, 249, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        /* Ambient shadow per DESIGN.md */
+        .ambient-shadow {
+            box-shadow: 0 4px 24px -4px rgba(18, 28, 42, 0.06);
+        }
+        .ambient-shadow-lg {
+            box-shadow: 0 8px 40px -4px rgba(18, 28, 42, 0.06);
+        }
+        
+        /* Course card hover state */
+        .course-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .course-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Chip selection states */
+        .chip-unselected {
+            background-color: #d9e3f6;
+            color: #404944;
+        }
+        .chip-selected {
+            background-color: #003527;
+            color: #ffffff;
+        }
+        
+        /* Course list scrollable area */
+        .course-list {
+            overflow: visible;
+        }
+        
+        /* Ghost border per DESIGN.md */
+        .ghost-border {
+            outline: 1px solid rgba(191, 201, 195, 0.2);
+        }
+        
+        /* Text truncation */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            grid-template-rows: repeat(15, 48px);
+            min-height: 720px;
+        }
+        .calendar-cell {
+            border-bottom: 1px solid rgba(191, 201, 195, 0.1);
+        }
+        .calendar-course {
+            border-left-width: 4px;
+        }
+        .month-cell {
+            min-height: 112px;
+        }
     </style>
 </head>
-<body class="bg-background text-on-background font-body antialiased">
-<!-- Sidebar Navigation -->
-<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-50 dark:bg-slate-950 flex flex-col p-4 border-r border-slate-200/50 dark:border-slate-800/50">
-<div class="mb-8 px-2">
-<h1 class="text-lg font-black text-emerald-900 dark:text-emerald-500">Course Catalog</h1>
-<p class="text-xs font-medium text-slate-500 uppercase tracking-widest mt-1">Fall 2024 Semester</p>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-3 px-3 py-2.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-300 font-bold rounded-lg transition-transform duration-200 hover:translate-x-1" href="#">
-<span class="material-symbols-outlined text-[20px]">calendar_today</span>
-<span class="font-['Inter'] text-sm font-medium">Current Semester</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-transform duration-200 hover:translate-x-1" href="#">
-<span class="material-symbols-outlined text-[20px]">import_contacts</span>
-<span class="font-['Inter'] text-sm font-medium">Core Modules</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-transform duration-200 hover:translate-x-1" href="#">
-<span class="material-symbols-outlined text-[20px]">architecture</span>
-<span class="font-['Inter'] text-sm font-medium">Electives</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-transform duration-200 hover:translate-x-1" href="#">
-<span class="material-symbols-outlined text-[20px]">biotech</span>
-<span class="font-['Inter'] text-sm font-medium">Research Labs</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-transform duration-200 hover:translate-x-1" href="#">
-<span class="material-symbols-outlined text-[20px]">inventory_2</span>
-<span class="font-['Inter'] text-sm font-medium">Archives</span>
-</a>
-</nav>
-<!-- Statistics Card (Bento Style) -->
-<div class="mt-6 p-4 bg-surface-container-low rounded-xl border border-outline-variant/20">
-<h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">Load Statistics</h3>
-<div class="space-y-3">
-<div class="flex justify-between items-center">
-<span class="text-sm text-secondary">Total Credits</span>
-<span class="text-sm font-bold text-primary">18.5</span>
-</div>
-<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
-<div class="bg-primary h-full w-[75%] rounded-full"></div>
-</div>
-<div class="grid grid-cols-2 gap-2 pt-2">
-<div class="bg-surface-container-lowest p-2 rounded-lg">
-<p class="text-[10px] text-on-surface-variant uppercase">Core</p>
-<p class="text-lg font-bold text-primary">04</p>
-</div>
-<div class="bg-surface-container-lowest p-2 rounded-lg">
-<p class="text-[10px] text-on-surface-variant uppercase">Elective</p>
-<p class="text-lg font-bold text-tertiary">02</p>
-</div>
-</div>
-</div>
-</div>
-<div class="mt-auto pt-4 border-t border-slate-200/50">
-<button class="w-full py-2.5 px-4 mb-4 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined text-sm">add</span>
-                Add New Course
-            </button>
-<div class="flex flex-col gap-1">
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined text-[20px]">help_outline</span>
-<span class="text-xs font-medium">Support</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:text-error transition-colors" href="#">
-<span class="material-symbols-outlined text-[20px]">logout</span>
-<span class="text-xs font-medium">Logout</span>
-</a>
-</div>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="ml-64 min-h-screen flex flex-col">
-<!-- TopAppBar -->
-<header class="sticky top-0 z-40 bg-slate-50 dark:bg-slate-950 flex justify-between items-center w-full px-8 py-4 border-b border-slate-200/50 dark:border-slate-800/50">
-<div class="flex items-center gap-8">
-<div class="flex items-center gap-3">
-<span class="text-xl font-bold text-emerald-900 dark:text-emerald-500 tracking-tighter">Academic Precision</span>
-<span class="h-4 w-[1px] bg-outline-variant/30"></span>
-<h2 class="font-headline text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">March 2026</h2>
-</div>
-<!-- View Switcher -->
-<div class="flex bg-surface-container p-1 rounded-lg">
-<button class="px-4 py-1.5 text-xs font-bold text-slate-500 hover:text-emerald-800 transition-colors">Day</button>
-<button class="px-4 py-1.5 text-xs font-bold text-emerald-900 dark:text-emerald-400 bg-surface-container-lowest rounded-md shadow-sm">Week</button>
-<button class="px-4 py-1.5 text-xs font-bold text-slate-500 hover:text-emerald-800 transition-colors">Month</button>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<div class="flex items-center gap-1">
-<button class="p-2 text-slate-500 hover:bg-slate-200/50 rounded-full transition-colors">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<button class="p-2 text-slate-500 hover:bg-slate-200/50 rounded-full transition-colors">
-<span class="material-symbols-outlined">settings</span>
-</button>
-</div>
-<div class="flex items-center gap-2">
-<button class="px-4 py-2 text-sm font-bold border border-outline-variant/30 rounded-full hover:bg-surface-container-low transition-colors">Save</button>
-<button class="px-5 py-2 text-sm font-bold bg-primary text-on-primary rounded-full flex items-center gap-2 hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined text-sm">ios_share</span>
-                        Export Schedule
+<body class="bg-surface text-on-surface font-body antialiased">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="h-screen w-72 fixed left-0 top-0 z-50 bg-surface-container-low overflow-y-auto">
+        <!-- Program Header -->
+        <div class="p-6 pb-4">
+            <div class="flex items-center gap-3 mb-1">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center">
+                    <span class="text-on-primary font-bold text-sm">HKU</span>
+                </div>
+                <div>
+                    <h1 class="text-base font-bold text-primary tracking-tight">MFFinTech</h1>
+                    <p class="text-[10px] font-medium text-on-surface-variant uppercase tracking-widest">2025-2026</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="px-4 mb-4">
+            <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2 px-2">Semester & Module</p>
+            <select id="module-select" onchange="switchSemester(this.value)" class="w-full bg-surface-container-lowest rounded-xl border-0 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary">
+                <optgroup label="Semester 1">
+                    <option value="module1">Module 1 · Aug 30 - Oct 12, 2025</option>
+                    <option value="module2">Module 2 · Oct 13 - Nov 29, 2025</option>
+                </optgroup>
+                <optgroup label="Semester 2">
+                    <option value="module3">Module 3 · Dec 8, 2025 - Jan 22, 2026</option>
+                    <option value="module4">Module 4 · Jan 29 - Mar 11, 2026</option>
+                    <option value="module5">Module 5 · Mar 19 - Apr 27, 2026</option>
+                </optgroup>
+                <optgroup label="Summer">
+                    <option value="module6">Module 6 · May 4 - Jun 9, 2026</option>
+                </optgroup>
+            </select>
+        </div>
+        
+        <!-- Course Type Filters -->
+        <div class="px-4 mb-4">
+            <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-3 px-2">Course Types</p>
+            <div class="flex flex-wrap gap-2 px-2">
+                <button onclick="toggleFilter('core')" id="filter-core" class="chip-selected px-3 py-1.5 rounded-full text-xs font-semibold transition-colors">
+                    Core
+                </button>
+                <button onclick="toggleFilter('elective')" id="filter-elective" class="chip-selected px-3 py-1.5 rounded-full text-xs font-semibold transition-colors">
+                    Elective
+                </button>
+                <button onclick="toggleFilter('project')" id="filter-project" class="chip-selected px-3 py-1.5 rounded-full text-xs font-semibold transition-colors">
+                    Capstone
+                </button>
+            </div>
+        </div>
+        
+        <!-- Course Search + List -->
+        <div class="px-4 mb-4">
+            <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2 px-2">Search</p>
+            <input id="course-search" type="text" oninput="setCourseSearch(this.value)" placeholder="Course code, name, instructor..." class="w-full bg-surface-container-lowest rounded-xl border-0 text-sm focus:ring-2 focus:ring-primary"/>
+        </div>
+        <div class="px-4">
+            <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-3 px-2">Available Courses</p>
+            <div id="course-list" class="course-list space-y-2 pb-4">
+                <!-- Courses will be populated dynamically -->
+            </div>
+        </div>
+        
+        <!-- Statistics Card -->
+        <div class="p-4">
+            <div class="p-4 bg-surface-container-lowest rounded-2xl ambient-shadow">
+                <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-3">Selection Summary</h3>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="text-center p-2 bg-surface-container rounded-xl">
+                        <p class="text-lg font-bold text-primary" id="stat-core">0</p>
+                        <p class="text-[9px] text-on-surface-variant uppercase">Core</p>
+                    </div>
+                    <div class="text-center p-2 bg-surface-container rounded-xl">
+                        <p class="text-lg font-bold text-secondary" id="stat-elective">0</p>
+                        <p class="text-[9px] text-on-surface-variant uppercase">Elective</p>
+                    </div>
+                    <div class="text-center p-2 bg-surface-container rounded-xl">
+                        <p class="text-lg font-bold text-tertiary" id="stat-project">0</p>
+                        <p class="text-[9px] text-on-surface-variant uppercase">Project</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Canvas -->
+    <main class="ml-72 min-h-screen flex flex-col bg-surface">
+        <!-- Top App Bar -->
+        <header class="sticky top-0 z-40 bg-surface/80 glass-morphism px-8 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-6">
+                    <div>
+                        <h2 class="font-headline text-xl font-bold tracking-tight text-on-surface" id="semester-title">Semester 1 · Module 1 & 2</h2>
+                        <p class="text-sm text-on-surface-variant" id="semester-dates">Sep 1 - Nov 29, 2025</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Calendar View Switch -->
+                    <div class="flex bg-surface-container p-1 rounded-lg">
+                        <button onclick="setCalendarView('week')" id="view-week" class="px-3 py-1.5 text-xs font-bold bg-surface-container-lowest text-primary rounded-md">Week</button>
+                        <button onclick="setCalendarView('month')" id="view-month" class="px-3 py-1.5 text-xs font-bold text-on-surface-variant hover:text-primary">Month</button>
+                        <button onclick="setCalendarView('agenda')" id="view-agenda" class="px-3 py-1.5 text-xs font-bold text-on-surface-variant hover:text-primary">Agenda</button>
+                    </div>
+                    <!-- Language Toggle -->
+                    <div class="flex bg-surface-container p-1 rounded-lg">
+                        <button onclick="setLanguage('zh')" id="lang-zh" class="px-3 py-1.5 text-xs font-bold text-on-primary bg-primary rounded-md transition-colors">中文</button>
+                        <button onclick="setLanguage('en')" id="lang-en" class="px-3 py-1.5 text-xs font-bold text-on-surface-variant hover:text-primary transition-colors">EN</button>
+                    </div>
+                    <button onclick="clearSelection()" class="px-4 py-2 text-sm font-semibold text-on-surface-variant hover:text-error transition-colors">
+                        Clear All
                     </button>
-</div>
-<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden ml-2 border-2 border-primary-fixed">
-<img alt="User profile avatar" data-alt="professional headshot of a female academic researcher in a minimalist office setting with soft daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEjxxiXPIxHgdGsieXEBsgo9BtoueUJVOXewQ2S0H92So3AAVx7WEwImGjENfx7zwK8KekmO_86HNhGwRbq0tg1ngWH8nMiY_r_RS0NY35_3oKhvaoKYFf-dAURHMbuimjAgZ2I6aQr_SpS2XIY-Xm_ShE45eMP9srIaTCoZ65TMOE5yIWN4FgwnwEsJOtBoAGmfYJjSvzsvtXXogigTgr0coinpC8oeO8mrbuDGiJ7J9QvbdccDi_PgFrzqpm_hcSKazjtYLYAdxd"/>
-</div>
-</div>
-</header>
-<!-- Timetable Area -->
-<div class="p-8 flex-1">
-<div class="max-w-7xl mx-auto">
-<!-- Day Headers -->
-<div class="grid grid-cols-[80px_repeat(5,1fr)] mb-4 border-b border-outline-variant/10 pb-4">
-<div class="flex items-center justify-center">
-<span class="material-symbols-outlined text-slate-300">schedule</span>
-</div>
-<div class="text-center">
-<p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Monday</p>
-<p class="text-2xl font-headline font-extrabold text-on-surface">09</p>
-</div>
-<div class="text-center">
-<p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Tuesday</p>
-<p class="text-2xl font-headline font-extrabold text-on-surface">10</p>
-</div>
-<div class="text-center">
-<p class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">Wednesday</p>
-<p class="text-2xl font-headline font-extrabold text-primary">11</p>
-</div>
-<div class="text-center">
-<p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Thursday</p>
-<p class="text-2xl font-headline font-extrabold text-on-surface">12</p>
-</div>
-<div class="text-center">
-<p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Friday</p>
-<p class="text-2xl font-headline font-extrabold text-on-surface">13</p>
-</div>
-</div>
-<!-- Timetable Grid -->
-<div class="relative bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden">
-<!-- Horizontal Hour Lines -->
-<div class="absolute inset-0 pointer-events-none">
-<div class="timetable-grid h-full">
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6 border-b border-outline-variant/5"></div>
-<div class="col-start-1 col-span-6"></div>
-</div>
-</div>
-<!-- Vertical Day Lines -->
-<div class="absolute inset-0 pointer-events-none grid grid-cols-[80px_repeat(5,1fr)]">
-<div class="border-r border-outline-variant/5"></div>
-<div class="border-r border-outline-variant/5"></div>
-<div class="border-r border-outline-variant/5"></div>
-<div class="border-r border-outline-variant/5"></div>
-<div class="border-r border-outline-variant/5"></div>
-<div></div>
-</div>
-<div class="timetable-grid relative z-10">
-<!-- Time Labels -->
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">08:00</div>
-<div class="col-start-2 col-span-5"></div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">09:00</div>
-<!-- Course Block: Advanced Jurisprudence -->
-<div class="col-start-2 row-start-2 row-span-2 p-1.5">
-<div class="h-full w-full bg-primary-fixed/60 hover:bg-primary-fixed-dim transition-colors rounded-xl p-3 flex flex-col group cursor-pointer border-l-4 border-primary">
-<span class="text-[10px] font-black text-on-primary-fixed-variant uppercase tracking-tighter">09:00 — 11:00</span>
-<h4 class="text-sm font-bold text-on-primary-fixed leading-tight mt-1">Advanced Jurisprudence</h4>
-<p class="text-[11px] font-medium text-on-primary-fixed-variant mt-auto flex items-center gap-1">
-<span class="material-symbols-outlined text-xs">location_on</span>
-                                    Hall 4B · 法学楼
-                                </p>
-</div>
-</div>
-<div class="col-start-3 col-span-4"></div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">10:00</div>
-<div class="col-start-3 col-span-4"></div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">11:00</div>
-<!-- Course Block: Macroeconomic Policy -->
-<div class="col-start-4 row-start-4 row-span-2 p-1.5">
-<div class="h-full w-full bg-surface-container-high hover:bg-surface-container-highest transition-colors rounded-xl p-3 flex flex-col group cursor-pointer border-l-4 border-secondary">
-<span class="text-[10px] font-black text-secondary uppercase tracking-tighter">11:00 — 13:00</span>
-<h4 class="text-sm font-bold text-on-surface leading-tight mt-1">Macroeconomic Policy</h4>
-<p class="text-[11px] font-medium text-on-surface-variant mt-auto flex items-center gap-1">
-<span class="material-symbols-outlined text-xs">location_on</span>
-                                    Room 202 · 经济中心
-                                </p>
-</div>
-</div>
-<div class="col-start-2 col-span-2"></div>
-<div class="col-start-5 col-span-2"></div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">12:00</div>
-<div class="col-start-2 col-span-2"></div>
-<div class="col-start-5 col-span-2"></div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">13:00</div>
-<!-- Lunch Gap -->
-<div class="col-start-2 col-span-5 bg-surface-container-low/30"></div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">14:00</div>
-<!-- Course Block: Structural Engineering -->
-<div class="col-start-3 row-start-7 row-span-2 p-1.5">
-<div class="h-full w-full bg-tertiary-fixed/60 hover:bg-tertiary-fixed-dim transition-colors rounded-xl p-3 flex flex-col group cursor-pointer border-l-4 border-tertiary">
-<span class="text-[10px] font-black text-on-tertiary-fixed-variant uppercase tracking-tighter">14:00 — 16:00</span>
-<h4 class="text-sm font-bold text-on-tertiary-fixed leading-tight mt-1">Structural Analysis II</h4>
-<p class="text-[11px] font-medium text-on-tertiary-fixed-variant mt-auto flex items-center gap-1">
-<span class="material-symbols-outlined text-xs">location_on</span>
-                                    Lab 01 · 工程实验室
-                                </p>
-</div>
-</div>
-<!-- Course Block: Research Seminar -->
-<div class="col-start-6 row-start-7 row-span-3 p-1.5">
-<div class="h-full w-full bg-primary-container text-on-primary rounded-xl p-3 flex flex-col group cursor-pointer">
-<span class="text-[10px] font-black opacity-70 uppercase tracking-tighter">14:00 — 17:00</span>
-<h4 class="text-sm font-bold leading-tight mt-1">Research Methods Seminar</h4>
-<p class="text-[11px] font-medium opacity-70 mt-auto flex items-center gap-1">
-<span class="material-symbols-outlined text-xs">location_on</span>
-                                    Online · 在线研讨
-                                </p>
-</div>
-</div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">15:00</div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">16:00</div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">17:00</div>
-<div class="flex items-center justify-center text-xs font-bold text-slate-400">18:00</div>
-</div>
-</div>
-<!-- Footer Summary Info -->
-<div class="mt-8 flex flex-wrap gap-6 items-center">
-<div class="flex items-center gap-3">
-<span class="w-3 h-3 rounded-full bg-primary"></span>
-<span class="text-xs font-bold text-on-surface-variant">Core Requirements</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="w-3 h-3 rounded-full bg-secondary"></span>
-<span class="text-xs font-bold text-on-surface-variant">Capstone Projects</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="w-3 h-3 rounded-full bg-tertiary"></span>
-<span class="text-xs font-bold text-on-surface-variant">Electives &amp; Labs</span>
-</div>
-<div class="flex-1"></div>
-<p class="text-xs font-medium text-slate-400 italic">Last updated: Today at 08:42 AM</p>
-</div>
-</div>
-</div>
-</main>
-<!-- Floating Action Button for Mobile Context (hidden on large desktop) -->
-<div class="fixed bottom-8 right-8 md:hidden">
-<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center">
-<span class="material-symbols-outlined">add</span>
-</button>
-</div>
-</body></html>
+                    <button onclick="openExportModal()" class="px-5 py-2 text-sm font-bold bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full flex items-center gap-2 hover:opacity-90 transition-opacity ambient-shadow">
+                        <span class="material-symbols-outlined text-sm">download</span>
+                        Export
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Course Cards Grid -->
+        <div class="p-8 flex-1">
+            <div class="max-w-7xl mx-auto">
+                <!-- Time Conflicts Warning -->
+                <div id="conflict-warning" class="hidden mb-6 p-4 bg-error-container rounded-2xl">
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-error">warning</span>
+                        <div>
+                            <p class="font-bold text-on-error-container">Time Conflict Detected</p>
+                            <p class="text-sm text-on-error-container/80 mt-1" id="conflict-details"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Week Calendar View -->
+                <div id="schedule-details" class="mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-bold text-on-surface uppercase tracking-wider">Calendar</h3>
+                        <div class="flex items-center gap-2">
+                            <button onclick="navigateCalendar(-1)" class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant hover:text-primary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-base">chevron_left</span>
+                            </button>
+                            <p id="calendar-subtitle" class="text-xs text-on-surface-variant min-w-[170px] text-center"></p>
+                            <button onclick="navigateCalendar(1)" class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant hover:text-primary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-base">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-lowest rounded-2xl ambient-shadow overflow-hidden">
+                        <div id="calendar-day-headers" class="grid grid-cols-[80px_repeat(7,1fr)] border-b border-outline-variant/10"></div>
+                        <div class="relative">
+                            <div class="absolute inset-0 pointer-events-none grid grid-cols-[80px_repeat(7,1fr)]">
+                                <div class="border-r border-outline-variant/10"></div>
+                                <div class="border-r border-outline-variant/10"></div>
+                                <div class="border-r border-outline-variant/10"></div>
+                                <div class="border-r border-outline-variant/10"></div>
+                                <div class="border-r border-outline-variant/10"></div>
+                                <div class="border-r border-outline-variant/10"></div>
+                                <div class="border-r border-outline-variant/10"></div>
+                                <div></div>
+                            </div>
+                            <div id="calendar-grid" class="relative z-10 timetable-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Courses Section -->
+                <div class="mb-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <h3 class="text-sm font-bold text-on-surface uppercase tracking-wider">Selected Courses</h3>
+                        <span class="text-xs text-on-surface-variant" id="selected-count">(0 courses)</span>
+                    </div>
+                    <div id="selected-courses" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div id="empty-state" class="col-span-full py-10 text-center">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-surface-container flex items-center justify-center">
+                                <span class="material-symbols-outlined text-3xl text-on-surface-variant">school</span>
+                            </div>
+                            <p class="text-on-surface-variant font-medium">No courses selected</p>
+                            <p class="text-sm text-on-surface-variant/60 mt-1">Click on courses in the sidebar to add them</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="mt-8 pt-6 flex flex-wrap gap-6 items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: #7d5964"></span>
+                        <span class="text-xs font-medium text-on-surface-variant">Core Courses</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: #6f7f76"></span>
+                        <span class="text-xs font-medium text-on-surface-variant">Elective Courses</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: #8d7458"></span>
+                        <span class="text-xs font-medium text-on-surface-variant">Capstone Project</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: #8f7c5d"></span>
+                        <span class="text-xs font-medium text-on-surface-variant">Special Arrangement</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Course Detail Modal -->
+    <div id="course-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-inverse-surface/40" onclick="closeModal()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-surface-container-lowest ambient-shadow-lg overflow-y-auto">
+            <div class="p-6">
+                <div class="flex items-start justify-between mb-6">
+                    <div>
+                        <span id="modal-type" class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-primary text-on-primary">Core</span>
+                        <h2 id="modal-title" class="text-xl font-bold text-on-surface mt-3">Course Title</h2>
+                        <p id="modal-code" class="text-sm text-on-surface-variant mt-1">MFIN7034 · A班</p>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="p-4 bg-surface-container rounded-xl">
+                        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Instructor</p>
+                        <p id="modal-instructor" class="font-medium text-on-surface">Prof. Name</p>
+                    </div>
+                    
+                    <div class="p-4 bg-surface-container rounded-xl">
+                        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Schedule</p>
+                        <p id="modal-schedule" class="font-medium text-on-surface">周二 & 周五 14:00-17:00</p>
+                    </div>
+                    
+                    <div class="p-4 bg-surface-container rounded-xl">
+                        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Location</p>
+                        <p id="modal-campus" class="font-medium text-on-surface">CP · Cyberport</p>
+                        <p id="modal-room" class="text-sm text-on-surface-variant mt-1">Room ABC</p>
+                    </div>
+                    
+                    <div class="p-4 bg-surface-container rounded-xl">
+                        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Class Dates</p>
+                        <div id="modal-dates" class="flex flex-wrap gap-2 mt-2">
+                            <!-- Date chips will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div id="modal-special" class="hidden p-4 bg-tertiary-fixed/30 rounded-xl">
+                        <p class="text-[10px] font-bold text-on-tertiary-fixed-variant uppercase tracking-wider mb-2">Special Arrangements</p>
+                        <div id="modal-special-content" class="space-y-2">
+                            <!-- Special arrangements will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-6">
+                    <button id="modal-action-btn" onclick="toggleCourseFromModal()" class="w-full py-3 px-4 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+                        <span class="material-symbols-outlined text-sm">add</span>
+                        Add to Schedule
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Options Modal -->
+    <div id="export-modal" class="fixed inset-0 z-[110] hidden">
+        <div class="absolute inset-0 bg-inverse-surface/40" onclick="closeExportModal()"></div>
+        <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-full max-w-xl bg-surface-container-lowest rounded-2xl ambient-shadow-lg p-6">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="text-lg font-bold text-on-surface">Export Schedule</h3>
+                <button onclick="closeExportModal()" class="p-2 hover:bg-surface-container rounded-full">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="space-y-5">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Format</p>
+                    <div class="flex gap-2">
+                        <button id="export-format-ics" onclick="setExportFormat('ics')" class="px-3 py-2 rounded-lg bg-primary text-on-primary text-sm font-semibold">ICS</button>
+                        <button id="export-format-csv" onclick="setExportFormat('csv')" class="px-3 py-2 rounded-lg bg-surface-container text-on-surface-variant text-sm font-semibold">CSV</button>
+                    </div>
+                </div>
+                <div id="ics-reminder-section">
+                    <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Reminders (multi-select)</p>
+                    <div class="flex flex-wrap gap-2" id="reminder-options">
+                        <label class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-medium cursor-pointer"><input type="checkbox" class="mr-1" value="10"/>10 min</label>
+                        <label class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-medium cursor-pointer"><input type="checkbox" class="mr-1" value="30"/>30 min</label>
+                        <label class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-medium cursor-pointer"><input type="checkbox" class="mr-1" value="60"/>1 hour</label>
+                        <label class="px-3 py-1.5 bg-surface-container rounded-full text-xs font-medium cursor-pointer"><input type="checkbox" class="mr-1" value="1440"/>1 day</label>
+                    </div>
+                    <div class="mt-3">
+                        <label for="custom-reminder" class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Custom (minutes before)</label>
+                        <input id="custom-reminder" type="number" min="1" class="mt-1 w-full bg-surface-container-low border-0 rounded-lg text-sm" placeholder="e.g. 45"/>
+                    </div>
+                </div>
+                <div class="pt-2 flex justify-end gap-3">
+                    <button onclick="closeExportModal()" class="px-4 py-2 rounded-lg bg-surface-container text-on-surface-variant text-sm font-semibold">Cancel</button>
+                    <button onclick="exportSchedule()" class="px-4 py-2 rounded-lg bg-gradient-to-br from-primary to-primary-container text-on-primary text-sm font-semibold">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        let currentLanguage = 'zh';
+        let currentModule = 'module1';
+        let selectedCourses = new Set();
+        let activeFilters = new Set(['core', 'elective', 'project']);
+        let currentModalCourse = null;
+        let exportFormat = 'ics';
+        let currentCalendarView = 'week';
+        let courseSearchQuery = '';
+        let currentWeekStart = null;
+        let currentMonthStart = null;
+        const STORAGE_KEY = 'mffintech-timetable-state-v1';
+
+        const ROOM_MONTHS = {
+            jan: 1, january: 1,
+            feb: 2, february: 2,
+            mar: 3, march: 3,
+            apr: 4, april: 4,
+            may: 5,
+            jun: 6, june: 6,
+            jul: 7, july: 7,
+            aug: 8, august: 8,
+            sep: 9, sept: 9, september: 9,
+            oct: 10, october: 10,
+            nov: 11, november: 11,
+            dec: 12, december: 12
+        };
+        const WEEKDAY_RULES = {
+            mon: 1, monday: 1,
+            tue: 2, tues: 2, tuesday: 2,
+            wed: 3, wednesday: 3,
+            thu: 4, thur: 4, thurs: 4, thursday: 4,
+            fri: 5, friday: 5,
+            sat: 6, saturday: 6,
+            sun: 0, sunday: 0
+        };
+        const roomRuleCache = new Map();
+
+        // Module Info
+        const MODULE_INFO = {
+            module1: {
+                title: { zh: 'Module 1', en: 'Module 1' },
+                subtitle: { zh: 'Semester 1', en: 'Semester 1' },
+                dates: 'Aug 30 - Oct 12, 2025',
+                semester: 'semester1',
+                moduleNum: '1'
+            },
+            module2: {
+                title: { zh: 'Module 2', en: 'Module 2' },
+                subtitle: { zh: 'Semester 1', en: 'Semester 1' },
+                dates: 'Oct 13 - Nov 29, 2025',
+                semester: 'semester1',
+                moduleNum: '2'
+            },
+            module3: {
+                title: { zh: 'Module 3', en: 'Module 3' },
+                subtitle: { zh: 'Semester 2', en: 'Semester 2' },
+                dates: 'Dec 8, 2025 - Jan 22, 2026',
+                semester: 'semester2',
+                moduleNum: '3'
+            },
+            module4: {
+                title: { zh: 'Module 4', en: 'Module 4' },
+                subtitle: { zh: 'Semester 2', en: 'Semester 2' },
+                dates: 'Jan 29 - Mar 11, 2026',
+                semester: 'semester2',
+                moduleNum: '4'
+            },
+            module5: {
+                title: { zh: 'Module 5', en: 'Module 5' },
+                subtitle: { zh: 'Semester 2', en: 'Semester 2' },
+                dates: 'Mar 19 - Apr 27, 2026',
+                semester: 'semester2',
+                moduleNum: '5'
+            },
+            module6: {
+                title: { zh: 'Module 6', en: 'Module 6' },
+                subtitle: { zh: 'Summer Term', en: 'Summer Term' },
+                dates: 'May 4 - Jun 9, 2026',
+                semester: 'summer',
+                moduleNum: '6'
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if COURSE_DATA is loaded
+            if (typeof COURSE_DATA === 'undefined') {
+                console.error('COURSE_DATA not loaded!');
+                document.getElementById('course-list').innerHTML = `
+                    <div class="text-center py-8 text-error">
+                        <p class="text-sm font-bold">Data Loading Error</p>
+                    </div>
+                `;
+                return;
+            }
+            console.log('COURSE_DATA loaded:', COURSE_DATA.semester1.length, 'courses in semester 1');
+            loadState();
+            renderCourseList();
+            renderSelectedCourses();
+            updateHeaderInfo();
+            setExportFormat('ics');
+            setCalendarView(currentCalendarView || 'week');
+        });
+
+        // Module Navigation
+        function switchSemester(module) {
+            currentModule = module;
+            const sel = document.getElementById('module-select');
+            if (sel && sel.value !== module) sel.value = module;
+            currentWeekStart = null;
+            currentMonthStart = null;
+            updateHeaderInfo();
+            renderCourseList();
+            renderSelectedCourses();
+            saveState();
+        }
+        
+        function updateHeaderInfo() {
+            const info = MODULE_INFO[currentModule];
+            if (info) {
+                document.getElementById('semester-title').textContent = 
+                    info.title[currentLanguage] + ' · ' + info.subtitle[currentLanguage];
+                document.getElementById('semester-dates').textContent = info.dates;
+            }
+        }
+
+        // Filter Toggle
+        function toggleFilter(type) {
+            const btn = document.getElementById('filter-' + type);
+            if (activeFilters.has(type)) {
+                activeFilters.delete(type);
+                btn.classList.remove('chip-selected');
+                btn.classList.add('chip-unselected');
+            } else {
+                activeFilters.add(type);
+                btn.classList.remove('chip-unselected');
+                btn.classList.add('chip-selected');
+            }
+            renderCourseList();
+            saveState();
+        }
+
+        function setCourseSearch(value) {
+            courseSearchQuery = (value || '').trim().toLowerCase();
+            renderCourseList();
+            saveState();
+        }
+
+        function setCalendarView(view) {
+            currentCalendarView = view;
+            ['week', 'month', 'agenda'].forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (!el) return;
+                if (v === view) {
+                    el.classList.add('bg-surface-container-lowest', 'text-primary', 'rounded-md');
+                    el.classList.remove('text-on-surface-variant');
+                } else {
+                    el.classList.remove('bg-surface-container-lowest', 'text-primary', 'rounded-md');
+                    el.classList.add('text-on-surface-variant');
+                }
+            });
+            renderSelectedCourses();
+            saveState();
+        }
+
+        function navigateCalendar(step) {
+            if (currentCalendarView === 'week') {
+                if (!currentWeekStart) currentWeekStart = mondayOf(new Date());
+                currentWeekStart.setDate(currentWeekStart.getDate() + step * 7);
+            } else if (currentCalendarView === 'month') {
+                if (!currentMonthStart) {
+                    const d = new Date();
+                    currentMonthStart = new Date(d.getFullYear(), d.getMonth(), 1);
+                }
+                currentMonthStart = new Date(currentMonthStart.getFullYear(), currentMonthStart.getMonth() + step, 1);
+            }
+            renderSelectedCourses();
+            saveState();
+        }
+
+        // Language Toggle
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update buttons
+            const zhBtn = document.getElementById('lang-zh');
+            const enBtn = document.getElementById('lang-en');
+            
+            if (lang === 'zh') {
+                zhBtn.classList.add('bg-primary', 'text-on-primary');
+                zhBtn.classList.remove('text-on-surface-variant');
+                enBtn.classList.remove('bg-primary', 'text-on-primary');
+                enBtn.classList.add('text-on-surface-variant');
+            } else {
+                enBtn.classList.add('bg-primary', 'text-on-primary');
+                enBtn.classList.remove('text-on-surface-variant');
+                zhBtn.classList.remove('bg-primary', 'text-on-primary');
+                zhBtn.classList.add('text-on-surface-variant');
+            }
+            
+            // Update header
+            updateHeaderInfo();
+            
+            renderCourseList();
+            renderSelectedCourses();
+            saveState();
+        }
+
+        // Get courses for current module
+        function getCurrentCourses() {
+            const info = MODULE_INFO[currentModule];
+            if (!info) return [];
+            
+            const semesterData = COURSE_DATA[info.semester] || [];
+            const moduleNum = info.moduleNum;
+            
+            // Filter courses by module
+            return semesterData.filter(course => {
+                if (!course.module) return true; // Show if no module specified
+                // Check if course's module matches or contains current module
+                return course.module === moduleNum || 
+                       course.module.includes(moduleNum) ||
+                       course.module === '1&2' && (moduleNum === '1' || moduleNum === '2') ||
+                       course.module === '3-5' && ['3', '4', '5'].includes(moduleNum);
+            });
+        }
+
+        function saveState() {
+            try {
+                const payload = {
+                    currentLanguage,
+                    currentModule,
+                    currentCalendarView,
+                    courseSearchQuery,
+                    activeFilters: Array.from(activeFilters),
+                    selectedCourses: Array.from(selectedCourses),
+                    currentWeekStart: currentWeekStart ? toISODateLocal(currentWeekStart) : null,
+                    currentMonthStart: currentMonthStart ? toISODateLocal(currentMonthStart) : null
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+            } catch (e) {
+                console.warn('saveState failed', e);
+            }
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const s = JSON.parse(raw);
+                if (s.currentLanguage === 'en' || s.currentLanguage === 'zh') currentLanguage = s.currentLanguage;
+                if (s.currentModule && MODULE_INFO[s.currentModule]) currentModule = s.currentModule;
+                if (s.currentCalendarView && ['week', 'month', 'agenda'].includes(s.currentCalendarView)) currentCalendarView = s.currentCalendarView;
+                if (typeof s.courseSearchQuery === 'string') courseSearchQuery = s.courseSearchQuery;
+                if (Array.isArray(s.activeFilters)) activeFilters = new Set(s.activeFilters.filter(x => ['core', 'elective', 'project'].includes(x)));
+                if (Array.isArray(s.selectedCourses)) selectedCourses = new Set(s.selectedCourses);
+                if (s.currentWeekStart) currentWeekStart = mondayOf(new Date(s.currentWeekStart));
+                if (s.currentMonthStart) {
+                    const d = new Date(s.currentMonthStart);
+                    currentMonthStart = new Date(d.getFullYear(), d.getMonth(), 1);
+                }
+
+                const sel = document.getElementById('module-select');
+                if (sel) sel.value = currentModule;
+                const search = document.getElementById('course-search');
+                if (search) search.value = courseSearchQuery;
+                ['core', 'elective', 'project'].forEach(type => {
+                    const btn = document.getElementById(`filter-${type}`);
+                    if (!btn) return;
+                    if (activeFilters.has(type)) {
+                        btn.classList.add('chip-selected');
+                        btn.classList.remove('chip-unselected');
+                    } else {
+                        btn.classList.remove('chip-selected');
+                        btn.classList.add('chip-unselected');
+                    }
+                });
+                const zhBtn = document.getElementById('lang-zh');
+                const enBtn = document.getElementById('lang-en');
+                if (zhBtn && enBtn) {
+                    if (currentLanguage === 'zh') {
+                        zhBtn.classList.add('bg-primary', 'text-on-primary');
+                        zhBtn.classList.remove('text-on-surface-variant');
+                        enBtn.classList.remove('bg-primary', 'text-on-primary');
+                        enBtn.classList.add('text-on-surface-variant');
+                    } else {
+                        enBtn.classList.add('bg-primary', 'text-on-primary');
+                        enBtn.classList.remove('text-on-surface-variant');
+                        zhBtn.classList.remove('bg-primary', 'text-on-primary');
+                        zhBtn.classList.add('text-on-surface-variant');
+                    }
+                }
+            } catch (e) {
+                console.warn('loadState failed', e);
+            }
+        }
+
+        // Get course name based on language
+        function getCourseName(course) {
+            if (COURSE_TRANSLATIONS[course.code] && COURSE_TRANSLATIONS[course.code].nameEn) {
+                return COURSE_TRANSLATIONS[course.code].nameEn;
+            }
+            return course.nameEn || course.name;
+        }
+
+        function parseRoomRules(rawRoom) {
+            const key = rawRoom || '';
+            if (roomRuleCache.has(key)) return roomRuleCache.get(key);
+            const rules = [];
+            if (!rawRoom) {
+                roomRuleCache.set(key, rules);
+                return rules;
+            }
+            const parts = rawRoom.split('/').map(x => x.trim()).filter(Boolean);
+            parts.forEach(part => {
+                const m = part.match(/\(([^)]+)\)/);
+                if (!m) return;
+                const inside = m[1];
+                const baseRoom = part.replace(/\([^)]+\)/g, '').trim().replace(/\s*@\s*[A-Za-z]+$/i, '').trim();
+                inside.split(',').map(x => x.trim()).forEach(token => {
+                    const t = token.toLowerCase();
+                    const w = t.match(/^(mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun|monday|tuesday|wednesday|thursday|friday|saturday|sunday)s?$/i);
+                    if (w) {
+                        rules.push({ type: 'weekday', value: WEEKDAY_RULES[w[1]], room: baseRoom });
+                        return;
+                    }
+                    const dm = t.match(/^([a-z]{3,9})\s+(\d{1,2})$/i);
+                    if (dm && ROOM_MONTHS[dm[1]]) {
+                        rules.push({ type: 'date', month: ROOM_MONTHS[dm[1]], day: Number(dm[2]), room: baseRoom });
+                    }
+                });
+            });
+            roomRuleCache.set(key, rules);
+            return rules;
+        }
+
+        function resolveRoomForDate(course, dateStr, fallbackRoom, weekdayHint = null) {
+            if (!course || !course.room) return fallbackRoom || '';
+            const d = new Date(dateStr + 'T00:00:00');
+            const wd = weekdayHint == null ? d.getDay() : weekdayHint;
+            const rules = parseRoomRules(course.room);
+            const exact = rules.find(r => r.type === 'date' && r.month === (d.getMonth() + 1) && r.day === d.getDate());
+            if (exact) return exact.room;
+            const byWd = rules.find(r => r.type === 'weekday' && r.value === wd);
+            if (byWd) return byWd.room;
+            return fallbackRoom || course.room;
+        }
+
+        // Render course list in sidebar
+        function renderCourseList() {
+            const container = document.getElementById('course-list');
+            const courses = getCurrentCourses()
+                .filter(c => activeFilters.has(c.type))
+                .filter(c => {
+                    if (!courseSearchQuery) return true;
+                    const hay = `${c.code} ${getCourseName(c)} ${c.instructor} ${c.section}`.toLowerCase();
+                    return hay.includes(courseSearchQuery);
+                });
+            
+            if (courses.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-sm text-on-surface-variant">No courses in this module</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = courses.map(course => {
+                const courseId = `${course.code}-${course.section}`;
+                const isSelected = selectedCourses.has(courseId);
+                const color = COURSE_COLORS[course.code] || COURSE_TYPES[course.type].color;
+                
+                return `
+                    <div class="p-3 rounded-xl cursor-pointer transition-all duration-200 ${isSelected ? 'bg-primary-fixed/40 ghost-border' : 'bg-surface-container-lowest hover:bg-surface-container'}" 
+                         onclick="toggleCourse('${courseId}')">
+                        <div class="flex items-start gap-3">
+                            <div class="w-1 h-full min-h-[40px] rounded-full" style="background-color: ${color}"></div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-[9px] font-bold text-on-surface-variant uppercase">${course.code}</span>
+                                    <span class="text-[9px] text-on-surface-variant/60">${course.section}</span>
+                                </div>
+                                <p class="text-sm font-semibold text-on-surface leading-tight line-clamp-2">${getCourseName(course)}</p>
+                                <p class="text-[10px] text-on-surface-variant mt-1">${course.schedule}</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                ${isSelected 
+                                    ? '<span class="material-symbols-outlined text-primary text-lg">check_circle</span>' 
+                                    : '<span class="material-symbols-outlined text-on-surface-variant/30 text-lg">radio_button_unchecked</span>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle course selection
+        function toggleCourse(courseId) {
+            if (selectedCourses.has(courseId)) {
+                selectedCourses.delete(courseId);
+            } else {
+                selectedCourses.add(courseId);
+            }
+            renderCourseList();
+            renderSelectedCourses();
+            updateStats();
+            checkConflicts();
+            saveState();
+        }
+
+        // Render selected courses
+        function renderSelectedCourses() {
+            const container = document.getElementById('selected-courses');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (selectedCourses.size === 0) {
+                container.innerHTML = '';
+                container.appendChild(emptyState.cloneNode(true));
+                document.getElementById('selected-count').textContent = '(0 courses)';
+                renderCalendar([]);
+                return;
+            }
+            
+            document.getElementById('selected-count').textContent = `(${selectedCourses.size} courses)`;
+            
+            // Get all selected course objects
+            const allCourses = [...COURSE_DATA.semester1, ...COURSE_DATA.semester2, ...COURSE_DATA.summer];
+            const selected = allCourses.filter(c => selectedCourses.has(`${c.code}-${c.section}`));
+            
+            container.innerHTML = selected.map(course => {
+                const color = COURSE_COLORS[course.code] || COURSE_TYPES[course.type].color;
+                const typeLabel = currentLanguage === 'en' ? COURSE_TYPES[course.type].nameEn : COURSE_TYPES[course.type].name;
+                
+                return `
+                    <div class="course-card bg-surface-container-lowest rounded-2xl ambient-shadow overflow-hidden" style="border-left: 4px solid ${color}">
+                        <div class="p-4">
+                            <div class="flex items-start justify-between mb-3">
+                                <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-full" style="background-color: ${color}20; color: ${color}">${typeLabel}</span>
+                                <button onclick="event.stopPropagation(); toggleCourse('${course.code}-${course.section}')" class="p-1 hover:bg-surface-container rounded-full transition-colors">
+                                    <span class="material-symbols-outlined text-on-surface-variant text-lg">close</span>
+                                </button>
+                            </div>
+                            <h4 class="font-bold text-on-surface leading-tight mb-2">${getCourseName(course)}</h4>
+                            <p class="text-xs text-on-surface-variant mb-3">${course.code} · ${course.section}</p>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex items-center gap-2 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">person</span>
+                                    <span>${course.instructor}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">schedule</span>
+                                    <span>${course.schedule}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">location_on</span>
+                                    <span>${course.campus} · ${resolveRoomForDate(course, course.dates?.[0] || new Date().toISOString().slice(0,10), course.room)}</span>
+                                </div>
+                            </div>
+                            ${course.special_arrangements && course.special_arrangements.length > 0 ? `
+                                <div class="mt-3 pt-3 border-t border-outline-variant/10">
+                                    <p class="text-[9px] font-bold text-tertiary uppercase tracking-wider mb-1">Special Arrangements</p>
+                                    <p class="text-[10px] text-on-surface-variant">${course.special_arrangements.length} date(s) with different schedule</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <button onclick="openModal('${course.code}-${course.section}')" class="w-full py-2 bg-surface-container text-xs font-semibold text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            renderCalendar(selected);
+        }
+
+        function mondayOf(d) {
+            const x = new Date(d);
+            const day = x.getDay();
+            const diff = (day + 6) % 7;
+            x.setDate(x.getDate() - diff);
+            x.setHours(0, 0, 0, 0);
+            return x;
+        }
+
+        function toISODateLocal(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+
+        function weekRangeFromCourses(courses) {
+            const allDates = [];
+            courses.forEach(c => {
+                c.dates.forEach(d => allDates.push(new Date(d)));
+                (c.special_arrangements || []).forEach(a => allDates.push(new Date(a.date)));
+            });
+            const base = allDates.length ? new Date(Math.min(...allDates.map(x => x.getTime()))) : new Date();
+            return mondayOf(base);
+        }
+
+        function monthStartFromCourses(courses) {
+            const allDates = [];
+            courses.forEach(c => {
+                c.dates.forEach(d => allDates.push(new Date(d)));
+                (c.special_arrangements || []).forEach(a => allDates.push(new Date(a.date)));
+            });
+            const base = allDates.length ? new Date(Math.min(...allDates.map(x => x.getTime()))) : new Date();
+            return new Date(base.getFullYear(), base.getMonth(), 1);
+        }
+
+        function getAllEvents(courses) {
+            const events = [];
+            courses.forEach(course => {
+                const ranges = parseAllTimeRanges(course.schedule);
+                const daySet = new Set((parseScheduleTime(course.schedule)?.days || []));
+                course.dates.forEach(dateStr => {
+                    const d = new Date(dateStr);
+                    if (!daySet.has(d.getDay())) return;
+                    ranges.forEach((r, idx) => {
+                        events.push({
+                            dateStr,
+                            start: r.startTime,
+                            end: r.endTime,
+                            course,
+                            room: resolveRoomForDate(course, dateStr, course.room, d.getDay()),
+                            isSpecial: false,
+                            idx
+                        });
+                    });
+                });
+                (course.special_arrangements || []).forEach((arr, idx) => {
+                    parseAllTimeRanges(arr.time).forEach((r, ridx) => {
+                        events.push({
+                            dateStr: arr.date,
+                            start: r.startTime,
+                            end: r.endTime,
+                            course: { ...course, room: arr.venue, schedule: arr.time },
+                            room: arr.venue,
+                            isSpecial: true,
+                            idx: `${idx}-${ridx}`
+                        });
+                    });
+                });
+            });
+            return events.sort((a, b) => `${a.dateStr} ${a.start}`.localeCompare(`${b.dateStr} ${b.start}`));
+        }
+
+        function renderMonthCalendar(courses) {
+            const headers = document.getElementById('calendar-day-headers');
+            const grid = document.getElementById('calendar-grid');
+            if (!headers || !grid) return;
+            const start = currentMonthStart || monthStartFromCourses(courses);
+            currentMonthStart = new Date(start.getFullYear(), start.getMonth(), 1);
+            const y = start.getFullYear();
+            const m = start.getMonth();
+            const firstDow = (new Date(y, m, 1).getDay() + 6) % 7; // monday based
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+            const cells = Math.ceil((firstDow + daysInMonth) / 7) * 7;
+            const events = getAllEvents(courses);
+            const byDate = new Map();
+            events.forEach(e => {
+                if (!byDate.has(e.dateStr)) byDate.set(e.dateStr, []);
+                byDate.get(e.dateStr).push(e);
+            });
+
+            headers.className = 'grid grid-cols-7 border-b border-outline-variant/10';
+            const labels = currentLanguage === 'zh' ? ['周一','周二','周三','周四','周五','周六','周日'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+            headers.innerHTML = labels.map(l => `<div class="py-3 text-center text-xs font-bold text-on-surface-variant">${l}</div>`).join('');
+
+            grid.className = 'grid grid-cols-7';
+            let html = '';
+            for (let i = 0; i < cells; i++) {
+                const dayNum = i - firstDow + 1;
+                if (dayNum < 1 || dayNum > daysInMonth) {
+                    html += `<div class="month-cell border-b border-r border-outline-variant/10 bg-surface"></div>`;
+                    continue;
+                }
+                const d = new Date(y, m, dayNum);
+                const key = toISODateLocal(d);
+                const dayEvents = (byDate.get(key) || []).slice(0, 3);
+                html += `<div class="month-cell border-b border-r border-outline-variant/10 p-2">
+                    <div class="text-xs font-bold text-on-surface mb-1">${String(dayNum).padStart(2,'0')}</div>
+                    <div class="space-y-1">
+                        ${dayEvents.map(ev => {
+                            const color = COURSE_COLORS[ev.course.code] || COURSE_TYPES[ev.course.type].color;
+                            return `<div class="text-[10px] rounded px-1 py-0.5 truncate" style="background:${color}22;color:${color}">${ev.start} ${getCourseName(ev.course)}</div>`;
+                        }).join('')}
+                        ${(byDate.get(key) || []).length > 3 ? `<div class="text-[10px] text-on-surface-variant">+${(byDate.get(key)||[]).length - 3} more</div>` : ''}
+                    </div>
+                </div>`;
+            }
+            grid.innerHTML = html;
+            document.getElementById('calendar-subtitle').textContent = `${y}-${String(m + 1).padStart(2,'0')}`;
+        }
+
+        function renderAgenda(courses) {
+            const headers = document.getElementById('calendar-day-headers');
+            const grid = document.getElementById('calendar-grid');
+            if (!headers || !grid) return;
+            const events = getAllEvents(courses).slice(0, 120);
+            headers.className = 'hidden';
+            grid.className = 'divide-y divide-outline-variant/10';
+            grid.innerHTML = events.length ? events.map(ev => {
+                const color = COURSE_COLORS[ev.course.code] || COURSE_TYPES[ev.course.type].color;
+                return `<div class="p-3 flex gap-3 items-start">
+                    <div class="w-1.5 h-10 rounded-full" style="background:${color}"></div>
+                    <div class="min-w-[130px]">
+                        <p class="text-xs font-bold text-on-surface">${ev.dateStr}</p>
+                        <p class="text-xs text-on-surface-variant">${ev.start} - ${ev.end}</p>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-on-surface">${getCourseName(ev.course)}</p>
+                        <p class="text-xs text-on-surface-variant">${ev.course.code} · ${ev.course.section} · ${ev.course.room}</p>
+                    </div>
+                </div>`;
+            }).join('') : `<div class="p-10 text-center text-on-surface-variant">No events</div>`;
+            document.getElementById('calendar-subtitle').textContent = 'Upcoming events';
+        }
+
+        function renderCalendar(courses) {
+            const headers = document.getElementById('calendar-day-headers');
+            const grid = document.getElementById('calendar-grid');
+            if (!headers || !grid) return;
+            headers.className = 'grid grid-cols-[80px_repeat(7,1fr)] border-b border-outline-variant/10';
+            grid.className = 'relative z-10 timetable-grid';
+            if (currentCalendarView === 'month') return renderMonthCalendar(courses);
+            if (currentCalendarView === 'agenda') return renderAgenda(courses);
+            return renderWeekCalendar(courses);
+        }
+
+        function renderWeekCalendar(courses) {
+            const headers = document.getElementById('calendar-day-headers');
+            const grid = document.getElementById('calendar-grid');
+            if (!headers || !grid) return;
+
+            const weekStart = currentWeekStart || weekRangeFromCourses(courses);
+            currentWeekStart = new Date(weekStart);
+            const dayNames = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+            const zhNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+            headers.innerHTML = `<div class="py-3 px-2 text-center text-[10px] text-on-surface-variant">TIME</div>` + dayNames.map((n, idx) => {
+                const d = new Date(weekStart);
+                d.setDate(weekStart.getDate() + idx);
+                const dd = String(d.getDate()).padStart(2, '0');
+                const label = currentLanguage === 'zh' ? zhNames[idx] : n;
+                return `<div class="py-3 text-center">
+                    <p class="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em] mb-1">${label}</p>
+                    <p class="text-2xl font-headline font-extrabold ${idx===2?'text-primary':'text-on-surface'}">${dd}</p>
+                </div>`;
+            }).join('');
+
+            // Base grid with time labels + background cells
+            const hours = Array.from({ length: 15 }, (_, i) => 8 + i); // 08:00 - 22:00
+            let html = '';
+            for (let r = 0; r < hours.length; r++) {
+                const h = String(hours[r]).padStart(2, '0') + ':00';
+                html += `<div class="calendar-cell flex items-center justify-center text-xs font-bold text-on-surface-variant">${h}</div>`;
+                for (let c = 0; c < 7; c++) html += `<div class="calendar-cell"></div>`;
+            }
+
+            // Selected course events in current week only
+            const weekDates = new Set(Array.from({ length: 7 }, (_, i) => {
+                const d = new Date(weekStart); d.setDate(weekStart.getDate() + i); return toISODateLocal(d);
+            }));
+
+            const events = [];
+            courses.forEach(course => {
+                const allRanges = parseAllTimeRanges(course.schedule);
+                course.dates.forEach(dateStr => {
+                    if (!weekDates.has(dateStr)) return;
+                    const d = new Date(dateStr);
+                    const day = d.getDay();
+                    if (day < 0 || day > 6) return;
+                    const ranges = allRanges.length ? allRanges : [];
+                    ranges.forEach((range, idx) => {
+                        events.push({
+                            course,
+                            dateStr,
+                            day,
+                            start: range.startTime,
+                            end: range.endTime,
+                            room: resolveRoomForDate(course, dateStr, course.room, day),
+                            special: false,
+                            idx
+                        });
+                    });
+                });
+                (course.special_arrangements || []).forEach(arr => {
+                    if (!weekDates.has(arr.date)) return;
+                    const d = new Date(arr.date);
+                    const day = d.getDay();
+                    if (day < 0 || day > 6) return;
+                    parseAllTimeRanges(arr.time).forEach((range, idx) => {
+                        events.push({
+                            course: { ...course, room: arr.venue, schedule: arr.time },
+                            dateStr: arr.date,
+                            day,
+                            start: range.startTime,
+                            end: range.endTime,
+                            room: arr.venue,
+                            special: true,
+                            idx
+                        });
+                    });
+                });
+            });
+
+            events.forEach(ev => {
+                const [sh, sm] = ev.start.split(':').map(Number);
+                const [eh, em] = ev.end.split(':').map(Number);
+                const startMin = sh * 60 + sm;
+                const endMin = eh * 60 + em;
+                const baseMin = 8 * 60;
+                const rowHeight = 48;
+                const top = ((startMin - baseMin) / 60) * rowHeight;
+                const height = Math.max(40, ((endMin - startMin) / 60) * rowHeight - 6);
+                const colIndex = ev.day === 0 ? 7 : ev.day; // Sun last
+                const left = `calc(80px + ${(colIndex - 1) * (100 / 7)}% + 6px)`;
+                const width = `calc(${100 / 7}% - 12px)`;
+                const color = COURSE_COLORS[ev.course.code] || COURSE_TYPES[ev.course.type].color;
+                html += `<div class="calendar-course absolute rounded-xl p-3 bg-surface-container-lowest ambient-shadow overflow-hidden"
+                    style="top:${top + 2}px; left:${left}; width:${width}; height:${height}px; border-left-color:${color};">
+                    <span class="text-[10px] font-black uppercase tracking-tight" style="color:${color}">${ev.start}–${ev.end}</span>
+                    <h4 class="text-sm font-bold text-on-surface leading-tight mt-1 line-clamp-2">${getCourseName(ev.course)}</h4>
+                    <p class="text-[11px] font-medium text-on-surface-variant mt-auto">${ev.room || ev.course.room}</p>
+                </div>`;
+            });
+
+            grid.innerHTML = html;
+            const end = new Date(weekStart); end.setDate(weekStart.getDate() + 6);
+            document.getElementById('calendar-subtitle').textContent = `${toISODateLocal(weekStart)} ~ ${toISODateLocal(end)}`;
+        }
+
+        // Extract time from schedule string
+        function extractTime(schedule) {
+            const match = schedule.match(/(\d{2}:\d{2})-(\d{2}:\d{2})/);
+            return match ? `${match[1]} - ${match[2]}` : schedule;
+        }
+
+        // Update statistics
+        function updateStats() {
+            const allCourses = [...COURSE_DATA.semester1, ...COURSE_DATA.semester2, ...COURSE_DATA.summer];
+            const selected = allCourses.filter(c => selectedCourses.has(`${c.code}-${c.section}`));
+            
+            const stats = { core: 0, elective: 0, project: 0 };
+            selected.forEach(c => {
+                stats[c.type] = (stats[c.type] || 0) + 1;
+            });
+            
+            document.getElementById('stat-core').textContent = stats.core.toString().padStart(2, '0');
+            document.getElementById('stat-elective').textContent = stats.elective.toString().padStart(2, '0');
+            document.getElementById('stat-project').textContent = stats.project.toString().padStart(2, '0');
+        }
+
+        // Check for time conflicts
+        function checkConflicts() {
+            const allCourses = [...COURSE_DATA.semester1, ...COURSE_DATA.semester2, ...COURSE_DATA.summer];
+            const selected = allCourses.filter(c => selectedCourses.has(`${c.code}-${c.section}`));
+            
+            const conflicts = [];
+            
+            for (let i = 0; i < selected.length; i++) {
+                for (let j = i + 1; j < selected.length; j++) {
+                    if (hasTimeConflict(selected[i], selected[j])) {
+                        conflicts.push([selected[i], selected[j]]);
+                    }
+                }
+            }
+            
+            const warningEl = document.getElementById('conflict-warning');
+            const detailsEl = document.getElementById('conflict-details');
+            
+            if (conflicts.length > 0) {
+                warningEl.classList.remove('hidden');
+                detailsEl.innerHTML = conflicts.map(([a, b]) => 
+                    `${getCourseName(a)} (${a.section}) conflicts with ${getCourseName(b)} (${b.section})`
+                ).join('<br>');
+            } else {
+                warningEl.classList.add('hidden');
+            }
+        }
+
+        // Clear all selections
+        function clearSelection() {
+            selectedCourses.clear();
+            renderCourseList();
+            renderSelectedCourses();
+            updateStats();
+            document.getElementById('conflict-warning').classList.add('hidden');
+            saveState();
+        }
+
+        // Export schedule
+        function openExportModal() {
+            document.getElementById('export-modal').classList.remove('hidden');
+        }
+
+        function closeExportModal() {
+            document.getElementById('export-modal').classList.add('hidden');
+        }
+
+        function setExportFormat(fmt) {
+            exportFormat = fmt;
+            const ics = document.getElementById('export-format-ics');
+            const csv = document.getElementById('export-format-csv');
+            const isICS = fmt === 'ics';
+            ics.className = `px-3 py-2 rounded-lg text-sm font-semibold ${isICS ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant'}`;
+            csv.className = `px-3 py-2 rounded-lg text-sm font-semibold ${!isICS ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant'}`;
+            document.getElementById('ics-reminder-section').classList.toggle('hidden', !isICS);
+        }
+
+        function collectReminderMinutes() {
+            const checks = Array.from(document.querySelectorAll('#reminder-options input[type=\"checkbox\"]:checked'))
+                .map(x => Number(x.value))
+                .filter(n => Number.isFinite(n) && n > 0);
+            const custom = Number(document.getElementById('custom-reminder').value || 0);
+            if (Number.isFinite(custom) && custom > 0) checks.push(custom);
+            return Array.from(new Set(checks)).sort((a, b) => a - b);
+        }
+
+        function formatICSDate(dtStr) {
+            // local floating time (no Z) for compatibility with calendar clients
+            return dtStr.replace(/[-:]/g, '').replace('T', 'T').slice(0, 15);
+        }
+
+        function escapeICSText(s) {
+            return String(s || '')
+                .replace(/\\/g, '\\\\')
+                .replace(/\n/g, '\\n')
+                .replace(/,/g, '\\,')
+                .replace(/;/g, '\\;');
+        }
+
+        function buildICSEvents(selected, reminders) {
+            const lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//HKU//MFFinTech Schedule//EN',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH'
+            ];
+
+            const now = new Date();
+            const stamp = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}T${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}${String(now.getSeconds()).padStart(2,'0')}`;
+
+            selected.forEach(course => {
+                const ranges = parseAllTimeRanges(course.schedule);
+                const daySet = new Set((parseScheduleTime(course.schedule)?.days || []));
+
+                course.dates.forEach(dateStr => {
+                    const d = new Date(dateStr);
+                    if (!daySet.has(d.getDay())) return;
+                    ranges.forEach((r, idx) => {
+                        const dtStart = `${dateStr}T${r.startTime}:00`;
+                        const dtEnd = `${dateStr}T${r.endTime}:00`;
+                        lines.push('BEGIN:VEVENT');
+                        lines.push(`UID:${course.code}-${course.section}-${dateStr}-${idx}@hku-mffintech`);
+                        lines.push(`DTSTAMP:${stamp}`);
+                        lines.push(`DTSTART:${formatICSDate(dtStart)}`);
+                        lines.push(`DTEND:${formatICSDate(dtEnd)}`);
+                        lines.push(`SUMMARY:${escapeICSText(getCourseName(course))} (${escapeICSText(course.code)}-${escapeICSText(course.section)})`);
+                        const roomForDate = resolveRoomForDate(course, dateStr, course.room, d.getDay());
+                        lines.push(`LOCATION:${escapeICSText(course.campus + ' ' + roomForDate)}`);
+                        lines.push(`DESCRIPTION:${escapeICSText(course.instructor + ' | ' + course.schedule)}`);
+                        reminders.forEach(mins => {
+                            lines.push('BEGIN:VALARM');
+                            lines.push(`TRIGGER:-PT${mins}M`);
+                            lines.push('ACTION:DISPLAY');
+                            lines.push(`DESCRIPTION:${escapeICSText(getCourseName(course))} starts in ${mins} minutes`);
+                            lines.push('END:VALARM');
+                        });
+                        lines.push('END:VEVENT');
+                    });
+                });
+
+                (course.special_arrangements || []).forEach((arr, idx) => {
+                    parseAllTimeRanges(arr.time).forEach((r, ridx) => {
+                        const dtStart = `${arr.date}T${r.startTime}:00`;
+                        const dtEnd = `${arr.date}T${r.endTime}:00`;
+                        lines.push('BEGIN:VEVENT');
+                        lines.push(`UID:${course.code}-${course.section}-${arr.date}-special-${idx}-${ridx}@hku-mffintech`);
+                        lines.push(`DTSTAMP:${stamp}`);
+                        lines.push(`DTSTART:${formatICSDate(dtStart)}`);
+                        lines.push(`DTEND:${formatICSDate(dtEnd)}`);
+                        lines.push(`SUMMARY:${escapeICSText(getCourseName(course))} (${escapeICSText(course.code)}-${escapeICSText(course.section)})`);
+                        lines.push(`LOCATION:${escapeICSText(course.campus + ' ' + arr.venue)}`);
+                        lines.push(`DESCRIPTION:${escapeICSText(course.instructor + ' | Special arrangement')}`);
+                        reminders.forEach(mins => {
+                            lines.push('BEGIN:VALARM');
+                            lines.push(`TRIGGER:-PT${mins}M`);
+                            lines.push('ACTION:DISPLAY');
+                            lines.push(`DESCRIPTION:${escapeICSText(getCourseName(course))} starts in ${mins} minutes`);
+                            lines.push('END:VALARM');
+                        });
+                        lines.push('END:VEVENT');
+                    });
+                });
+            });
+
+            lines.push('END:VCALENDAR');
+            return lines.join('\r\n');
+        }
+
+        function exportSchedule() {
+            const allCourses = [...COURSE_DATA.semester1, ...COURSE_DATA.semester2, ...COURSE_DATA.summer];
+            const selected = allCourses.filter(c => selectedCourses.has(`${c.code}-${c.section}`));
+            
+            if (selected.length === 0) {
+                alert('Please select at least one course to export.');
+                return;
+            }
+
+            if (exportFormat === 'csv') {
+                let csv = 'Course Code,Course Name,Section,Type,Instructor,Schedule,Campus,Room,Dates\n';
+                selected.forEach(c => {
+                    const name = getCourseName(c).replace(/,/g, ';');
+                    const dates = c.dates.join('; ');
+                    csv += `${c.code},"${name}",${c.section},${c.type},${c.instructor},"${c.schedule}",${c.campus},"${c.room}","${dates}"\n`;
+                });
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'mffintech-schedule.csv';
+                a.click();
+                URL.revokeObjectURL(url);
+                closeExportModal();
+                return;
+            }
+
+            const reminders = collectReminderMinutes();
+            const ics = buildICSEvents(selected, reminders);
+            const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mffintech-schedule.ics';
+            a.click();
+            URL.revokeObjectURL(url);
+            closeExportModal();
+        }
+
+        // Open course detail modal
+        function openModal(courseId) {
+            const allCourses = [...COURSE_DATA.semester1, ...COURSE_DATA.semester2, ...COURSE_DATA.summer];
+            const course = allCourses.find(c => `${c.code}-${c.section}` === courseId);
+            
+            if (!course) return;
+            
+            currentModalCourse = course;
+            
+            const modal = document.getElementById('course-modal');
+            const color = COURSE_COLORS[course.code] || COURSE_TYPES[course.type].color;
+            const typeLabel = currentLanguage === 'en' ? COURSE_TYPES[course.type].nameEn : COURSE_TYPES[course.type].name;
+            
+            document.getElementById('modal-type').textContent = typeLabel;
+            document.getElementById('modal-type').style.backgroundColor = color;
+            document.getElementById('modal-title').textContent = getCourseName(course);
+            document.getElementById('modal-code').textContent = `${course.code} · ${course.section}`;
+            document.getElementById('modal-instructor').textContent = course.instructor;
+            document.getElementById('modal-schedule').textContent = course.schedule;
+            document.getElementById('modal-campus').textContent = `${course.campus} · ${CAMPUS_INFO[course.campus] || course.campus}`;
+            document.getElementById('modal-room').textContent = course.room;
+            
+            // Dates
+            const datesEl = document.getElementById('modal-dates');
+            datesEl.innerHTML = course.dates.map(d => 
+                `<span class="text-[10px] bg-surface-container px-2 py-1 rounded-full">${d}</span>`
+            ).join('');
+            
+            // Special arrangements
+            const specialEl = document.getElementById('modal-special');
+            const specialContent = document.getElementById('modal-special-content');
+            if (course.special_arrangements && course.special_arrangements.length > 0) {
+                specialEl.classList.remove('hidden');
+                specialContent.innerHTML = course.special_arrangements.map(arr => `
+                    <div class="text-sm">
+                        <span class="font-medium">${arr.date}</span> (${arr.day})<br>
+                        <span class="text-on-surface-variant">${arr.time} · ${arr.venue}</span>
+                    </div>
+                `).join('');
+            } else {
+                specialEl.classList.add('hidden');
+            }
+            
+            // Action button
+            const actionBtn = document.getElementById('modal-action-btn');
+            const isSelected = selectedCourses.has(courseId);
+            if (isSelected) {
+                actionBtn.innerHTML = `
+                    <span class="material-symbols-outlined text-sm">remove</span>
+                    Remove from Schedule
+                `;
+                actionBtn.classList.remove('from-primary', 'to-primary-container');
+                actionBtn.classList.add('bg-error');
+            } else {
+                actionBtn.innerHTML = `
+                    <span class="material-symbols-outlined text-sm">add</span>
+                    Add to Schedule
+                `;
+                actionBtn.classList.add('from-primary', 'to-primary-container');
+                actionBtn.classList.remove('bg-error');
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('course-modal').classList.add('hidden');
+            currentModalCourse = null;
+        }
+
+        // Toggle course from modal
+        function toggleCourseFromModal() {
+            if (currentModalCourse) {
+                toggleCourse(`${currentModalCourse.code}-${currentModalCourse.section}`);
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
